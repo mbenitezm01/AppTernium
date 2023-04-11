@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import Button from "react-bootstrap/Button"
 
 //Importacion de estilos
 import './sharedStyles/Header.css'
@@ -9,10 +10,11 @@ import Logo from '../media/images/logo.png'
 function Header(){
     return(
         <div>
-            <div>
-            <img src={Logo}/>
-                <Link to={"/busqueda"}> <button className="botones-Header">Busqueda</button> </Link>
-                <Link to={"/usuarios"}> <button className="botones-Header">Usuarios</button> </Link>
+            <div className="header-bg">
+            <img src={Logo} className="logo"/>
+                <Link to={"/busqueda"}> <Button variant="outline-dark" className="button-header">Busqueda</Button> </Link>
+                <Link to={"/usuarios"}> <Button variant="outline-dark" className="button-header">Usuarios</Button> </Link>
+                
             </div>
         </div>
     )
