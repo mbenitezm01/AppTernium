@@ -1,0 +1,35 @@
+.header-bg {
+    border-bottom: 3px solid grey;
+    height: 71px;
+    width: 100%;
+    display: flex;
+}
+
+img.logo {
+    height: 59px;
+    width: 180px;
+
+    margin: 5px;
+    margin-right: 30px;
+}
+
+.button-header {
+    height: 100%;
+    width: 100%;
+
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+
+}
+
+a {
+    display:inline-block;
+    height: 40px;
+    width: 100px;
+
+    margin: 15.5px;
+    margin-right: 2vw;
+}
