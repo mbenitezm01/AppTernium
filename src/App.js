@@ -15,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Header/>
         <Routes>
+          <Route path='' element={<Navigate to="/busqueda" replace={true} />}/>
           <Route><Route path='/busqueda' element={<Busqueda />} /></Route>
           <Route><Route path='/ficha' element={<Ficha />} /></Route>
           <Route><Route path='/usuarios' element={<Usuarios />} /></Route>
