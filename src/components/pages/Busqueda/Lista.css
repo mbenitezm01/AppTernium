@@ -1,0 +1,19 @@
+
+.busquedaLista{
+    border: 1px solid black;
+    width: 100%;
+
+}
+
+.busquedaLista table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.busquedaLista th {
+    border-bottom: 2px solid black;
+}
+
+.busquedaLista tr {
+    border-bottom: 1px solid black;
+}
