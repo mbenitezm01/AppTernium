@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button"
+import Btn from './Btn'
 
 //Importacion de estilos
 import './sharedStyles/Header.css'
@@ -12,9 +14,8 @@ function Header(){
         <div>
             <div className="header-bg">
             <img src={Logo} className="logo"/>
-                <Link to={"/busqueda"}> <Button variant="outline-dark" className="button-header">Busqueda</Button> </Link>
-                <Link to={"/usuarios"}> <Button variant="outline-dark" className="button-header">Usuarios</Button> </Link>
-                
+                <Link to={"/busqueda"}  style={{width:'200px', margin:'0'}}> <Btn text={'Busqueda'} icon={'search'}/> </Link>
+                <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link>
             </div>
         </div>
     )
