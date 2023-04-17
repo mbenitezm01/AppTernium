@@ -28,4 +28,15 @@
 
 .filter-box {
     padding-left: 30px;
+    height: 100vh;
+    overflow-y: scroll;
+    padding-bottom: 30px;
+    padding-top: 20px;
+
+    border: 1px solid black;
+
+}
+
+.filters {
+    margin-bottom: 15px;
 }
