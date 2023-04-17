@@ -1,0 +1,21 @@
+button {
+    border: none;
+    border-radius: 15px;
+    background: none;
+
+    margin: 5px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+    button:hover {
+        background-color: lightgrey;
+    }
+
+.icon {
+    margin-left: 5px;
+    width: 55px;
+    height: 55px;
+}

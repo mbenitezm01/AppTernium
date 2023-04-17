@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -15,6 +16,7 @@ function App() {
       <BrowserRouter>
         <Header/>
         <Routes>
+          <Route path='' element={<Navigate to="/busqueda" replace={true} />}/>
           <Route><Route path='/busqueda' element={<Busqueda />} /></Route>
           <Route><Route path='/ficha' element={<Ficha />} /></Route>
           <Route><Route path='/usuarios' element={<Usuarios />} /></Route>
