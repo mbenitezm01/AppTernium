@@ -1,0 +1,19 @@
+button {
+    border: none;
+    background: none;
+
+    margin: 5px;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+    button:hover {
+        border-radius: 15px;
+        background-color: lightgrey;
+    }
+
+.icon {
+    margin-left: 5px;
+    width: 55px;
+    height: 55px;
+}
