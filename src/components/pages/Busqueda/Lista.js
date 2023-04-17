@@ -15,22 +15,22 @@ function Lista(){
 
     const renderedRows = mockData.map(data => {
         return(
-            <tr>
-                <td><input type="checkbox"/></td>
-                <td>{data.cet}</td>
-                <td>{data.nombre}</td>
-                <td>{data.est3}</td>
-                <td>{data.est4}</td>
-                <td>{data.puesto}</td>
-                <td>{data.jefe}</td>
-                <td>{data.antiguedad}</td>
-                <td>{data.performance}</td>
-                <td>{data.calif}</td>
-                <td>{data.potencial}</td>
-                <td>{data.keyT}</td>
+                <tr>
+                    <td><input type="checkbox"/></td>
+                    <td>{data.cet}</td>
+                    <td>{data.nombre}</td>
+                    <td>{data.est3}</td>
+                    <td>{data.est4}</td>
+                    <td>{data.puesto}</td>
+                    <td>{data.jefe}</td>
+                    <td>{data.antiguedad}</td>
+                    <td>{data.performance}</td>
+                    <td>{data.calif}</td>
+                    <td>{data.potencial}</td>
+                    <td>{data.keyT}</td>
 
 
-            </tr>
+                </tr>
         )
     })
 

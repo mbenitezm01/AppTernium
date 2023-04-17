@@ -2,13 +2,12 @@
 .sidebar-bg {
     border-right: 3px solid grey;
 
-
     text-align: left;
     font-size: 24px;
     font-weight: bold;
 
     width: 270px;
-    height: 100vh;
+    height: calc(100vh - 71px);
 
     
 }
@@ -20,20 +19,20 @@
 
     text-align: center;
 
-    height: 53px;
+    height: 60px;
 
-    padding-top: 26.5px;
-
+    padding-top: 12px;
 }
 
 .filter-box {
     padding-left: 30px;
-    height: 100vh;
+    height: calc(100% - 60px);
     overflow-y: scroll;
     padding-bottom: 30px;
     padding-top: 20px;
 
     border: 1px solid black;
+
 
 }
 
