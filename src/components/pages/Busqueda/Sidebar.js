@@ -19,19 +19,19 @@ function Sidebar(){
 
 
                     <Form.Group className='filters'> 
-                        <Form.Label>CET    </Form.Label>
+                        <Form.Label>CET</Form.Label>
                         <Form.Control type="cet" placeholder="Buscar" />
                     </Form.Group>
 
 
                     <Form.Group  className='filters' style={{display:'inline-block'}}>
                         <Form.Label>Antigüedad</Form.Label>
-                        <Row style={{display:'flex'}}>
-                        <Col style={{marginRight: '20px'}}>
-                        <Form.Control type="antiguedad" placeholder="Min" style={{width: '50px'}}/>
+                        <Row>
+                        <Col>
+                        <Form.Control type="antiguedad" placeholder="Min" style={{width: '60px'}}/>
                             </Col>
                             <Col>
-                        <Form.Control type="antiguedad" placeholder="Max" style={{width: '50px'}}/>
+                        <Form.Control type="antiguedad" placeholder="Max" style={{width: '60px'}}/>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -39,12 +39,12 @@ function Sidebar(){
 
                     <Form.Group  className='filters' style={{display:'inline-block'}}>
                         <Form.Label>Calificacion</Form.Label>
-                        <Row style={{display:'flex'}}>
-                        <Col style={{marginRight: '20px'}}>
-                        <Form.Control type="antiguedad" placeholder="Min" style={{width: '50px'}}/>
+                        <Row>
+                        <Col>
+                        <Form.Control type="antiguedad" placeholder="Min" style={{width: '60px'}}/>
                             </Col>
                             <Col>
-                        <Form.Control type="antiguedad" placeholder="Max" style={{width: '50px'}}/>
+                        <Form.Control type="antiguedad" placeholder="Max" style={{width: '60px'}}/>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -122,7 +122,7 @@ function Sidebar(){
                     </Form.Group>
 
 
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" className='submit-btn'>
                         Submit
                     </Button>
                 </Form>
