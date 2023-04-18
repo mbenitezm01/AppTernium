@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../../media/images/logo.png';
 import './Ficha.css';
+import { HiDownload, HiPlus, HiMinus } from 'react-icons/hi';
 //Importacion de estilos
 
 function Ficha(){
@@ -162,9 +163,9 @@ function Ficha(){
     return(
         <div className='page'>
             <div className='herramientas'>
-                <button onClick={() => handleClickZoom(false)}>+</button>
-                <button onClick={() => handleClickZoom(true)}>-</button>
-                <button onClick={handleDownloadPdf}>print</button>
+                <button onClick={() => handleClickZoom(true)}><HiMinus /></button>
+                <button onClick={() => handleClickZoom(false)}><HiPlus /></button>
+                <button onClick={handleDownloadPdf}><HiDownload /></button>
             </div>
             <div className='main-container' style={{padding: padding}}>
                 <div ref={printRef}>
