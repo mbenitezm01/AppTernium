@@ -1,0 +1,23 @@
+.lista-bg {
+    width: 100vw;
+    height: 100%;
+}
+
+.lista-bg{
+    border: 1px solid black;
+    width: 100%;
+
+}
+
+.lista-bg table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.lista-bg th {
+    border-bottom: 2px solid black;
+}
+
+.lista-bg tr {
+    border-bottom: 1px solid black;
+}
