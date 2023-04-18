@@ -143,10 +143,12 @@ td{
 
 .rounded-l{
     width: 3rem;
+    cursor: pointer;
     height: 2.5rem;
 }
 
 .rounded-r{
     width: 3rem;
+    cursor: pointer;
     height: 2.5rem;
 }

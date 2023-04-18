@@ -1,84 +1,120 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Logo from '../../../media/images/logo.png';
 import './Ficha.css';
 //Importacion de estilos
 
-function Ficha({ empleado }){
+function Ficha(){
     const [zoom, setZoom] = useState(1);
+    const [info, setInfo] = useState({});
+    const cet = useParams();
 
-    const personalData = [
-        {title: 'Edad', value: 44},
-        {title: 'Antigüedad', value: 3},
-        {title: 'Estudios', value: 0},
-        {title: 'Universidad', value: 0},
-        {title: 'Area Manager', value: 'Pesqueria 2'},
-        {title: 'Direccion', value: 'Automacion y Control Tx'},
-        {title: 'Puesto', value: 'Ingeniero en automacion'},
-        {title: 'PC-CAT', value: '51 - 51'}
-    ]
+    const fetchInfoEmpleado = useCallback(async () => {
+        const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
+        setInfo(response.data);
+    }, []);
 
-    const evaluaciones = [
-        {title: 2022, pref: 4, potencial: 'AP (MT)', curva: 'TX DIMA CI'},
-        {title: 2021, pref: 5, potencial: 'PROM (M)', curva: 'TX DIMA CI'},
-        {title: 2020, pref: 4, potencial: 'PROM (M)', curva: 'TX DIMA CI'},
-        {title: 2019, pref: null, potencial: null, curva: null},
-        {title: 2017, pref: null, potencial: null, curva: null},
-        {title: 2016, pref: null, potencial: null, curva: null},
-    ];
+    useEffect(() => {
+        fetchInfoEmpleado();
+    }, [fetchInfoEmpleado]);
 
-    const upwardFeedback = [];
-
-    const clienteProveedor = [
-        {nota: 5, comentario: 'Conocimientos y vocacion de servicio'},
-        {nota: 5, comentario: 'Excelente elemento, con alto sentido de orientación al servicio, y alto conocimiento técnico.'},
-        {nota: 4, comentario: 'Su aporte técnico y liderazgo ha sido clave para varios hitos del proyecto'},
-        {nota: 5, comentario: 'Cuando se presentan problemas viene con soluciones. Muy efectivo en su trabajo y mucho compromiso. Debe mejorar el control del estrés ante la presión.'}
-    ];
-
-    const trayectoriaLaboral = [
-        {fecha: '2005-01-22', empresa: 'CEMEX', puesto: 'Mecanico'},
-        {fecha: '2008-10-16', empresa: 'BAT', puesto: 'Ingeniero en sistemas'},
-        {fecha: '2017-06-02', empresa: 'John Deere', puesto: 'Mecanico'}
-    ]
-
-    const renderedInfoValue = personalData.map(data => {
-        return (
-            <tr>
-                <td className='border-r'>{data.title}</td>
-                <td>{data.value}</td>
-            </tr>
-        )
-    });
-
-    const renderedEvaluaciones = evaluaciones.map(data => {
-        return (
-            <tr>
-                <td>{data.title}</td>
-                <td>{data.pref}</td>
-                <td>{data.potencial}</td>
-                <td>{data.curva}</td>
-            </tr>
+    let renderedInfoValue = null;
+    if(info.empleado !== undefined){
+        renderedInfoValue = (
+            <tbody>
+                <tr>
+                    <td className='border-r'>Edad</td>
+                    <td>{info.empleado.fecha_nacimiento.slice(0,10) || 0}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Antiguedad</td>
+                    <td>{info.empleado.antiguedad || 0}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Estudios</td>
+                    <td>{info.empleado.estudios ? 1 : 0}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Universidad</td>
+                    <td>{info.empleado.estudios || 0}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Area Manager</td>
+                    <td>{info.empleado.area_manager || ''}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Direccion</td>
+                    <td>{info.empleado.direccion || ''}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Puesto</td>
+                    <td>{info.empleado.puesto || ''}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>PC-CAT</td>
+                    <td>{info.empleado.pc_cat || ''}</td>
+                </tr>
+            </tbody>
         );
-    });
+    };
 
-    const renderedClienteProveedor = clienteProveedor.map(data => {
-        return (
-            <tr>
-                <td className='border-r'>{data.nota}</td>
-                <td>{data.comentario}</td>
-            </tr>
-        );
-    });
-    
-    const renderedTrayectoriaLaboral = trayectoriaLaboral.map(data => {
-        return (
-            <tr>
-                <td>{data.fecha}</td>
-                <td>{data.empresa}</td>
-                <td>{data.puesto}</td>
-            </tr>
-        );
-    });
+    let renderedEvaluaciones = null;
+    if(info.evaluacion !== undefined && info.evaluacion.length > 0){
+        renderedEvaluaciones = info.evaluacion.map(data => {
+            return (
+                <tr key={data.title}>
+                    <td>{data.fecha.slice(0, 4) || ''}</td>
+                    <td>{data.performance || 0}</td>
+                    <td>{data.potencial || ''}</td>
+                    <td>{data.curva || ''}</td>
+                </tr>
+            );
+        });
+    };
+
+    let promedioUpwardFeedback = 0;
+    let renderedUpwardFeedback = null;
+    if(info.upwardfeedback !== undefined && info.upwardfeedback.length > 0){
+        renderedUpwardFeedback = info.upwardfeedback.map(data => {
+            promedioUpwardFeedback += data.nota;
+            return (
+                <tr key={data.comentarios}>
+                    <td className='border-r'>{data.nota}</td>
+                    <td>{data.comentarios}</td>
+                </tr>
+            );
+        });
+        promedioUpwardFeedback /= info.upwardfeedback.length 
+    };
+
+    let promedioClienteProveedor = 0;
+    let renderedClienteProveedor = null;
+    if(info.clienteproveedor !== undefined && info.clienteproveedor.length > 0){
+        renderedClienteProveedor = info.clienteproveedor.map(data => {
+            promedioClienteProveedor += data.nota
+            return (
+                <tr key={data.comentarios}>
+                    <td className='border-r'>{data.nota}</td>
+                    <td>{data.comentarios}</td>
+                </tr>
+            );
+        });
+        promedioClienteProveedor /= info.clienteproveedor.length;
+    };
+
+    let renderedTrayectoriaLaboral = null;
+    if(info.trayectorialaboral !== undefined && info.trayectorialaboral.length > 0){
+        renderedTrayectoriaLaboral = info.trayectorialaboral.map(data => {
+            return (
+                <tr key={data.fecha + data.empresa}>
+                    <td>{data.fecha.slice(0, 10)}</td>
+                    <td>{data.empresa}</td>
+                    <td>{data.puesto}</td>
+                </tr>
+            );
+        });
+    }
 
     const handleClickZoom = (zoomDirection) => {
         if(zoomDirection){
@@ -107,9 +143,9 @@ function Ficha({ empleado }){
 
     return(
         <div className='main-container' style={{padding: padding}}>
+            {console.log(info)}
             <div className='main-header'>
-                {/* Deberia ir el nombre del empleado pasado como prop */}
-                <p>Juan Gzz Gzz</p>
+                <p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
                 <img src={Logo} className='logo'/>
             </div>
             <div className='body'>
@@ -144,22 +180,36 @@ function Ficha({ empleado }){
                 <div className='upward-feedback'>
                     <div className='comment-header'>
                         <div>
-                            <p>UPWARD FEEDBACK: {upwardFeedback.length}</p>
+                            <p>UPWARD FEEDBACK: {info.upwardfeedback !== undefined ? info.upwardfeedback.length : 0}</p>
                         </div>
                         <div>
-                            <p>Promedio: 0</p>
+                            <p>Promedio: {promedioUpwardFeedback.toFixed(1) || 0}</p>
                         </div>
                     </div>
+                    {renderedUpwardFeedback !== null ? 
+                    <table className='info'>
+                        <thead>
+                            <tr>
+                                <th>Nota</th>
+                                <th>Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {renderedUpwardFeedback}
+                        </tbody>
+                    </table>
+                    : null}
                 </div>
                 <div className='client-provider'>
                     <div className='comment-header'>
                         <div>
-                            <p>CLIENTE PROVEEDOR: {clienteProveedor.length}</p>
+                            <p>CLIENTE PROVEEDOR: {info.clienteproveedor !== undefined ? info.clienteproveedor.length : 0}</p>
                         </div>
                         <div>
-                            <p>Promedio: 0</p>
+                            <p>Promedio: {promedioClienteProveedor.toFixed(1) || 0}</p>
                         </div>
                     </div>
+                    {renderedClienteProveedor !== null ?
                     <table className='info'>
                         <thead>
                             <tr>
@@ -171,6 +221,7 @@ function Ficha({ empleado }){
                             {renderedClienteProveedor}
                         </tbody>
                     </table>
+                    : null}
                 </div>
                 <div className='work-history'>
                     <div className='header'>
@@ -178,9 +229,11 @@ function Ficha({ empleado }){
                     </div>
                     <table className='info'>
                         <thead>
-                            <th>Fecha</th>
-                            <th>Empresa</th>
-                            <th>Puesto</th>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Empresa</th>
+                                <th>Puesto</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {renderedTrayectoriaLaboral}
