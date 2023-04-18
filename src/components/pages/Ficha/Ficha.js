@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../../media/images/logo.png';
@@ -8,7 +10,23 @@ import './Ficha.css';
 function Ficha(){
     const [zoom, setZoom] = useState(1);
     const [info, setInfo] = useState({});
+    const printRef = useRef();
     const cet = useParams();
+
+    const handleDownloadPdf = async () => {
+        const element = printRef.current;
+        const canvas = await html2canvas(element);
+        const data = canvas.toDataURL('image/png');
+    
+        const pdf = new jsPDF();
+        const imgProperties = pdf.getImageProperties(data);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight =
+          (imgProperties.height * pdfWidth) / imgProperties.width;
+    
+        pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(info.empleado !== null ? `${info.empleado.nombre}.pdf` : 'empleado.pdf');
+    };
 
     const fetchInfoEmpleado = useCallback(async () => {
         const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
@@ -142,118 +160,129 @@ function Ficha(){
     }
 
     return(
-        <div className='main-container' style={{padding: padding}}>
-            {console.log(info)}
-            <div className='main-header'>
-                <p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
-                <img src={Logo} className='logo'/>
+        <div className='page'>
+            <div className='herramientas'>
+                <button onClick={() => handleClickZoom(false)}>+</button>
+                <button onClick={() => handleClickZoom(true)}>-</button>
+                <button onClick={handleDownloadPdf}>print</button>
             </div>
-            <div className='body'>
-                <div className='personal-section'>
-                    <div className='personal-data'>
-                        <div className='header'>
-                            <p>DATOS PERSONALES</p>
+            <div className='main-container' style={{padding: padding}}>
+                <div ref={printRef}>
+                    <div className='main-header'>
+                        <p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
+                        <img src={Logo} className='logo'/>
+                    </div>
+                    <div className='body'>
+                        <div className='personal-section'>
+                            <div className='personal-data'>
+                                <div className='header'>
+                                    <p>DATOS PERSONALES</p>
+                                </div>
+                                <table className='info'>
+                                    {renderedInfoValue}
+                                </table>
+                            </div>
+                            <div className='evaluations'>
+                                <div className='header'>
+                                    <p>EVALUACIONES ANUALES</p>
+                                </div>
+                                <table className='info'>
+                                    <thead>
+                                        <tr>
+                                            <th>Año</th>
+                                            <th>PERF</th>
+                                            <th>POTENCIAL</th>
+                                            <th>CURVA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {renderedEvaluaciones}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <table className='info'>
-                            {renderedInfoValue}
-                        </table>
-                    </div>
-                    <div className='evaluations'>
-                        <div className='header'>
-                            <p>EVALUACIONES ANUALES</p>
+                        <div className='upward-feedback'>
+                            <div className='comment-header'>
+                                <div>
+                                    <p>UPWARD FEEDBACK: {info.upwardfeedback !== undefined ? info.upwardfeedback.length : 0}</p>
+                                </div>
+                                <div>
+                                    <p>Promedio: {promedioUpwardFeedback.toFixed(1) || 0}</p>
+                                </div>
+                            </div>
+                            {renderedUpwardFeedback !== null ? 
+                            <table className='info'>
+                                <thead>
+                                    <tr>
+                                        <th>Nota</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {renderedUpwardFeedback}
+                                </tbody>
+                            </table>
+                            : null}
                         </div>
-                        <table className='info'>
-                            <thead>
-                                <tr>
-                                    <th>Año</th>
-                                    <th>PERF</th>
-                                    <th>POTENCIAL</th>
-                                    <th>CURVA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {renderedEvaluaciones}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className='upward-feedback'>
-                    <div className='comment-header'>
-                        <div>
-                            <p>UPWARD FEEDBACK: {info.upwardfeedback !== undefined ? info.upwardfeedback.length : 0}</p>
+                        <div className='client-provider'>
+                            <div className='comment-header'>
+                                <div>
+                                    <p>CLIENTE PROVEEDOR: {info.clienteproveedor !== undefined ? info.clienteproveedor.length : 0}</p>
+                                </div>
+                                <div>
+                                    <p>Promedio: {promedioClienteProveedor.toFixed(1) || 0}</p>
+                                </div>
+                            </div>
+                            {renderedClienteProveedor !== null ?
+                            <table className='info'>
+                                <thead>
+                                    <tr>
+                                        <th>Nota</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {renderedClienteProveedor}
+                                </tbody>
+                            </table>
+                            : null}
                         </div>
-                        <div>
-                            <p>Promedio: {promedioUpwardFeedback.toFixed(1) || 0}</p>
+                        <div className='work-history'>
+                            <div className='header'>
+                                <p>TRAYECTORIA LABORAL</p>
+                            </div>
+                            <table className='info'>
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Empresa</th>
+                                        <th>Puesto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {renderedTrayectoriaLaboral}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className='profile-summary'>
+                            <div className='header'>
+                                <p>RESUMEN PERFIL</p>
+                            </div>
+                        </div>
+                        <div className='potential-job'>
+                            <div className='header'>
+                                <p>PUESTOS DE PROYECCIÓN</p>
+                            </div>
                         </div>
                     </div>
-                    {renderedUpwardFeedback !== null ? 
-                    <table className='info'>
-                        <thead>
-                            <tr>
-                                <th>Nota</th>
-                                <th>Comentario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {renderedUpwardFeedback}
-                        </tbody>
-                    </table>
-                    : null}
-                </div>
-                <div className='client-provider'>
-                    <div className='comment-header'>
-                        <div>
-                            <p>CLIENTE PROVEEDOR: {info.clienteproveedor !== undefined ? info.clienteproveedor.length : 0}</p>
-                        </div>
-                        <div>
-                            <p>Promedio: {promedioClienteProveedor.toFixed(1) || 0}</p>
-                        </div>
+                    {/* <div className='zoom'>
+                        <button className='rounded-l' onClick={() => handleClickZoom(false)}>+</button>
+                        <button className='rounded-r' onClick={() => handleClickZoom(true)}>-</button>
                     </div>
-                    {renderedClienteProveedor !== null ?
-                    <table className='info'>
-                        <thead>
-                            <tr>
-                                <th>Nota</th>
-                                <th>Comentario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {renderedClienteProveedor}
-                        </tbody>
-                    </table>
-                    : null}
+                    <div className='zoom'>
+                        <button onClick={handleDownloadPdf}>Download</button>
+                    </div> */}
                 </div>
-                <div className='work-history'>
-                    <div className='header'>
-                        <p>TRAYECTORIA LABORAL</p>
-                    </div>
-                    <table className='info'>
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Empresa</th>
-                                <th>Puesto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {renderedTrayectoriaLaboral}
-                        </tbody>
-                    </table>
-                </div>
-                <div className='profile-summary'>
-                    <div className='header'>
-                        <p>RESUMEN PERFIL</p>
-                    </div>
-                </div>
-                <div className='potential-job'>
-                    <div className='header'>
-                        <p>PUESTOS DE PROYECCIÓN</p>
-                    </div>
-                </div>
-            </div>
-            <div className='zoom'>
-                <button className='rounded-l' onClick={() => handleClickZoom(false)}>+</button>
-                <button className='rounded-r' onClick={() => handleClickZoom(true)}>-</button>
             </div>
         </div>
     )
