@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import './Login.css'
 
@@ -10,23 +10,38 @@ function Login(){
         usr: "david",
         psswrd : "martinez"
     };
+    
 
-    let usr = ""
-    let psswrd = ""
+    function isUser(user, query){
+        return user.usr === query
+    }
+
+    const userArray = [{usr:"david", psswrd:"martinez"},{usr:"leonardo",psswrd:"davinci"},{usr:"keanu", psswrd:"reeves"}]
 
     function displayLoginInfo(){
-        
-        usr = document.getElementById("username").value;
-        psswrd= document.getElementById("pass").value;
-        if (usr === dataDavid.usr && psswrd === dataDavid.psswrd){
-            alert("Hola, David!")
-        } else{
-            alert("El usuario o la contraseña son incorrectos\nPor favor verifica tu información")
+        // datos de prueba de login
+        let usuario = {usr:"", psswrd:""}
+        let usrQuery = {usr:"", psswrd:""}
+        usuario.usr = document.getElementById("username").value;
+        usuario.psswrd = document.getElementById("pass").value;
+        //usuario = userArray.find(x => x.usr === usuario.usr);
+        usrQuery = userArray.find(x => x.usr === usuario.usr)
+
+        if (usrQuery  !== undefined){
+            if (usuario.usr === usrQuery.usr && usuario.psswrd === usrQuery.psswrd){
+                alert("usuario: " + usuario.usr + "\npassword: " + usuario.psswrd)
+            } else {
+                document.getElementById("errorMsg").innerHTML = "El usuario o contraseña son incorrectos"
+            }
+            
+        }else{
+            //alert("El usuario o la contraseña son incorrectos\nPor favor verifica tu información")
+            document.getElementById("errorMsg").innerHTML = "El usuario o contraseña son incorrectos"
         }
     }
 
     
-
+    // considerar cambiar el componente img por image
     return(
         <div id="login-page">
             <div id="login-box">
@@ -38,8 +53,11 @@ function Login(){
                     <input type="password" id="pass" name="contrasena"></input><br></br>
                 </form>
                 <button onClick={displayLoginInfo}>Ingresar</button><br></br>
+                <p id="errorMsg"></p>
             </div>
-            <img src="../../../../logo512.png" alt="logo"></img>
+            
+            <img src="../../../../TerniumLoginImg.jpeg" id="login-image" alt="logo"></img>
+            
         </div>
     )
 }
