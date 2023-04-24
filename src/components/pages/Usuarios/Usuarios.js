@@ -23,25 +23,25 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 
-function Lista() {
+function ListaUsuarios() {
 
     const data = React.useMemo(
         () => [
-            { cet: 1, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 2, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 3, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 4, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 5, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 6, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 7, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 8, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 9, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 10, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 11, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 12, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 13, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 14, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 15, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
+            { cet: 1, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
+            { cet: 2, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 3, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 4, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 5, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 6, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
+            { cet: 7, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 8, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 9, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 10, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 11, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 12, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
+            { cet: 13, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 14, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 15, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
             
         ],
         []
@@ -61,40 +61,12 @@ function Lista() {
                 sortType: 'alphanumeric'
             },
             {
-                Header: 'Estructura 3',
-                accessor: 'est3'
+                Header: 'Contraseña',
+                accessor: 'contra'
             },
             {
-                Header: 'Estructura 4',
-                accessor: 'est4'
-            },
-            {
-                Header: 'Puesto',
-                accessor: 'puesto'
-            },
-            {
-                Header: 'Jefe',
-                accessor: 'jefe'
-            },
-            {
-                Header: 'Antigüedad',
-                accessor: 'antiguedad'
-            },
-            {
-                Header: 'Performance',
-                accessor: 'performance'
-            },
-            {
-                Header: 'Calificación',
-                accessor: 'calif'
-            },
-            {
-                Header: 'Potencial',
-                accessor: 'potencial'
-            },
-            {
-                Header: 'Key Talent',
-                accessor: 'keyT'
+                Header: 'E-mail',
+                accessor: 'email'
             },
         ],
         []
@@ -276,4 +248,4 @@ function Lista() {
 
     )
 }
-export default Lista
+export default ListaUsuarios
