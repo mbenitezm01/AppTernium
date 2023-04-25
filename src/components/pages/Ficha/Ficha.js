@@ -6,6 +6,7 @@ import axios from 'axios';
 import Logo from '../../../media/images/logo.png';
 import './Ficha.css';
 import { HiDownload, HiPlus, HiMinus } from 'react-icons/hi';
+import { MdModeEdit } from 'react-icons/md';
 //Importacion de estilos
 
 function Ficha(){
@@ -26,13 +27,20 @@ function Ficha(){
           (imgProperties.height * pdfWidth) / imgProperties.width;
     
         pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(info.empleado !== null ? `${info.empleado.nombre}.pdf` : 'empleado.pdf');
+        const name = info.empleado.nombre.replace(/ /g, '_');
+        pdf.save(info.empleado !== undefined ? `${info.empleado.cet}_${name}.pdf` : 'empleado.pdf');
     };
 
     const fetchInfoEmpleado = useCallback(async () => {
-        const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
+        console.log('Request');
+        const response = await axios.get(`http://localhost:5050/api/info-empleado/${cet.id}`);
         setInfo(response.data);
     }, []);
+
+    // const fetchInfoEmpleado = useCallback(async () => {
+    //     const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
+    //     setInfo(response.data);
+    // }, [cet.id]);
 
     useEffect(() => {
         fetchInfoEmpleado();
@@ -59,20 +67,24 @@ function Ficha(){
                     <td>{info.empleado.estudios || 0}</td>
                 </tr>
                 <tr>
-                    <td className='border-r'>Area Manager</td>
-                    <td>{info.empleado.area_manager || ''}</td>
+                    <td className='border-r'>Estructura 3</td>
+                    <td>{info.empleado.estructura_3 || ''}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Estructura 4</td>
+                    <td>{info.empleado.estructura_4 || ''}</td>
+                </tr>
+                <tr>
+                    <td className='border-r'>Estructura 5</td>
+                    <td>{info.empleado.estructura_5 || ''}</td>
                 </tr>
                 <tr>
                     <td className='border-r'>Direccion</td>
                     <td>{info.empleado.direccion || ''}</td>
                 </tr>
                 <tr>
-                    <td className='border-r'>Puesto</td>
-                    <td>{info.empleado.puesto || ''}</td>
-                </tr>
-                <tr>
                     <td className='border-r'>PC-CAT</td>
-                    <td>{info.empleado.pc_cat || ''}</td>
+                    <td>{info.empleado.pc + ' - ' + (info.empleado.cat || '') || ''}</td>
                 </tr>
             </tbody>
         );
@@ -137,40 +149,60 @@ function Ficha(){
 
     const handleClickZoom = (zoomDirection) => {
         if(zoomDirection){
-            if(zoom === 1){
-                setZoom(2);
-            }else if(zoom === 2){
-                setZoom(3);
+            // if(zoom === 1){
+            //     setZoom(2);
+            // }else if(zoom === 2){
+            //     setZoom(3);
+            // }
+            if(zoom !== 5){
+                setZoom(zoom + 1);
             }
         }else{
-            if(zoom === 3){
-                setZoom(2);
-            }else if(zoom === 2){
-                setZoom(1);
+            // if(zoom === 3){
+            //     setZoom(2);
+            // }else if(zoom === 2){
+            //     setZoom(1);
+            // }
+            if(zoom !== 1){
+                setZoom(zoom - 1);
             }
         }
     };
 
+    let zoomContent = null;
     let padding = 0;
     if(zoom === 1){
+        zoomContent = '100%';
         padding = 30;
     }else if(zoom === 2){
+        zoomContent = '83.3%';
         padding = 60;
     }else if(zoom === 3){
+        zoomContent = '75%';
+        padding = 70;
+    }else if(zoom === 4){
+        zoomContent = '63.3%';
         padding = 90;
+    }else if(zoom === 5){
+        zoomContent = '50%';
+        padding = 120;
     }
 
     return(
         <div className='page'>
             <div className='herramientas'>
-                <button onClick={() => handleClickZoom(true)}><HiMinus /></button>
-                <button onClick={() => handleClickZoom(false)}><HiPlus /></button>
-                <button onClick={handleDownloadPdf}><HiDownload /></button>
+                <button className='btn-herramientas' onClick={() => handleClickZoom(true)}><HiMinus /></button>
+                <p className='zoom-content'>{zoomContent}</p>
+                <button className='btn-herramientas' onClick={() => handleClickZoom(false)}><HiPlus /></button>
+                <div className='border-l'>
+                    <button className='btn-herramientas' onClick={handleDownloadPdf}><HiDownload /></button>
+                    <button className='btn-herramientas'><MdModeEdit /></button>
+                </div>
             </div>
             <div className='main-container' style={{padding: padding}}>
-                <div ref={printRef}>
+                {<div ref={printRef}>
                     <div className='main-header'>
-                        <p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
+                        <p className='main-title'>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
                         <img src={Logo} className='logo'/>
                     </div>
                     <div className='body'>
@@ -276,14 +308,7 @@ function Ficha(){
                             </div>
                         </div>
                     </div>
-                    {/* <div className='zoom'>
-                        <button className='rounded-l' onClick={() => handleClickZoom(false)}>+</button>
-                        <button className='rounded-r' onClick={() => handleClickZoom(true)}>-</button>
-                    </div>
-                    <div className='zoom'>
-                        <button onClick={handleDownloadPdf}>Download</button>
-                    </div> */}
-                </div>
+                </div>}
             </div>
         </div>
     )
