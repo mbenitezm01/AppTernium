@@ -10,8 +10,11 @@
 }
 
 .listaUsuarios-bg table {
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    padding: 15px;
+
 }
 
 .listaUsuariosbg th {

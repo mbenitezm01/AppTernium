@@ -118,7 +118,7 @@ function ListaUsuarios() {
 
 
     return (
-        <div className="lista-bg">
+        <div className="listaUsuarios-bg">
             {/* Te dice las paginas
             <pre>
                 <code>
