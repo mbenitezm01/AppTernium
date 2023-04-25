@@ -24,24 +24,25 @@ const IndeterminateCheckbox = React.forwardRef(
 
 
 function ListaUsuarios() {
+    
 
     const data = React.useMemo(
         () => [
-            { cet: 1, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
-            { cet: 2, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 3, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 4, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 5, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 6, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
-            { cet: 7, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 8, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 9, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 10, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 11, nombre: "Pedro", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 12, nombre: "Fernanda", contra: "*********", email: "[Espacio En Blanco]@ternium.mx"},
-            { cet: 13, nombre: "Sebastian", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 14, nombre: "Mike", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
-            { cet: 15, nombre: "Alfonso", contra: "*********", email: "[Espacio En Blanco]@ternium.mx" },
+            { cet: 1, usuario: "Pedro", mail: "[Espacio]@ternium.mx"},
+            { cet: 2, usuario: "Fernanda", mail: "[Espacio]@ternium.mx" },
+            { cet: 3, usuario: "Sebastian", mail: "[Espacio]@ternium.mx" },
+            { cet: 4, usuario: "Mike", mail: "[Espacio]@ternium.mx" },
+            { cet: 5, usuario: "Alfonso",  mail: "[Espacio]@ternium.mx" },
+            { cet: 6, usuario: "Pedro", mail: "[Espacio]@ternium.mx"},
+            { cet: 7, usuario: "Fernanda", mail: "[Blanco]@ternium.mx" },
+            { cet: 8, usuario: "Sebastian", mail: "[Espacio]@ternium.mx" },
+            { cet: 9, usuario: "Mike", mail: "[Espacio]@ternium.mx" },
+            { cet: 10, usuario: "Alfonso", mail: "[Espacio]@ternium.mx" },
+            { cet: 11, usuario: "Pedro", mail: "[Espacio]@ternium.mx" },
+            { cet: 12, usuario: "Fernanda", mail: "[Espacio]@ternium.mx"},
+            { cet: 13, usuario: "Sebastian", mail: "[Espacio]@ternium.mx" },
+            { cet: 14, usuario: "Mike", mail: "[Espacio]@ternium.mx" },
+            { cet: 15, usuario: "Alfonso", mail: "[Espacio]@ternium.mx" },
             
         ],
         []
@@ -51,52 +52,50 @@ function ListaUsuarios() {
         () => [
             {
                 Header: 'CET',
-                accessor: 'cet', // accessor is the "key" in the data
+                accessor: 'cet', 
                 sortType: 'basic'
+            },
+            {
+                Header: 'Usuario',
+                accessor: 'usuario',
+                sortType: 'alphanumeric',
+                
+            },
+            {
+                Header: 'Correo',
+                accessor: 'mail',
+                
+            },
 
-            },
-            {
-                Header: 'Nombre',
-                accessor: 'nombre',
-                sortType: 'alphanumeric'
-            },
-            {
-                Header: 'Contraseña',
-                accessor: 'contra'
-            },
-            {
-                Header: 'E-mail',
-                accessor: 'email'
-            },
         ],
         []
     )
 
     const tableInstance = useTable(
         {columns, data},
-         useSortBy,
-         usePagination,
-         useRowSelect,
-         hooks => {
-            hooks.visibleColumns.push(columns => [
-                {
-                    id: 'selection',
-                    Header: ({ getToggleAllPageRowsSelectedProps }) => (
-                        <div>
-                            <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
-                        </div>
-                    ),
-                    Cell: ({ row }) => (
-                        <div>
-                            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                        </div>
-                    ),
-                },
-                ...columns,
-            ])
-        }
-    )
-
+        useSortBy,
+        usePagination,
+        useRowSelect,
+        // hooks => {
+        //     hooks.visibleColumns.push(columns => [
+        //         {
+        //             id: 'selection',
+        //             Header: ({ getToggleAllPageRowsSelectedProps }) => (
+        //                 <div>
+        //                     <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+        //                 </div>
+        //             ),
+        //             Cell: ({ row }) => (
+        //                 <div>
+        //                     <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+        //                 </div>
+        //             ),
+        //         },
+        //         ...columns,
+        //     ])
+        // }
+    );
+    
     const {
         getTableProps,
         getTableBodyProps,
@@ -114,28 +113,10 @@ function ListaUsuarios() {
         canPreviousPage,
         canNextPage,
         selectedFlatRows,
-    } = tableInstance
-
-
+    } = tableInstance;
+    
     return (
         <div className="listaUsuarios-bg">
-            {/* Te dice las paginas
-            <pre>
-                <code>
-                    {JSON.stringify(
-                        {
-                            pageIndex,
-                            pageSize,
-                            pageCount,
-                            canNextPage,
-                            canPreviousPage,
-                        },
-                        null,
-                        2
-                    )}
-                </code>
-            </pre>
-            */}
             <table {...getTableProps()}>
                 <thead>
                     {// Loop over the header rows
@@ -184,6 +165,7 @@ function ListaUsuarios() {
                         })}
                 </tbody>
             </table>
+    
             <div className="pagination">
                 <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
@@ -244,8 +226,9 @@ function ListaUsuarios() {
             </pre>
         */}
         </div>
+        
         </div>
-
     )
+    
 }
 export default ListaUsuarios
