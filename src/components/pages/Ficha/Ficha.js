@@ -1,20 +1,33 @@
+// Imports de hooks, media y paquetes
 import { useState, useEffect, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../../media/images/logo.png';
+
+// Import de estilos
 import './Ficha.css';
-import { HiDownload, HiPlus, HiMinus } from 'react-icons/hi';
-import { MdModeEdit } from 'react-icons/md';
-//Importacion de estilos
+
+// Import de todos los componentes de la ficha
+import Herramientas from './componentes/Herramientas';
+import SeccionPersonal from './componentes/SeccionPersonal';
+import Feedback from './componentes/Feedback';
+import TrayectoriaLaboral from './componentes/TrayectoriaLaboral';
+import ResumenPerfil from './componentes/ResumenPerfil';
 
 function Ficha(){
-    const [zoom, setZoom] = useState(1);
+    // Declaracion de variable para guardar la informacion traida de la API
     const [info, setInfo] = useState({});
+
+    // Declaracion de variable para manejar el zoom de la ficha
+    const [zoom, setZoom] = useState(1);
+
+    // Declaracion de variables para poder descargar la vista en pdf y del CET del empleado
     const printRef = useRef();
     const cet = useParams();
 
+    // Funcion que maneja el evento de descargar la ficha en PDF
     const handleDownloadPdf = async () => {
         const element = printRef.current;
         const canvas = await html2canvas(element);
@@ -31,20 +44,18 @@ function Ficha(){
         pdf.save(info.empleado !== undefined ? `${info.empleado.cet}_${name}.pdf` : 'empleado.pdf');
     };
 
+    // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = useCallback(async () => {
         console.log('Request');
         const response = await axios.get(`http://localhost:5050/api/info-empleado/${cet.id}`);
         setInfo(response.data);
     }, []);
 
-    // const fetchInfoEmpleado = useCallback(async () => {
-    //     const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
-    //     setInfo(response.data);
-    // }, [cet.id]);
-
+    // useEffect
     useEffect(() => {
         fetchInfoEmpleado();
     }, [fetchInfoEmpleado]);
+
 
     let renderedInfoValue = null;
     if(info.empleado !== undefined){
@@ -106,9 +117,11 @@ function Ficha(){
 
     let promedioUpwardFeedback = 0;
     let renderedUpwardFeedback = null;
+    let cantUpwardFeedback = 0;
     if(info.upwardfeedback !== undefined && info.upwardfeedback.length > 0){
         renderedUpwardFeedback = info.upwardfeedback.map(data => {
             promedioUpwardFeedback += data.nota;
+            cantUpwardFeedback++;
             return (
                 <tr key={data.comentarios}>
                     <td className='border-r'>{data.nota}</td>
@@ -121,9 +134,11 @@ function Ficha(){
 
     let promedioClienteProveedor = 0;
     let renderedClienteProveedor = null;
+    let cantClienteProveedor = 0;
     if(info.clienteproveedor !== undefined && info.clienteproveedor.length > 0){
         renderedClienteProveedor = info.clienteproveedor.map(data => {
-            promedioClienteProveedor += data.nota
+            promedioClienteProveedor += data.nota;
+            cantClienteProveedor++;
             return (
                 <tr key={data.comentarios}>
                     <td className='border-r'>{data.nota}</td>
@@ -147,22 +162,21 @@ function Ficha(){
         });
     }
 
+    let renderedResumenPerfil = null;
+    if(info.resumenperfil !== undefined && info.resumenperfil.length > 0){
+        renderedResumenPerfil = info.resumenperfil.map(data => {
+            return (
+                <tr key={data.comentarios}><td>{data.comentarios}</td></tr>
+            );
+        });
+    };
+
     const handleClickZoom = (zoomDirection) => {
         if(zoomDirection){
-            // if(zoom === 1){
-            //     setZoom(2);
-            // }else if(zoom === 2){
-            //     setZoom(3);
-            // }
             if(zoom !== 5){
                 setZoom(zoom + 1);
             }
         }else{
-            // if(zoom === 3){
-            //     setZoom(2);
-            // }else if(zoom === 2){
-            //     setZoom(1);
-            // }
             if(zoom !== 1){
                 setZoom(zoom - 1);
             }
@@ -190,15 +204,7 @@ function Ficha(){
 
     return(
         <div className='page'>
-            <div className='herramientas'>
-                <button className='btn-herramientas' onClick={() => handleClickZoom(true)}><HiMinus /></button>
-                <p className='zoom-content'>{zoomContent}</p>
-                <button className='btn-herramientas' onClick={() => handleClickZoom(false)}><HiPlus /></button>
-                <div className='border-l'>
-                    <button className='btn-herramientas' onClick={handleDownloadPdf}><HiDownload /></button>
-                    <button className='btn-herramientas'><MdModeEdit /></button>
-                </div>
-            </div>
+            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent}/>
             <div className='main-container' style={{padding: padding}}>
                 {<div ref={printRef}>
                     <div className='main-header'>
@@ -206,102 +212,11 @@ function Ficha(){
                         <img src={Logo} className='logo'/>
                     </div>
                     <div className='body'>
-                        <div className='personal-section'>
-                            <div className='personal-data'>
-                                <div className='header'>
-                                    <p>DATOS PERSONALES</p>
-                                </div>
-                                <table className='info'>
-                                    {renderedInfoValue}
-                                </table>
-                            </div>
-                            <div className='evaluations'>
-                                <div className='header'>
-                                    <p>EVALUACIONES ANUALES</p>
-                                </div>
-                                <table className='info'>
-                                    <thead>
-                                        <tr>
-                                            <th>Año</th>
-                                            <th>PERF</th>
-                                            <th>POTENCIAL</th>
-                                            <th>CURVA</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {renderedEvaluaciones}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className='upward-feedback'>
-                            <div className='comment-header'>
-                                <div>
-                                    <p>UPWARD FEEDBACK: {info.upwardfeedback !== undefined ? info.upwardfeedback.length : 0}</p>
-                                </div>
-                                <div>
-                                    <p>Promedio: {promedioUpwardFeedback.toFixed(1) || 0}</p>
-                                </div>
-                            </div>
-                            {renderedUpwardFeedback !== null ? 
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Nota</th>
-                                        <th>Comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedUpwardFeedback}
-                                </tbody>
-                            </table>
-                            : null}
-                        </div>
-                        <div className='client-provider'>
-                            <div className='comment-header'>
-                                <div>
-                                    <p>CLIENTE PROVEEDOR: {info.clienteproveedor !== undefined ? info.clienteproveedor.length : 0}</p>
-                                </div>
-                                <div>
-                                    <p>Promedio: {promedioClienteProveedor.toFixed(1) || 0}</p>
-                                </div>
-                            </div>
-                            {renderedClienteProveedor !== null ?
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Nota</th>
-                                        <th>Comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedClienteProveedor}
-                                </tbody>
-                            </table>
-                            : null}
-                        </div>
-                        <div className='work-history'>
-                            <div className='header'>
-                                <p>TRAYECTORIA LABORAL</p>
-                            </div>
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Empresa</th>
-                                        <th>Puesto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedTrayectoriaLaboral}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='profile-summary'>
-                            <div className='header'>
-                                <p>RESUMEN PERFIL</p>
-                            </div>
-                        </div>
+                        <SeccionPersonal renderedInfoValue={renderedInfoValue} renderedEvaluaciones={renderedEvaluaciones}/>
+                        <Feedback renderedData={renderedUpwardFeedback} promedio={promedioUpwardFeedback} cantidad={cantUpwardFeedback} header='upward feedback'/>
+                        <Feedback renderedData={renderedClienteProveedor} promedio={promedioClienteProveedor} cantidad={cantClienteProveedor} header='cliente proveedor'/>
+                        <TrayectoriaLaboral datos={renderedTrayectoriaLaboral}/>
+                        <ResumenPerfil datos={renderedResumenPerfil}/>
                         <div className='potential-job'>
                             <div className='header'>
                                 <p>PUESTOS DE PROYECCIÓN</p>

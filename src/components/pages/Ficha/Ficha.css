@@ -24,15 +24,15 @@
 }
 
 .main-header .logo{
-    margin-top: 10px;
-    margin-right: 10px;
+    margin-top: 5px;
+    margin-right: 5px;
     position: absolute;
     right: 0;
     top: 0;
 }
 
 .main-title{
-    padding-top: 10px;
+    padding-top: 5px;
 }
 
 .body{
@@ -105,7 +105,7 @@ td{
     border-right: 1px solid black;
 }
 
-.upward-feedback{
+.feedback{
     margin-bottom: 20px;
 }
 
@@ -118,11 +118,6 @@ td{
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
-}
-
-
-.client-provider{
-    margin-bottom: 20px;
 }
 
 .work-history{
