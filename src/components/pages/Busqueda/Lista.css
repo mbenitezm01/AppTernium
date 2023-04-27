@@ -21,3 +21,7 @@
 .lista-bg tr {
     border-bottom: 1px solid black;
 }
+
+.lista-key {
+    color: green;
+}

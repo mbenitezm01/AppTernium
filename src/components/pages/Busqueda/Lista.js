@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTable, useRowSelect, usePagination, useSortBy} from 'react-table'
-
+import { AiFillCheckCircle } from 'react-icons/ai'
 //Importacion de estilos
 import './Lista.css'
 
@@ -23,8 +23,9 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 
-function Lista() {
+function Lista({data, filters}) {
 
+    /*
     const data = React.useMemo(
         () => [
             { cet: 1, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
@@ -46,6 +47,8 @@ function Lista() {
         ],
         []
     )
+    */
+    
 
     const columns = React.useMemo(
         () => [
@@ -62,11 +65,15 @@ function Lista() {
             },
             {
                 Header: 'Estructura 3',
-                accessor: 'est3'
+                accessor: 'estructura_3'
             },
             {
                 Header: 'Estructura 4',
-                accessor: 'est4'
+                accessor: 'estructura_4'
+            },
+            {
+                Header: 'Estructura 5',
+                accessor: 'estructura_5'
             },
             {
                 Header: 'Puesto',
@@ -74,7 +81,7 @@ function Lista() {
             },
             {
                 Header: 'Jefe',
-                accessor: 'jefe'
+                accessor: 'jefe_cet'
             },
             {
                 Header: 'Antigüedad',
@@ -85,16 +92,9 @@ function Lista() {
                 accessor: 'performance'
             },
             {
-                Header: 'Calificación',
-                accessor: 'calif'
-            },
-            {
-                Header: 'Potencial',
-                accessor: 'potencial'
-            },
-            {
+                id: 'key_talent',
                 Header: 'Key Talent',
-                accessor: 'keyT'
+                accessor: d => { return d.key_talent ? <AiFillCheckCircle className='lista-key'/> : '' },
             },
         ],
         []
