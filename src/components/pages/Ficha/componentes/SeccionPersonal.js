@@ -11,7 +11,7 @@ export default function SeccionPersonal({ renderedInfoValue, renderedEvaluacione
                 <Header texto='evaluaciones anuales'/>
                 <table className='info'>
                     <thead>
-                        <tr>
+                        <tr key='info'>
                             <th>Año</th>
                             <th>PERF</th>
                             <th>POTENCIAL</th>

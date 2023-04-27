@@ -57,8 +57,8 @@
 
 .header{
     padding-left: 5px;
-    /* background-color: #a5a5a5; */
-    background-color: rgb(255, 153, 0);
+    background-color: #a5a5a5;
+    /* background-color: rgb(255, 153, 0); */
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -99,8 +99,8 @@ td{
 }
 
 .info > thead{
-    /* background-color: #c5c5c5; */
-    background-color: rgb(212, 212, 212);
+    background-color: #c5c5c5;
+    /* background-color: rgb(212, 212, 212); */
 }
 
 .border-r{
@@ -114,7 +114,8 @@ td{
 .comment-header{
     padding-left: 5px;
     padding-right: 20rem;
-    background-color: rgb(255, 153, 0);
+    /* background-color: rgb(255, 153, 0); */
+    background-color: #a5a5a5;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;

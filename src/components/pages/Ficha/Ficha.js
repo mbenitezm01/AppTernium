@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../../media/logo-ternium.jpeg'
 
@@ -19,6 +19,9 @@ import ResumenPerfil from './componentes/ResumenPerfil';
 function Ficha(){
     // Declaracion de variable para guardar la informacion traida de la API
     const [info, setInfo] = useState({});
+
+    // Declaracion de variable para cambiar de ruta
+    const navigate = useNavigate();
 
     // Declaracion de variable para manejar el zoom de la ficha
     const [zoom, setZoom] = useState(1);
@@ -44,56 +47,60 @@ function Ficha(){
         pdf.save(info.empleado !== undefined ? `${info.empleado.cet}_${name}.pdf` : 'empleado.pdf');
     };
 
+    const handleClickEdit = () => {
+        navigate(`/ficha/${info.empleado.cet}/editar`, {state: {empleado: info, cet: cet}});
+    };
+
     // Funcion que hace una peticion a la API y regresa toda la info personal
-    const fetchInfoEmpleado = useCallback(async () => {
+    const fetchInfoEmpleado = async () => {
         console.log('Request');
         const response = await axios.get(`http://localhost:5050/api/info-empleado/${cet.id}`);
         setInfo(response.data);
-    }, []);
+    };
 
     // useEffect
     useEffect(() => {
         fetchInfoEmpleado();
-    }, [fetchInfoEmpleado]);
+    }, []);
 
     // Se cargan los datos de la seccion personal
     let renderedInfoValue = null;
     if(info.empleado !== undefined){
         renderedInfoValue = (
             <tbody>
-                <tr>
+                <tr key={info.empleado.fecha_nacimiento.slice(0,10)}>
                     <td className='border-r'>Edad</td>
                     <td>{info.empleado.fecha_nacimiento.slice(0,10) || 0}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.antiguedad}>
                     <td className='border-r'>Antiguedad</td>
                     <td>{info.empleado.antiguedad || 0}</td>
                 </tr>
-                <tr>
+                <tr key='estudios'>
                     <td className='border-r'>Estudios</td>
                     <td>{info.empleado.estudios ? 1 : 0}</td>
                 </tr>
-                <tr>
+                <tr key='universidad'>
                     <td className='border-r'>Universidad</td>
                     <td>{info.empleado.estudios || 0}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.puesto}>
                     <td className='border-r'>Puesto</td>
                     <td>{info.empleado.puesto || ''}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.estructura_3}>
                     <td className='border-r'>Estructura 3</td>
                     <td>{info.empleado.estructura_3 || ''}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.estructura_4}>
                     <td className='border-r'>Estructura 4</td>
                     <td>{info.empleado.estructura_4 || ''}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.direccion}>
                     <td className='border-r'>Direccion</td>
                     <td>{info.empleado.direccion || ''}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.pc}>
                     <td className='border-r'>PC-CAT</td>
                     <td>{info.empleado.pc + ' - ' + (info.empleado.cat || '') || ''}</td>
                 </tr>
@@ -211,7 +218,7 @@ function Ficha(){
 
     return(
         <div className='page'>
-            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent}/>
+            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent} handleEdit={handleClickEdit}/>
             <div className='main-container' style={{padding: padding}}>
                 {<div ref={printRef}>
                     <div className='main-header'>
