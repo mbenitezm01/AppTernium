@@ -101,7 +101,12 @@ function Lista({data, filters}) {
     )
 
     const tableInstance = useTable(
-        {columns, data},
+        {
+            columns,
+            data,
+            initialState: {pageIndex: 0},
+            autoResetPage: false,
+        },
          useSortBy,
          usePagination,
          useRowSelect,
@@ -129,7 +134,6 @@ function Lista({data, filters}) {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
         prepareRow,
         pageOptions,
         pageCount,
@@ -179,8 +183,8 @@ function Lista({data, filters}) {
                                                 <span>
                                                     {column.isSorted
                                                       ? column.isSortedDesc
-                                                        ? ' 🔽'
-                                                        : ' 🔼'
+                                                        ? '🔻'
+                                                        : '🔺'
                                                       : ''}
                                                   </span> 
                                         </th>
@@ -191,7 +195,7 @@ function Lista({data, filters}) {
                 {/* Apply the table body props */}
                 <tbody {...getTableBodyProps()}>
                     {// Loop over the table rows
-                        rows.map(row => {
+                        page.map((row, i) => {
                             // Prepare the row for display
                             prepareRow(row)
                             return (
