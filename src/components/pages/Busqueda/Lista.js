@@ -56,6 +56,7 @@ function Lista({data, filters}) {
                 Header: 'CET',
                 accessor: 'cet', // accessor is the "key" in the data
                 sortType: 'basic'
+                
 
             },
             {
@@ -168,7 +169,7 @@ function Lista({data, filters}) {
                 </code>
             </pre>
             */}
-            <table {...getTableProps()}>
+            <table {...getTableProps()} className='table-container'>
                 <thead>
                     {// Loop over the header rows
                         headerGroups.map(headerGroup => (
@@ -216,7 +217,7 @@ function Lista({data, filters}) {
                         })}
                 </tbody>
             </table>
-            <div className="pagination">
+            <div className='pagination'>
                 <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
                 </button>{' '}
