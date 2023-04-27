@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Logo from '../../../media/images/logo.png';
+import Logo from '../../../media/logo-ternium.jpeg'
 
 // Import de estilos
 import './Ficha.css';
@@ -56,7 +56,7 @@ function Ficha(){
         fetchInfoEmpleado();
     }, [fetchInfoEmpleado]);
 
-
+    // Se cargan los datos de la seccion personal
     let renderedInfoValue = null;
     if(info.empleado !== undefined){
         renderedInfoValue = (
@@ -78,16 +78,16 @@ function Ficha(){
                     <td>{info.empleado.estudios || 0}</td>
                 </tr>
                 <tr>
+                    <td className='border-r'>Puesto</td>
+                    <td>{info.empleado.puesto || ''}</td>
+                </tr>
+                <tr>
                     <td className='border-r'>Estructura 3</td>
                     <td>{info.empleado.estructura_3 || ''}</td>
                 </tr>
                 <tr>
                     <td className='border-r'>Estructura 4</td>
                     <td>{info.empleado.estructura_4 || ''}</td>
-                </tr>
-                <tr>
-                    <td className='border-r'>Estructura 5</td>
-                    <td>{info.empleado.estructura_5 || ''}</td>
                 </tr>
                 <tr>
                     <td className='border-r'>Direccion</td>
@@ -101,6 +101,7 @@ function Ficha(){
         );
     };
 
+    // Se cargan los datos de las evaluaciones
     let renderedEvaluaciones = null;
     if(info.evaluacion !== undefined && info.evaluacion.length > 0){
         renderedEvaluaciones = info.evaluacion.map(data => {
@@ -115,6 +116,7 @@ function Ficha(){
         });
     };
 
+    // Se cargan los datos de upward feedback al igual que el promedio de las evaluaciones y la cantidad de comentarios
     let promedioUpwardFeedback = 0;
     let renderedUpwardFeedback = null;
     let cantUpwardFeedback = 0;
@@ -132,6 +134,7 @@ function Ficha(){
         promedioUpwardFeedback /= info.upwardfeedback.length 
     };
 
+    // Se cargan los datos de cliente proveedor al igual que el promedio de las evaluaciones y la cantidad de comentarios
     let promedioClienteProveedor = 0;
     let renderedClienteProveedor = null;
     let cantClienteProveedor = 0;
@@ -149,6 +152,7 @@ function Ficha(){
         promedioClienteProveedor /= info.clienteproveedor.length;
     };
 
+    // Se cargan los datos de la trayectoria laboral
     let renderedTrayectoriaLaboral = null;
     if(info.trayectorialaboral !== undefined && info.trayectorialaboral.length > 0){
         renderedTrayectoriaLaboral = info.trayectorialaboral.map(data => {
@@ -162,15 +166,17 @@ function Ficha(){
         });
     }
 
+    // Se cargan los datos del resumen del perfil
     let renderedResumenPerfil = null;
     if(info.resumenperfil !== undefined && info.resumenperfil.length > 0){
         renderedResumenPerfil = info.resumenperfil.map(data => {
             return (
-                <tr key={data.comentarios}><td>{data.comentarios}</td></tr>
+                <p className='resumen-perfil' key={data.comentarios}>{data.comentarios}</p>
             );
         });
     };
 
+    // Se maneja el zoom (padding)
     const handleClickZoom = (zoomDirection) => {
         if(zoomDirection){
             if(zoom !== 5){
@@ -183,6 +189,7 @@ function Ficha(){
         }
     };
 
+    // Se aplica el zoom necesario
     let zoomContent = null;
     let padding = 0;
     if(zoom === 1){
