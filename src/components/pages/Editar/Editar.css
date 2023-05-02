@@ -1,0 +1,96 @@
+.editar-ficha{
+    height: calc(100vh - 71px);
+    display: flex;
+}
+
+.perfil{
+    width: 30%;
+    background-color: #e1e1e1;
+}
+
+.perfil-header{
+    color: white;
+    font-weight: bold;
+    height:30%;
+    background-image: linear-gradient(70deg,#f30,#f90);
+    overflow-wrap: break-word;
+}
+
+.perfil-body{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    height: 70%;
+    overflow-y: auto;
+}
+
+.editar-btn:hover{
+    background-color: #c9c9c9;
+}
+
+.editar-btn{
+    cursor: pointer;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-icon{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.btn-icon p{
+    margin-left: 5px;
+}
+
+.edit-card{
+    background-color: #c9c9c9;
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-list-view{
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    width: 70%;
+    background-color: white;
+}
+
+.edit-list{
+    padding: 30px;
+}
+
+.edit-card > div{
+    padding: 10px;
+    font-size: large;
+    /* background-image: linear-gradient(70deg,#538d1b,#0095a6); */
+    background-color: #f90;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit-card-btns{
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+.edit-card-btns:hover{
+    background-color: #c9c9c9;
+}
+
+.agregar{
+    position: sticky;
+    top: 0;
+    background-color: #333;
+}
