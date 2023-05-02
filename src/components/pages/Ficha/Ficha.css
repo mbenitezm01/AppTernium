@@ -1,0 +1,174 @@
+.main-container{
+    background-color: #555;
+    text-align: left;
+    position: relative;
+}
+
+.main-container > div{
+    background-color: white;
+}
+
+.main-header{
+    height: 8rem;
+    position: relative;
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+.main-header > p{
+    font-size: 30px;
+}
+
+.main-header .logo{
+    margin-top: 14px;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.body{
+    min-height: 20rem;
+}
+
+.body{
+    font-size: 15px;
+    padding: 5px;
+}
+
+.personal-section{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.personal-data,
+.evaluations{
+    width: calc(50% - 5px);
+}
+
+.header{
+    padding-left: 5px;
+    background-color: #a5a5a5;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+div > p{
+    margin: 0;
+}
+
+td{
+    padding: 2px
+}
+
+.info{
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+    padding: 2px 4px;
+    height: 15rem;
+    max-height: max-content;
+}
+
+.info > tbody > tr:nth-child(odd){
+    background-color: #fff;
+}
+
+.info > tbody > tr:nth-child(even){
+    background-color: #eee;
+}
+
+.info > thead{
+    background-color: #c5c5c5;
+}
+
+.border-r{
+    border-right: 1px solid black;
+}
+
+.upward-feedback{
+    margin-bottom: 20px;
+}
+
+.comment-header{
+    padding-left: 5px;
+    padding-right: 20rem;
+    background-color: #a5a5a5;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.client-provider{
+    margin-bottom: 20px;
+}
+
+.work-history{
+    margin-bottom: 20px;
+}
+
+.profile-summary{
+    margin-bottom: 20px;
+}
+
+.potential-job{
+    margin-bottom: 20px;
+}
+
+.main-container > div > .zoom{
+    position: sticky;
+    bottom: 30px;
+    background-color: transparent;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.zoom > button{
+    border: none;
+    background-color: #555;
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.rounded-l{
+    width: 3rem;
+    cursor: pointer;
+    height: 2.5rem;
+}
+
+.rounded-r{
+    width: 3rem;
+    cursor: pointer;
+    height: 2.5rem;
+}
+
+.herramientas{
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+}
+
+.herramientas > button{
+    border: none;
+    color: white;
+    width: 3rem;
+    height: 2.5rem;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.herramientas > button:hover{
+    background-color: #555;
+}
