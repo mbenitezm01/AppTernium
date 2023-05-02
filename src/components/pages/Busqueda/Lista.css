@@ -35,12 +35,14 @@
     border-top: 1px solid black;
 }
 
-.table-container thead {
-    position: sticky;
-}
-
 .table-container td{
     height: 60px;
     min-height: 60px;
     max-height: min-content;
+}
+
+.table-container th {
+    position:sticky;
+    top: 0;
+    background-color: white;
 }

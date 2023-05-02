@@ -1,8 +1,11 @@
 import React from 'react'
 import { useTable, useRowSelect, usePagination, useSortBy} from 'react-table'
+import { useSticky } from 'react-table-sticky'
 import { AiFillCheckCircle } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 //Importacion de estilos
 import './Lista.css'
+
 
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -23,7 +26,17 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 
+
+
+
 function Lista({data, filters}) {
+
+    const navigate = useNavigate();
+
+
+    const onRowClick = (cet) => {
+        navigate(`/ficha/${cet}`)
+    }
 
     /*
     const data = React.useMemo(
@@ -201,7 +214,7 @@ function Lista({data, filters}) {
                             prepareRow(row)
                             return (
                                 // Apply the row props
-                                <tr {...row.getRowProps()}>
+                                <tr {...row.getRowProps()} onClick={() => onRowClick(row.original.cet)} style={{cursor:'pointer'}}>
                                     {// Loop over the rows cells
                                         row.cells.map(cell => {
                                             // Apply the cell props
