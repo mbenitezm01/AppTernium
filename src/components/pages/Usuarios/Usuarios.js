@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTable, useRowSelect } from 'react-table'
+import Btn from '../../Btn'
 
 //Importacion de estilos
 import './listaUsuarios.css'
@@ -8,11 +9,11 @@ import './listaUsuarios.css'
 
 function ListaUsuarios() {
 
-    function handleEdit(rowData){
+    function handleEdit(rowData) {
         console.log('Editar', rowData)
     }
 
-    function handleDelete(rowData){
+    function handleDelete(rowData) {
         console.log('Eliminar', rowData)
     }
 
@@ -44,12 +45,14 @@ function ListaUsuarios() {
                 accessor: 'correo'
             },
             {
-                Header: "Acciones",
+                Header: () => (
+                    <Btn text="Crear nuevo usuario" icon={"add"} />
+                ),
                 id: "acciones",
                 Cell: ({ row }) => (
                     <>
-                        <button onClick={() => handleEdit(row.original)}>Editar</button>
-                        <button onClick={() => handleDelete(row.original)}>Eliminar</button>
+                        <Btn text="Editar" icon={"edit"} onClick={() => handleEdit(row.original)} />
+                        <Btn text="Eliminar" icon={"delete"} onClick={() => handleDelete(row.original)} />
                     </>
                 )
             }
