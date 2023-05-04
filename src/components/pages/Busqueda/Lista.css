@@ -1,6 +1,7 @@
 .lista-bg {
     width: 100vw;
-    height: 100%;
+    height: calc(100vh - 71px);
+    overflow-y: scroll;
 }
 
 .lista-bg{
@@ -12,6 +13,7 @@
 .lista-bg table {
     border-collapse: collapse;
     width: 100%;
+    height: 100%;
 }
 
 .lista-bg th {
@@ -20,4 +22,32 @@
 
 .lista-bg tr {
     border-bottom: 1px solid black;
+}
+
+.lista-key {
+    color: green;
+}
+
+.pagination {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    border-top: 1px solid black;
+}
+
+.table-container td{
+    height: 60px;
+    min-height: 60px;
+    max-height: min-content;
+}
+
+.table-container th {
+    position:sticky;
+    top: 0;
+    background-color: white;
+}
+
+.table-container tr:hover {
+    background: #eee;
+    transition: 0.2s;
 }
