@@ -1,3 +1,7 @@
+.page{
+    position: relative;
+}
+
 .main-container{
     background-color: #555;
     text-align: left;
@@ -20,11 +24,15 @@
 }
 
 .main-header .logo{
-    margin-top: 14px;
-    margin-right: 10px;
+    margin-top: 5px;
+    margin-right: 5px;
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.main-title{
+    padding-top: 5px;
 }
 
 .body{
@@ -50,6 +58,7 @@
 .header{
     padding-left: 5px;
     background-color: #a5a5a5;
+    /* background-color: rgb(255, 153, 0); */
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -68,8 +77,17 @@ td{
     width: 100%;
     border: 1px solid black;
     padding: 2px 4px;
-    height: 15rem;
-    max-height: max-content;
+    min-height: 15rem;
+}
+
+
+th{
+    padding-left: 10px;
+}
+
+td{
+    padding-left: 10px;
+    /*border-right: 1px solid black*/
 }
 
 .info > tbody > tr:nth-child(odd){
@@ -77,35 +95,32 @@ td{
 }
 
 .info > tbody > tr:nth-child(even){
-    background-color: #eee;
+    background-color: rgb(212, 212, 212);
 }
 
 .info > thead{
     background-color: #c5c5c5;
+    /* background-color: rgb(212, 212, 212); */
 }
 
 .border-r{
     border-right: 1px solid black;
 }
 
-.upward-feedback{
+.feedback{
     margin-bottom: 20px;
 }
 
 .comment-header{
     padding-left: 5px;
     padding-right: 20rem;
+    /* background-color: rgb(255, 153, 0); */
     background-color: #a5a5a5;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
-}
-
-
-.client-provider{
-    margin-bottom: 20px;
 }
 
 .work-history{
@@ -120,39 +135,11 @@ td{
     margin-bottom: 20px;
 }
 
-.main-container > div > .zoom{
-    position: sticky;
-    bottom: 30px;
-    background-color: transparent;
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-}
-
-.zoom > button{
-    border: none;
-    background-color: #555;
-    color: white;
-    font-size: larger;
-    font-weight: bold;
-}
-
-.rounded-l{
-    width: 3rem;
-    cursor: pointer;
-    height: 2.5rem;
-}
-
-.rounded-r{
-    width: 3rem;
-    cursor: pointer;
-    height: 2.5rem;
-}
-
 .herramientas{
+    z-index: 100;
+    position: sticky;
     background-color: #333;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -160,7 +147,21 @@ td{
     width: 100%;
 }
 
-.herramientas > button{
+.zoom-content{
+    color: white;
+    height: 2.5rem;
+    width: 3.5rem;
+    background-color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.border-l{
+    border-left: 2px solid #555;
+}
+
+.herramientas button{
     border: none;
     color: white;
     width: 3rem;
@@ -169,6 +170,14 @@ td{
     background-color: transparent;
 }
 
-.herramientas > button:hover{
+.herramientas button:hover{
     background-color: #555;
+}
+
+.resumen-perfil{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid black;
+    margin-bottom: 10px;
 }

@@ -1,19 +1,36 @@
+// Imports de hooks, media y paquetes
 import { useState, useEffect, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Logo from '../../../media/images/logo.png';
+import Logo from '../../../media/logo-ternium.jpeg'
+
+// Import de estilos
 import './Ficha.css';
-import { HiDownload, HiPlus, HiMinus } from 'react-icons/hi';
-//Importacion de estilos
+
+// Import de todos los componentes de la ficha
+import Herramientas from './componentes/Herramientas';
+import SeccionPersonal from './componentes/SeccionPersonal';
+import Feedback from './componentes/Feedback';
+import TrayectoriaLaboral from './componentes/TrayectoriaLaboral';
+import ResumenPerfil from './componentes/ResumenPerfil';
 
 function Ficha(){
-    const [zoom, setZoom] = useState(1);
+    // Declaracion de variable para guardar la informacion traida de la API
     const [info, setInfo] = useState({});
+
+    // Declaracion de variable para cambiar de ruta
+    const navigate = useNavigate();
+
+    // Declaracion de variable para manejar el zoom de la ficha
+    const [zoom, setZoom] = useState(1);
+
+    // Declaracion de variables para poder descargar la vista en pdf y del CET del empleado
     const printRef = useRef();
     const cet = useParams();
 
+    // Funcion que maneja el evento de descargar la ficha en PDF
     const handleDownloadPdf = async () => {
         const element = printRef.current;
         const canvas = await html2canvas(element);
@@ -26,58 +43,72 @@ function Ficha(){
           (imgProperties.height * pdfWidth) / imgProperties.width;
     
         pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(info.empleado !== null ? `${info.empleado.nombre}.pdf` : 'empleado.pdf');
+        const name = info.empleado.nombre.replace(/ /g, '_');
+        pdf.save(info.empleado !== undefined ? `${info.empleado.cet}_${name}.pdf` : 'empleado.pdf');
     };
 
-    const fetchInfoEmpleado = useCallback(async () => {
-        const response = await axios.get(`http://localhost:5050/info-empleado/${cet.id}`);
-        setInfo(response.data);
-    }, []);
+    const handleClickEdit = () => {
+        navigate(`/ficha/${info.empleado.cet}/editar`, {state: {empleado: info, cet: cet}});
+    };
 
+    // Funcion que hace una peticion a la API y regresa toda la info personal
+    const fetchInfoEmpleado = async () => {
+        console.log('Request');
+        const response = await axios.get(`http://localhost:5050/api/info-empleado/${cet.id}`);
+        setInfo(response.data);
+    };
+
+    // useEffect
     useEffect(() => {
         fetchInfoEmpleado();
-    }, [fetchInfoEmpleado]);
+    }, []);
 
+    // Se cargan los datos de la seccion personal
     let renderedInfoValue = null;
     if(info.empleado !== undefined){
         renderedInfoValue = (
             <tbody>
-                <tr>
+                <tr key={info.empleado.fecha_nacimiento.slice(0,10)}>
                     <td className='border-r'>Edad</td>
                     <td>{info.empleado.fecha_nacimiento.slice(0,10) || 0}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.antiguedad}>
                     <td className='border-r'>Antiguedad</td>
                     <td>{info.empleado.antiguedad || 0}</td>
                 </tr>
-                <tr>
+                <tr key='estudios'>
                     <td className='border-r'>Estudios</td>
                     <td>{info.empleado.estudios ? 1 : 0}</td>
                 </tr>
-                <tr>
+                <tr key='universidad'>
                     <td className='border-r'>Universidad</td>
                     <td>{info.empleado.estudios || 0}</td>
                 </tr>
-                <tr>
-                    <td className='border-r'>Area Manager</td>
-                    <td>{info.empleado.area_manager || ''}</td>
-                </tr>
-                <tr>
-                    <td className='border-r'>Direccion</td>
-                    <td>{info.empleado.direccion || ''}</td>
-                </tr>
-                <tr>
+                <tr key={info.empleado.puesto}>
                     <td className='border-r'>Puesto</td>
                     <td>{info.empleado.puesto || ''}</td>
                 </tr>
-                <tr>
+                <tr key={info.empleado.estructura_3}>
+                    <td className='border-r'>Estructura 3</td>
+                    <td>{info.empleado.estructura_3 || ''}</td>
+                </tr>
+                <tr key={info.empleado.estructura_4}>
+                    <td className='border-r'>Estructura 4</td>
+                    <td>{info.empleado.estructura_4 || ''}</td>
+                </tr>
+                <tr key={info.empleado.direccion}>
+                    <td className='border-r'>Direccion</td>
+                    <td>{info.empleado.direccion || ''}</td>
+                </tr>
+                <tr key={info.empleado.pc}>
                     <td className='border-r'>PC-CAT</td>
-                    <td>{info.empleado.pc_cat || ''}</td>
+                    <td>{info.empleado.pc + ' - ' + (info.empleado.cat || '') || ''}</td>
                 </tr>
             </tbody>
         );
     };
 
+    // Se cargan los datos de las evaluaciones
     let renderedEvaluaciones = null;
     if(info.evaluacion !== undefined && info.evaluacion.length > 0){
         renderedEvaluaciones = info.evaluacion.map(data => {
@@ -92,11 +123,14 @@ function Ficha(){
         });
     };
 
+    // Se cargan los datos de upward feedback al igual que el promedio de las evaluaciones y la cantidad de comentarios
     let promedioUpwardFeedback = 0;
     let renderedUpwardFeedback = null;
+    let cantUpwardFeedback = 0;
     if(info.upwardfeedback !== undefined && info.upwardfeedback.length > 0){
         renderedUpwardFeedback = info.upwardfeedback.map(data => {
             promedioUpwardFeedback += data.nota;
+            cantUpwardFeedback++;
             return (
                 <tr key={data.comentarios}>
                     <td className='border-r'>{data.nota}</td>
@@ -107,11 +141,14 @@ function Ficha(){
         promedioUpwardFeedback /= info.upwardfeedback.length 
     };
 
+    // Se cargan los datos de cliente proveedor al igual que el promedio de las evaluaciones y la cantidad de comentarios
     let promedioClienteProveedor = 0;
     let renderedClienteProveedor = null;
+    let cantClienteProveedor = 0;
     if(info.clienteproveedor !== undefined && info.clienteproveedor.length > 0){
         renderedClienteProveedor = info.clienteproveedor.map(data => {
-            promedioClienteProveedor += data.nota
+            promedioClienteProveedor += data.nota;
+            cantClienteProveedor++;
             return (
                 <tr key={data.comentarios}>
                     <td className='border-r'>{data.nota}</td>
@@ -122,6 +159,7 @@ function Ficha(){
         promedioClienteProveedor /= info.clienteproveedor.length;
     };
 
+    // Se cargan los datos de la trayectoria laboral
     let renderedTrayectoriaLaboral = null;
     if(info.trayectorialaboral !== undefined && info.trayectorialaboral.length > 0){
         renderedTrayectoriaLaboral = info.trayectorialaboral.map(data => {
@@ -135,155 +173,71 @@ function Ficha(){
         });
     }
 
+    // Se cargan los datos del resumen del perfil
+    let renderedResumenPerfil = null;
+    if(info.resumenperfil !== undefined && info.resumenperfil.length > 0){
+        renderedResumenPerfil = info.resumenperfil.map(data => {
+            return (
+                <p className='resumen-perfil' key={data.comentarios}>{data.comentarios}</p>
+            );
+        });
+    };
+
+    // Se maneja el zoom (padding)
     const handleClickZoom = (zoomDirection) => {
         if(zoomDirection){
-            if(zoom === 1){
-                setZoom(2);
-            }else if(zoom === 2){
-                setZoom(3);
+            if(zoom !== 5){
+                setZoom(zoom + 1);
             }
         }else{
-            if(zoom === 3){
-                setZoom(2);
-            }else if(zoom === 2){
-                setZoom(1);
+            if(zoom !== 1){
+                setZoom(zoom - 1);
             }
         }
     };
 
+    // Se aplica el zoom necesario
+    let zoomContent = null;
     let padding = 0;
     if(zoom === 1){
+        zoomContent = '100%';
         padding = 30;
     }else if(zoom === 2){
+        zoomContent = '83.3%';
         padding = 60;
     }else if(zoom === 3){
+        zoomContent = '75%';
+        padding = 70;
+    }else if(zoom === 4){
+        zoomContent = '63.3%';
         padding = 90;
+    }else if(zoom === 5){
+        zoomContent = '50%';
+        padding = 120;
     }
 
     return(
         <div className='page'>
-            <div className='herramientas'>
-                <button onClick={() => handleClickZoom(true)}><HiMinus /></button>
-                <button onClick={() => handleClickZoom(false)}><HiPlus /></button>
-                <button onClick={handleDownloadPdf}><HiDownload /></button>
-            </div>
+            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent} handleEdit={handleClickEdit}/>
             <div className='main-container' style={{padding: padding}}>
-                <div ref={printRef}>
+                {<div ref={printRef}>
                     <div className='main-header'>
-                        <p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
+                        <p className='main-title'>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
                         <img src={Logo} className='logo'/>
                     </div>
                     <div className='body'>
-                        <div className='personal-section'>
-                            <div className='personal-data'>
-                                <div className='header'>
-                                    <p>DATOS PERSONALES</p>
-                                </div>
-                                <table className='info'>
-                                    {renderedInfoValue}
-                                </table>
-                            </div>
-                            <div className='evaluations'>
-                                <div className='header'>
-                                    <p>EVALUACIONES ANUALES</p>
-                                </div>
-                                <table className='info'>
-                                    <thead>
-                                        <tr>
-                                            <th>Año</th>
-                                            <th>PERF</th>
-                                            <th>POTENCIAL</th>
-                                            <th>CURVA</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {renderedEvaluaciones}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className='upward-feedback'>
-                            <div className='comment-header'>
-                                <div>
-                                    <p>UPWARD FEEDBACK: {info.upwardfeedback !== undefined ? info.upwardfeedback.length : 0}</p>
-                                </div>
-                                <div>
-                                    <p>Promedio: {promedioUpwardFeedback.toFixed(1) || 0}</p>
-                                </div>
-                            </div>
-                            {renderedUpwardFeedback !== null ? 
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Nota</th>
-                                        <th>Comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedUpwardFeedback}
-                                </tbody>
-                            </table>
-                            : null}
-                        </div>
-                        <div className='client-provider'>
-                            <div className='comment-header'>
-                                <div>
-                                    <p>CLIENTE PROVEEDOR: {info.clienteproveedor !== undefined ? info.clienteproveedor.length : 0}</p>
-                                </div>
-                                <div>
-                                    <p>Promedio: {promedioClienteProveedor.toFixed(1) || 0}</p>
-                                </div>
-                            </div>
-                            {renderedClienteProveedor !== null ?
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Nota</th>
-                                        <th>Comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedClienteProveedor}
-                                </tbody>
-                            </table>
-                            : null}
-                        </div>
-                        <div className='work-history'>
-                            <div className='header'>
-                                <p>TRAYECTORIA LABORAL</p>
-                            </div>
-                            <table className='info'>
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Empresa</th>
-                                        <th>Puesto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {renderedTrayectoriaLaboral}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='profile-summary'>
-                            <div className='header'>
-                                <p>RESUMEN PERFIL</p>
-                            </div>
-                        </div>
+                        <SeccionPersonal renderedInfoValue={renderedInfoValue} renderedEvaluaciones={renderedEvaluaciones}/>
+                        <Feedback renderedData={renderedUpwardFeedback} promedio={promedioUpwardFeedback} cantidad={cantUpwardFeedback} header='upward feedback'/>
+                        <Feedback renderedData={renderedClienteProveedor} promedio={promedioClienteProveedor} cantidad={cantClienteProveedor} header='cliente proveedor'/>
+                        <TrayectoriaLaboral datos={renderedTrayectoriaLaboral}/>
+                        <ResumenPerfil datos={renderedResumenPerfil}/>
                         <div className='potential-job'>
                             <div className='header'>
                                 <p>PUESTOS DE PROYECCIÓN</p>
                             </div>
                         </div>
                     </div>
-                    {/* <div className='zoom'>
-                        <button className='rounded-l' onClick={() => handleClickZoom(false)}>+</button>
-                        <button className='rounded-r' onClick={() => handleClickZoom(true)}>-</button>
-                    </div>
-                    <div className='zoom'>
-                        <button onClick={handleDownloadPdf}>Download</button>
-                    </div> */}
-                </div>
+                </div>}
             </div>
         </div>
     )
