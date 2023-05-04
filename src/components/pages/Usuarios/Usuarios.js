@@ -8,6 +8,14 @@ import './listaUsuarios.css'
 
 function ListaUsuarios() {
 
+    function handleEdit(rowData){
+        console.log('Editar', rowData)
+    }
+
+    function handleDelete(rowData){
+        console.log('Eliminar', rowData)
+    }
+
     const data = React.useMemo(
         () => [
             { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
@@ -16,7 +24,7 @@ function ListaUsuarios() {
             { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
             { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
             { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-           
+
         ],
         []
     )
@@ -25,7 +33,7 @@ function ListaUsuarios() {
         () => [
             {
                 Header: 'ID',
-                accessor: 'id', 
+                accessor: 'id',
             },
             {
                 Header: 'Usuario',
@@ -35,6 +43,16 @@ function ListaUsuarios() {
                 Header: 'Correo Electronico',
                 accessor: 'correo'
             },
+            {
+                Header: "Acciones",
+                id: "acciones",
+                Cell: ({ row }) => (
+                    <>
+                        <button onClick={() => handleEdit(row.original)}>Editar</button>
+                        <button onClick={() => handleDelete(row.original)}>Eliminar</button>
+                    </>
+                )
+            }
         ],
         []
     )
