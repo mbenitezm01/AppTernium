@@ -91,8 +91,12 @@
     background-color: #c9c9c9;
 }
 
-.agregar-btn{
+.agregar{
+    padding: 10px;
     position: sticky;
+}
+
+/* .agregar-btn{
     top: 0;
     right: 0;
     color: white;
@@ -105,9 +109,9 @@
     justify-content: space-between;
     border-radius: 5px;
     transition: background-color .5s ease,border-color .5s ease;
-}
+} */
 
-.agregar-btn:hover{
+/* .agregar-btn:hover{
     background-color: white;
     color: #f30;
-}
+} */

@@ -4,7 +4,7 @@ export default function EditarListView({ renderedItems }){
     return(
         <div className="edit-list-view">
             <div className="agregar">
-                <div className='agregar-btn'><p>Agregar</p><HiOutlineDocumentAdd /></div>
+                <button className='agregar-btn'><p>Agregar</p><HiOutlineDocumentAdd /></button>
             </div>
             <div className='edit-list'>
                 {renderedItems}
