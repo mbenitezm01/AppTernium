@@ -5,11 +5,7 @@ import PerfilSideBar from './componentes/PerfilSideBar';
 import EditarListView from './componentes/EditarListView';
 import EditCardComentarios from './componentes/cards/EditCardComentarios';
 import EditCardEvaluacion from './componentes/cards/EditCardEvaluacion';
-// import ClienteProveedorView from './componentes/ClienteProveedorView';
-// import UpwardFeedbackView from './componentes/UpwardFeedbackView';
-// import EvaluacionView from './componentes/Evaluacion';
-// import TrayectoriaLaboralView from './componentes/TrayectoriaLaboralView';
-// import PuestoProyeccionView from './componentes/PuestoProyeccionView';
+import EditarCardTrayectoriaLaboral from './componentes/cards/EditarCardTrayectoriaLaboral';
 
 function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
@@ -25,7 +21,6 @@ function Editar(){
 
     let renderedItems = null;
     if(editarView === 'upward-feedback'){
-        // content = <UpwardFeedbackView />
         if(location.state !== null){
             renderedItems = location.state.empleado.upwardfeedback.map((data) => {
                 return <EditCardComentarios data={data}/>
@@ -37,16 +32,18 @@ function Editar(){
                 return <EditCardComentarios data={data}/>
             });
         }
-        // content = <ClienteProveedorView />
     }else if (editarView === 'evaluacion'){
         if(location.state !== null){
             renderedItems = location.state.empleado.evaluacion.map((data) => {
                 return <EditCardEvaluacion data={data}/>
             });
         }
-        // content = <EvaluacionView />
     }else if(editarView === 'trayectoria'){
-        // content = <TrayectoriaLaboralView />
+        if(location.state !== null){
+            renderedItems = location.state.empleado.trayectorialaboral.map(data => {
+                return <EditarCardTrayectoriaLaboral data={data}/>
+            });
+        }
     }else if(editarView === 'proyeccion-puesto'){
         // content = <PuestoProyeccionView />
     }
