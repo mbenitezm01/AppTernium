@@ -18,7 +18,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
                 Filtros
             </div>
             <div className='filter-box'>
-                <Form onSubmit={console.log(filterState)}>
+                <Form>
                     <Form.Group className='filters'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control name='name' placeholder='Buscar' onChange={handleChange}/>
@@ -48,10 +48,10 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
                         <Form.Label>Calificacion</Form.Label>
                         <Row>
                         <Col>
-                        <Form.Control name='antiguedad' placeholder='Min' style={{width: '60px'}} onChange={handleChange}/>
+                        <Form.Control name='califMin' placeholder='Min' style={{width: '60px'}} onChange={handleChange}/>
                             </Col>
                             <Col>
-                        <Form.Control name='antiguedad' placeholder='Max' style={{width: '60px'}} onChange={handleChange}/>
+                        <Form.Control name='califMax' placeholder='Max' style={{width: '60px'}} onChange={handleChange}/>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -59,7 +59,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
                     
                     <Form.Group className='filters'>
                         <Form.Label>Estructura 3</Form.Label>
-                        <Form.Select name='est3' aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select name='est3' onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>
@@ -70,7 +70,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
 
                     <Form.Group className='filters'>
                         <Form.Label>Estructura 4</Form.Label>
-                        <Form.Select name='est4' aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select name='est4' onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>
@@ -81,7 +81,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
 
                     <Form.Group className='filters'>
                         <Form.Label>Performance</Form.Label>
-                        <Form.Select name='perf' aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select name='perf' onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>
@@ -92,7 +92,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
 
                     <Form.Group className='filters'>
                         <Form.Label>Jefe</Form.Label>
-                        <Form.Select aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>
@@ -103,7 +103,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
 
                     <Form.Group className='filters'>
                         <Form.Label>Potencial</Form.Label>
-                        <Form.Select aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>
@@ -114,7 +114,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
 
                     <Form.Group className='filters'>
                         <Form.Label>Puesto</Form.Label>
-                        <Form.Select aria-label='Default select example' onChange={handleChange}>
+                        <Form.Select onChange={handleChange}>
                             <option>Open this select menu</option>
                             <option value='1'>One</option>
                             <option value='2'>Two</option>

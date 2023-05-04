@@ -15,15 +15,17 @@ function Busqueda(){
     const [filterState, setFilterState] = useState({
         name: '',
         cet: '',
-        ant: '',
-        calif: '',
+        antMin: '',
+        antMax: '',
+        califMin: '',
+        califMax: '',
         est3: '',
         est4: '',
         perf: '',
         jefe: '',
         pot: '',
         puesto: '',
-        key: ''
+        key: '',
     });
 
     
@@ -39,13 +41,13 @@ function Busqueda(){
     
     function handleSubmit(){
         console.log('datos:')
-        console.log(data)
+        console.log(filterState)
     }
 
     return(
         <div className='view-container'>
             <Sidebar filterState={filterState} setFilterState={setFilterState} handleSubmit={handleSubmit}/>
-            <Lista data={data}/>
+            <Lista data={data} filters={filterState}/>
         </div>
     )
 }

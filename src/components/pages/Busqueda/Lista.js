@@ -1,5 +1,6 @@
 import React from 'react'
-import { useTable, useRowSelect, usePagination, useSortBy} from 'react-table'
+import { useEffect } from 'react'
+import { useTable, useRowSelect, usePagination, useSortBy, useFilters} from 'react-table'
 import { useSticky } from 'react-table-sticky'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +20,7 @@ const IndeterminateCheckbox = React.forwardRef(
     
         return (
         <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
+            <input type="checkbox" ref={resolvedRef} {...rest}  onClick={(e) => e.stopPropagation()}/>
         </>
         )
     }
@@ -61,21 +62,23 @@ function Lista({data, filters}) {
         []
     )
     */
-    
+    const customFilterFunction = (rows, id, filterValue) =>
+    (   console.log(filterValue),
+        rows.filter((row) => row.original.cet >= filterValue));
 
     const columns = React.useMemo(
         () => [
             {
                 Header: 'CET',
                 accessor: 'cet', // accessor is the "key" in the data
-                sortType: 'basic'
-                
+                sortType: 'basic',
+                filter: customFilterFunction,
 
             },
             {
                 Header: 'Nombre',
                 accessor: 'nombre',
-                sortType: 'alphanumeric'
+                sortType: 'alphanumeric',
             },
             {
                 Header: 'Estructura 3',
@@ -120,7 +123,9 @@ function Lista({data, filters}) {
             data,
             initialState: {pageIndex: 0},
             autoResetPage: false,
+            manualFilters: true,
         },
+         useFilters,
          useSortBy,
          usePagination,
          useRowSelect,
@@ -160,7 +165,15 @@ function Lista({data, filters}) {
         canPreviousPage,
         canNextPage,
         selectedFlatRows,
+        setFilter,
     } = tableInstance
+
+    useEffect(() => {
+        console.log("hola")
+        setFilter('nombre', filters.nombre);
+    }, [filters]);
+
+    
 
 
     return (

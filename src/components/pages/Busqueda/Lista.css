@@ -46,3 +46,8 @@
     top: 0;
     background-color: white;
 }
+
+.table-container tr:hover {
+    background: #eee;
+    transition: 0.2s;
+}
