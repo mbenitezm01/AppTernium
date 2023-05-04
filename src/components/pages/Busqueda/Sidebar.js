@@ -12,6 +12,10 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
         setFilterState({ ...filterState, [e.target.name]: e.target.value });
     }
 
+    const handleClick = () => {
+        handleSubmit.current();
+    }
+
     return(
         <div className='sidebar-bg'>
             <div className='title-box'>
@@ -129,7 +133,7 @@ function Sidebar({filterState, setFilterState, handleSubmit}){
                     </Form.Group>
 
 
-                    <Button variant='primary' onClick={handleSubmit} className='submit-btn'>
+                    <Button variant='primary' onClick={handleClick} className='submit-btn'>
                         Submit
                     </Button>
                 </Form>

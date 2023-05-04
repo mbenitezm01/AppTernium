@@ -1,6 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react'
-import { useTable, useRowSelect, usePagination, useSortBy, useFilters} from 'react-table'
+import { useEffect, useRef } from 'react'
+import { useTable, useRowSelect, usePagination, useSortBy, useFilters } from 'react-table'
 import { useSticky } from 'react-table-sticky'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
@@ -17,11 +17,11 @@ const IndeterminateCheckbox = React.forwardRef(
         React.useEffect(() => {
             resolvedRef.current.indeterminate = indeterminate
         }, [resolvedRef, indeterminate])
-    
+
         return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest}  onClick={(e) => e.stopPropagation()}/>
-        </>
+            <>
+                <input type="checkbox" ref={resolvedRef} {...rest} onClick={(e) => e.stopPropagation()} />
+            </>
         )
     }
 )
@@ -30,10 +30,9 @@ const IndeterminateCheckbox = React.forwardRef(
 
 
 
-function Lista({data, filters}) {
+function Lista({ data, filtersState, handleSubmit }) {
 
     const navigate = useNavigate();
-
 
     const onRowClick = (cet) => {
         navigate(`/ficha/${cet}`)
@@ -62,9 +61,6 @@ function Lista({data, filters}) {
         []
     )
     */
-    const customFilterFunction = (rows, id, filterValue) =>
-    (   console.log(filterValue),
-        rows.filter((row) => row.original.cet >= filterValue));
 
     const columns = React.useMemo(
         () => [
@@ -72,7 +68,6 @@ function Lista({data, filters}) {
                 Header: 'CET',
                 accessor: 'cet', // accessor is the "key" in the data
                 sortType: 'basic',
-                filter: customFilterFunction,
 
             },
             {
@@ -111,7 +106,7 @@ function Lista({data, filters}) {
             {
                 id: 'key_talent',
                 Header: 'Key Talent',
-                accessor: d => { return d.key_talent ? <AiFillCheckCircle className='lista-key'/> : '' },
+                accessor: d => { return d.key_talent ? <AiFillCheckCircle className='lista-key' /> : '' },
             },
         ],
         []
@@ -121,15 +116,15 @@ function Lista({data, filters}) {
         {
             columns,
             data,
-            initialState: {pageIndex: 0},
+            initialState: { pageIndex: 0 },
             autoResetPage: false,
-            manualFilters: true,
+            manualFilters: false,
         },
-         useFilters,
-         useSortBy,
-         usePagination,
-         useRowSelect,
-         hooks => {
+        useFilters,
+        useSortBy,
+        usePagination,
+        useRowSelect,
+        hooks => {
             hooks.visibleColumns.push(columns => [
                 {
                     id: 'selection',
@@ -157,7 +152,7 @@ function Lista({data, filters}) {
         pageOptions,
         pageCount,
         page,
-        state: { pageIndex, pageSize, selectedRowIds},
+        state: { pageIndex, pageSize, selectedRowIds },
         gotoPage,
         previousPage,
         nextPage,
@@ -166,15 +161,27 @@ function Lista({data, filters}) {
         canNextPage,
         selectedFlatRows,
         setFilter,
+        setAllFilters,
     } = tableInstance
 
+
+    function changeFilters() {
+        //setFilter('nombre', filtersState.name);
+
+        setAllFilters([{
+            id: 'nombre',
+            value: filtersState.name,
+        },
+        {
+            id: 'cet',
+            value: filtersState.cet,
+        }])
+    }
+
     useEffect(() => {
-        console.log("hola")
-        setFilter('nombre', filters.nombre);
-    }, [filters]);
+        handleSubmit.current = changeFilters;
 
-    
-
+    }, [filtersState]);
 
     return (
         <div className="lista-bg">
@@ -207,13 +214,13 @@ function Lista({data, filters}) {
                                         <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                             {// Render the header
                                                 column.render('Header')}
-                                                <span>
-                                                    {column.isSorted
-                                                      ? column.isSortedDesc
+                                            <span>
+                                                {column.isSorted
+                                                    ? column.isSortedDesc
                                                         ? '🔻'
                                                         : '🔺'
-                                                      : ''}
-                                                  </span> 
+                                                    : ''}
+                                            </span>
                                         </th>
                                     ))}
                             </tr>
@@ -227,7 +234,7 @@ function Lista({data, filters}) {
                             prepareRow(row)
                             return (
                                 // Apply the row props
-                                <tr {...row.getRowProps()} onClick={() => onRowClick(row.original.cet)} style={{cursor:'pointer'}}>
+                                <tr {...row.getRowProps()} onClick={() => onRowClick(row.original.cet)} style={{ cursor: 'pointer' }}>
                                     {// Loop over the rows cells
                                         row.cells.map(cell => {
                                             // Apply the cell props
@@ -263,30 +270,30 @@ function Lista({data, filters}) {
                     </strong>{' '}
                 </span>
                 <span>
-            | Go to page:{' '}
-            <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={e => {
-                    const page = e.target.value ? Number(e.target.value) - 1 : 0
-                    gotoPage(page)
-                }}
-                style={{ width: '100px' }}
-            />
-        </span>{' '}
-        <select
-            value={pageSize}
-            onChange={e => {
-                setPageSize(Number(e.target.value))
-            }}
-        >
-            {[10, 20, 30, 40, 50].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                </option>
-            ))}
-        </select>
-        {/* Te dice los ids
+                    | Go to page:{' '}
+                    <input
+                        type="number"
+                        defaultValue={pageIndex + 1}
+                        onChange={e => {
+                            const page = e.target.value ? Number(e.target.value) - 1 : 0
+                            gotoPage(page)
+                        }}
+                        style={{ width: '100px' }}
+                    />
+                </span>{' '}
+                <select
+                    value={pageSize}
+                    onChange={e => {
+                        setPageSize(Number(e.target.value))
+                    }}
+                >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                        <option key={pageSize} value={pageSize}>
+                            Show {pageSize}
+                        </option>
+                    ))}
+                </select>
+                {/* Te dice los ids
             <pre>
                 <code>
                     {JSON.stringify(
@@ -302,7 +309,7 @@ function Lista({data, filters}) {
                 </code>
             </pre>
         */}
-        </div>
+            </div>
         </div>
 
     )

@@ -12,6 +12,8 @@ function Busqueda(){
 
     const [data, setData] = useState([]);
 
+    const handleSubmit = useRef();
+
     const [filterState, setFilterState] = useState({
         name: '',
         cet: '',
@@ -39,15 +41,17 @@ function Busqueda(){
         fetchList();
     }, [fetchList]);
     
+    /*
     function handleSubmit(){
         console.log('datos:')
         console.log(filterState)
     }
+    */
 
     return(
         <div className='view-container'>
             <Sidebar filterState={filterState} setFilterState={setFilterState} handleSubmit={handleSubmit}/>
-            <Lista data={data} filters={filterState}/>
+            <Lista data={data} filtersState={filterState} handleSubmit={handleSubmit}/>
         </div>
     )
 }
