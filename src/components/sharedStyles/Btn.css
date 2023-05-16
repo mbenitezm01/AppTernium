@@ -10,8 +10,12 @@ button {
 
     transition: 0.3s;
 }
-    button:hover {
+    button:enabled:hover {
         background-color: lightgrey;
+    }
+
+    button:disabled{
+        cursor: not-allowed;
     }
 
 .icon {
