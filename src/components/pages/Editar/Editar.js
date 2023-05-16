@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import './Editar.css';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,6 +8,15 @@ import EditCardComentarios from './componentes/cards/EditCardComentarios';
 import EditCardEvaluacion from './componentes/cards/EditCardEvaluacion';
 import EditarCardTrayectoriaLaboral from './componentes/cards/EditarCardTrayectoriaLaboral';
 import CreateModal from './componentes/modals/CreateModal';
+
+// function agregarComentario(tipo, comentario, nota){
+//     switch(tipo){
+//         case 'upward-feedback':
+//             const updatedContent = [{}]
+//             location.state
+//     }
+// }
+
 
 function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
@@ -25,22 +34,29 @@ function Editar(){
         setModal(true);
     };
 
-    const handleSubmitCreate = async (tipo, nota, comentario) => {
+    const handleSubmitCreate = async (tipo, dataObject) => {
         // const { empleado_cet, fecha, nota, comentario} = req.body;
         if(location.state === null){
             return;
         }
-
-        const hoy = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now());
-
-        const response = await axios.post(`http://localhost:5050/api/${tipo}`, {
-            empleado_cet: location.state.cet.id,
-            fecha: hoy,
-            nota: nota,
-            comentario: comentario
-        });
-        console.log(response);
-        handleCloseCreateModal();
+        console.log('request');
+        const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+        console.log(response.data);
+        if(response.data.creado){
+            let updatedContent;
+            switch(tipo){
+                case 'upward-feedback':
+                    updatedContent = [response.data.data, ...location.state.empleado.upwardfeedback];
+                    location.state.empleado.upwardfeedback = updatedContent;
+                case 'cliente-proveedor':
+                    updatedContent = [response.data.data, ...location.state.empleado.clienteproveedor];
+                    location.state.empleado.clienteproveedor = updatedContent;
+                case 'evaluacion':
+                    updatedContent = [response.data.data, ...location.state.empleado.evaluacion];
+                    location.state.empleado.evaluacion = updatedContent;
+            }
+        }
+        setModal(false);
     };
 
     useEffect(() => {
@@ -93,7 +109,7 @@ function Editar(){
                 cantPuestoProyeccion={0}
             />
             <EditarListView renderedItems={renderedItems} tipo={editarView} openModal={handleOpenCreateModal}/>
-            {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal}/> : null}
+            {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal} cet={location.state !== null ? location.state.cet.id : null}/> : null}
         </div>
     );
 };

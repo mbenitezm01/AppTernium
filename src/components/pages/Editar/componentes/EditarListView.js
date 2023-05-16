@@ -1,6 +1,6 @@
 import { HiOutlineDocumentAdd } from 'react-icons/hi';
 
-export default function EditarListView({ renderedItems, tipo, openModal }){
+export default function EditarListView({ renderedItems, openModal }){
     return(
         <div className="edit-list-view">
             <div className="agregar">
