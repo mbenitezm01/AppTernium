@@ -54,6 +54,31 @@ function Editar(){
                 case 'evaluacion':
                     updatedContent = [response.data.data, ...location.state.empleado.evaluacion];
                     location.state.empleado.evaluacion = updatedContent;
+                case 'trayectoria':
+                    updatedContent = [response.data.data, ...location.state.empleado.trayectorialaboral];
+                    location.state.empleado.trayectorialaboral = updatedContent;
+                // case 'proyeccion-puesto':
+                //     updatedContent = [response.data.data, ...location.state.empleado.]
+            }
+        }
+    };
+
+    const handleDelete = async (tipo, id) => {
+        if(location.state === null){
+            return
+        }
+
+        console.log('Delete request');
+        const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+        console.log(response);
+        if(response.data.borrado){
+            let updatedContent;
+            switch(tipo){
+                case 'upward-feedback':
+                    updatedContent = location.state.empleado.upwardfeedback.filter((data) => {
+                        return data.id !== id;
+                    });
+                    location.state.empleado.upwardfeedback = updatedContent;
             }
         }
         setModal(false);
@@ -69,7 +94,7 @@ function Editar(){
     if(editarView === 'upward-feedback'){
         if(location.state !== null){
             renderedItems = location.state.empleado.upwardfeedback.map((data) => {
-                return <EditCardComentarios data={data}/>
+                return <EditCardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){

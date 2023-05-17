@@ -2,17 +2,20 @@ import { useState, useCallback } from "react";
 import { GrClose } from 'react-icons/gr';
 
 export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, cet }) {
+    // No todos se usan al mismo tiempo, se usan para crear y modificar los valores de cada
+    // una de las evaluaciones, comentarios, puestos de proyeccion, entre otros.
     const [comentario, setComentario] = useState('');
     const [nota, setNota] = useState(0);
     const [potencial, setPotencial] = useState('AP (MT)');
     const [curva, setCurva] = useState('TX DIMA CI');
+    const [puesto, setPuesto] = useState('');
+    const [fecha, setFecha] = useState('');
+
+    // Estas variables son responsables de crear los campos a llenar en el modal.
     let content = null;
     let name = null;
 
-    const handlePotencialChange = (event) => {
-        console.log(event.target.value);
-    };
-
+    // Aqui se evalua que se debe de desplegar en el Modal.
     if(tipo === 'upward-feedback'){
         name = 'Upward Feedback';
         content = (
@@ -107,6 +110,29 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
         
     }else if (tipo === 'trayectoria'){
         name = 'Trayectoria Laboral';
+        content = (
+            <>
+                <input 
+                    value={comentario} 
+                    type="text" 
+                    className="input-box comentario" 
+                    placeholder="Empresa..."
+                    onChange={(e) => setComentario(e.target.value)}
+                />
+                <input 
+                    value={puesto}
+                    type='text'
+                    className="input-box comentario"
+                    placeholder="Puesto..."
+                    onChange={(e) => setPuesto(e.target.value)}
+                />
+                <input 
+                    value={fecha}
+                    type='date'
+                    onChange={(e) => setFecha(e.target.value)}
+                />
+            </>
+        )
         
     }else if (tipo === 'proyeccion-puesto'){
         name = 'Proyección de Puesto';
@@ -147,9 +173,24 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                     comentario: comentario
                 })
             }
+        }else if(tipo === 'trayectoria'){
+            if(comentario === '' && puesto === '' && fecha === ''){
+                alert('Debe de agregar los datos de todos los campos')
+            }else{
+                handleSubmitCreate(tipo, {
+                    empleado_cet: cet,
+                    fecha: fecha,
+                    empresa: comentario,
+                    puesto: puesto
+                })
+            }
+
+        }else if(tipo === 'proyeccion-puesto'){
+
         }
     };
 
+    console.log(fecha);
     return (
         <div className="modal">
             <form className="create-modal" onSubmit={handleSubmit}>
