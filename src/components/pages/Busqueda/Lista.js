@@ -81,28 +81,33 @@ function Lista({ data, filtersState, handleSubmit }) {
                 Header: 'CET',
                 accessor: 'cet', // accessor is the "key" in the data
                 sortType: 'basic',
-
+                filter: 'exactText',
             },
             {
                 Header: 'Nombre',
                 accessor: 'nombre',
                 sortType: 'alphanumeric',
+                filter: 'includeString',
             },
             {
                 Header: 'Estructura 3',
-                accessor: 'estructura_3'
+                accessor: 'estructura_3',
+                filter: 'exactText',
             },
             {
                 Header: 'Estructura 4',
-                accessor: 'estructura_4'
+                accessor: 'estructura_4',
+                filter: 'exactText',
             },
             {
                 Header: 'Estructura 5',
-                accessor: 'estructura_5'
+                accessor: 'estructura_5',
+                filter: 'exactText',
             },
             {
                 Header: 'Puesto',
-                accessor: 'puesto'
+                accessor: 'puesto',
+                filter: 'exactText',
             },
             {
                 Header: 'Jefe',
@@ -110,16 +115,24 @@ function Lista({ data, filtersState, handleSubmit }) {
             },
             {
                 Header: 'Antigüedad',
-                accessor: 'antiguedad'
+                accessor: 'antiguedad',
+                filter: 'between',
             },
             {
                 Header: 'Performance',
-                accessor: 'performance'
+                accessor: 'performance',
+                filter: 'between',
             },
             {
                 id: 'key_talent',
                 Header: 'Key Talent',
-                accessor: d => { return d.key_talent ? <AiFillCheckCircle className='lista-key' /> : '' },
+                accessor: 'key_talent',
+                Cell: ({value}) => value ? <AiFillCheckCircle className='lista-key' /> : '',
+                sortType: (rowA, rowB, columnId) => {
+                    const a = rowA.original[columnId];
+                    const b = rowB.original[columnId];
+                    return a === b ? 0 : (a ? -1 : 1);
+                  }
             },
         ],
         []
@@ -132,7 +145,21 @@ function Lista({ data, filtersState, handleSubmit }) {
             initialState: { pageIndex: 0 },
             autoResetPage: false,
             manualFilters: false,
+            filterTypes: React.useMemo(
+                () => ({
+                  num: (rows, id, filterValue) => {
+                    return rows.filter((row) => {
+                        return filterValue === '' || String(row.values[id]) === filterValue})
+                  },
+                  range: (rows, id, filterValue) => {
+                    return rows.filter((row) => {
+                        return filterValue === '' || String(row.values[id]) === filterValue})
+                  },
+                }),
+                []
+              ),
         },
+        
         useFilters,
         useSortBy,
         usePagination,
@@ -154,7 +181,9 @@ function Lista({ data, filtersState, handleSubmit }) {
                 },
                 ...columns,
             ])
-        }
+        },
+
+        
     )
 
     const {
@@ -188,12 +217,36 @@ function Lista({ data, filtersState, handleSubmit }) {
         {
             id: 'cet',
             value: filtersState.cet,
-        }])
+        },
+        {
+            id: 'antiguedad',
+            value: [filtersState.antMin, filtersState.antMax],
+        },
+        {
+            id: 'estructura_3',
+            value: filtersState.est3,
+        },
+        {
+            id: 'estructura_4',
+            value: filtersState.est4,
+        },
+        {
+            id: 'puesto',
+            value: filtersState.puesto,
+        },
+        {
+            id: 'performance',
+            value: [filtersState.perfMin, filtersState.perfMax],
+        },
+        {
+            id: 'key_talent',
+            value: filtersState.key,
+        },
+    ])
     }
 
     useEffect(() => {
         handleSubmit.current = changeFilters;
-
     }, [filtersState]);
 
     return (

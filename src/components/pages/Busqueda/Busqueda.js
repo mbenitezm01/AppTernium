@@ -17,17 +17,16 @@ function Busqueda(){
     const [filterState, setFilterState] = useState({
         name: '',
         cet: '',
-        antMin: '',
-        antMax: '',
-        califMin: '',
-        califMax: '',
+        antMin: undefined,
+        antMax: undefined,
+        perfMin: undefined,
+        perfMax: undefined,
         est3: '',
         est4: '',
-        perf: '',
         jefe: '',
         pot: '',
         puesto: '',
-        key: '',
+        key: false,
     });
 
     
@@ -35,6 +34,8 @@ function Busqueda(){
         console.log('Request');
         const response = await axios.get(`http://localhost:5050/api/empleados`);
         setData(response.data);
+        
+
     }, []);
     
     useEffect(() => {
@@ -50,7 +51,7 @@ function Busqueda(){
 
     return(
         <div className='view-container'>
-            <Sidebar filterState={filterState} setFilterState={setFilterState} handleSubmit={handleSubmit}/>
+            <Sidebar filterState={filterState} setFilterState={setFilterState} handleSubmit={handleSubmit} data={data}/>
             <Lista data={data} filtersState={filterState} handleSubmit={handleSubmit}/>
         </div>
     )
