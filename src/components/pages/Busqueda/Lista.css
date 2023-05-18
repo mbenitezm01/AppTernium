@@ -1,53 +1,160 @@
 .lista-bg {
-    width: 100vw;
-    height: calc(100vh - 71px);
-    overflow-y: scroll;
+  width: 100vw;
+  height: calc(100vh - 71px);
+  overflow: hidden;
 }
 
-.lista-bg{
-    border: 1px solid black;
-    width: 100%;
-
+.table-wrapper{
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow-x: scroll;
 }
 
-.lista-bg table {
-    border-collapse: collapse;
-    width: 100%;
-    height: 100%;
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  table-layout: fixed;
+  overflow-x: scroll;
 }
 
-.lista-bg th {
-    border-bottom: 2px solid black;
-}
-
-.lista-bg tr {
-    border-bottom: 1px solid black;
-}
-
-.lista-key {
-    color: green;
-}
-
-.pagination {
-    position: sticky;
-    bottom: 0;
-    background-color: white;
-    border-top: 1px solid black;
-}
-
-.table-container td{
-    height: 60px;
-    min-height: 60px;
-    max-height: min-content;
+.table-container th,
+.table-container td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 47px;
 }
 
 .table-container th {
-    position:sticky;
-    top: 0;
-    background-color: white;
+  font-weight: bold;
+  background-color: #f9f9f9;
+}
+
+.table-container td:nth-child(1) {
+  width: 30px;
+}
+.table-container th:nth-child(1) {
+  width: 30px;
+}
+
+.table-container td:nth-child(2) {
+  width: 80px;
+}
+.table-container th:nth-child(2) {
+  width: 80px;
+}
+
+.table-container td:nth-child(3),
+.table-container td:nth-child(4),
+.table-container td:nth-child(5),
+.table-container td:nth-child(6),
+.table-container td:nth-child(7),
+.table-container td:nth-child(8) {
+  width: 200px;
+}
+.table-container th:nth-child(3),
+.table-container th:nth-child(4),
+.table-container th:nth-child(5),
+.table-container th:nth-child(6),
+.table-container th:nth-child(7),
+.table-container th:nth-child(8) {
+  width: 200px;
+}
+
+.table-container td:nth-child(9),
+.table-container td:nth-child(10),
+.table-container td:nth-child(11) {
+  text-align: center;
+  width: 120px;
+}
+
+.table-container th:nth-child(9),
+.table-container th:nth-child(10),
+.table-container th:nth-child(11) {
+  text-align: center;
+  width: 120px;
+}
+
+.pagination {
+  height: 50px;
+  margin-top: 10px;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+}
+
+.pagination button {
+  font-size: 14px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin-left: 10px;
+}
+
+.pagination input[type="number"] {
+  padding: 5px;
+}
+
+.lista-key {
+  color: green;
 }
 
 .table-container tr:hover {
-    background: #eee;
-    transition: 0.2s;
+  background: #eee;
+  transition: 0.s;
+}
+
+.table-container thead {
+  position: sticky;
+  height: 50px;
+  top: 0;
+  background-color: white;
+  overflow: hidden;
+}
+
+
+
+.table-sorting-indicator {
+  display: inline-block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.table-sorting-indicator.up {
+  border-bottom: 6px solid #777;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  opacity: 0;
+  transform: translateY(-2px);
+}
+
+.table-sorting-indicator.down {
+  border-top: 6px solid #777;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+.table-sorting-indicator.active {
+  opacity: 1;
+  transform: translateY(0);
 }
