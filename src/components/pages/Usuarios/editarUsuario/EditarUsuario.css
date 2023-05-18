@@ -1,0 +1,11 @@
+#delete-user-button:hover{
+    background-color: #cf5d38;
+}
+
+#edit-data{
+    background-color: #6d6e6d;
+    max-width: 60%;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 5%;
+}
