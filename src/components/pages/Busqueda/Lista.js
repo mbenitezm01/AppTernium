@@ -105,6 +105,7 @@ function Lista({ data, filtersState, handleSubmit }) {
             {
                 Header: 'Jefe',
                 accessor: 'jefe_cet',
+                filter: 'exactText',
                 sortable: true,
             },
             {
@@ -217,6 +218,10 @@ function Lista({ data, filtersState, handleSubmit }) {
         {
             id: 'cet',
             value: filtersState.cet,
+        },
+        {
+            id: 'jefe_cet',
+            value: filtersState.jefe,
         },
         {
             id: 'antiguedad',

@@ -24,7 +24,6 @@ function Busqueda(){
         est3: '',
         est4: '',
         jefe: '',
-        pot: '',
         puesto: '',
         key: false,
     });
