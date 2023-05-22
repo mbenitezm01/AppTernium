@@ -69,51 +69,61 @@ function Lista({ data, filtersState, handleSubmit }) {
                 accessor: 'cet', // accessor is the "key" in the data
                 sortType: 'basic',
                 filter: 'exactText',
+                sortable: true,
             },
             {
                 Header: 'Nombre',
                 accessor: 'nombre',
                 sortType: 'alphanumeric',
                 filter: 'includeString',
+                sortable: true,
             },
             {
                 Header: 'Estructura 3',
                 accessor: 'estructura_3',
                 filter: 'exactText',
+                sortable: true,
             },
             {
                 Header: 'Estructura 4',
                 accessor: 'estructura_4',
                 filter: 'exactText',
+                sortable: true,
             },
             {
                 Header: 'Estructura 5',
                 accessor: 'estructura_5',
                 filter: 'exactText',
+                sortable: true,
             },
             {
                 Header: 'Puesto',
                 accessor: 'puesto',
                 filter: 'exactText',
+                sortable: true,
             },
             {
                 Header: 'Jefe',
-                accessor: 'jefe_cet'
+                accessor: 'jefe_cet',
+                sortable: true,
             },
             {
                 Header: 'Antigüedad',
                 accessor: 'antiguedad',
                 filter: 'between',
+                sortable: true,
             },
             {
                 Header: 'Performance',
                 accessor: 'performance',
                 filter: 'between',
+                sortable: true,
             },
             {
                 id: 'key_talent',
                 Header: 'Key Talent',
                 accessor: 'key_talent',
+                sortable: true,
                 Cell: ({ value }) => value ? <AiFillCheckCircle className='lista-key' /> : '',
                 sortType: (rowA, rowB, columnId) => {
                     const a = rowA.original[columnId];
@@ -272,10 +282,13 @@ function Lista({ data, filtersState, handleSubmit }) {
                                                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                                     {// Render the header
                                                         column.render('Header')}
-                                                    <span
+                                                    { column.sortable &&(
+
+                                                        <span
                                                         className={`table-sorting-indicator ${column.isSorted ? 'active' : ''
-                                                            } ${column.isSortedDesc ? 'down' : 'up'}`}
+                                                    } ${column.isSortedDesc ? 'down' : 'up'}`}
                                                     ></span>
+                                                )}
                                                 </th>
                                             ))}
                                     </tr>

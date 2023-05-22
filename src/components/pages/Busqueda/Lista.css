@@ -35,10 +35,10 @@
 }
 
 .table-container td:nth-child(1) {
-  width: 30px;
+  width: 35px;
 }
 .table-container th:nth-child(1) {
-  width: 30px;
+  width: 35px;
 }
 
 .table-container td:nth-child(2) {
@@ -123,6 +123,11 @@
   top: 0;
   background-color: white;
   overflow: hidden;
+}
+
+.table-container input {
+  width: 15px;
+  height: 15px;
 }
 
 
