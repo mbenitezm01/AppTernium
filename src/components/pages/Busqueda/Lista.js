@@ -4,6 +4,9 @@ import { useTable, useRowSelect, usePagination, useSortBy, useFilters } from 're
 import { useSticky } from 'react-table-sticky'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
+import Btn from '../../Btn';
+import { Link } from "react-router-dom"
+
 //Importacion de estilos
 import './Lista.css'
 
@@ -37,6 +40,16 @@ function Lista({ data, filtersState, handleSubmit }) {
     const onRowClick = (cet) => {
         navigate(`/ficha/${cet}`)
     }
+
+    const onCompareClick = () => {
+        if (selectedFlatRows.length == 2){
+            let id1 = selectedFlatRows[0].cells[1].value;
+            let id2 = selectedFlatRows[1].cells[1].value
+            navigate(`/comparacion?ficha1=${id1}&ficha2=${id2}`)
+
+        }
+    }
+
 
     /*
     const data = React.useMemo(
@@ -367,7 +380,13 @@ function Lista({ data, filtersState, handleSubmit }) {
                             </option>
                         ))}
                     </select>
-                    {/* Te dice los ids
+                
+            {selectedFlatRows.length === 2?
+                <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
+                <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
+            }
+            
+            {/*
             <pre>
             <code>
                     {JSON.stringify(

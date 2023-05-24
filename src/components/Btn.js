@@ -28,9 +28,9 @@ function btnIcon(icon) {
     return <Icon className='icon'/>
 }
 
-const Btn = ({ text, icon, onClick }) => {
+const Btn = ({ text, icon, onClick, state }) => {
     return (
-        <button onClick={onClick}>
+        <button disabled={state} onClick={onClick}>
             {text}
             {btnIcon(icon)}
         </button>
