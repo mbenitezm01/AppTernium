@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
 import './Editar.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PerfilSideBar from './componentes/PerfilSideBar';
@@ -6,12 +7,82 @@ import EditarListView from './componentes/EditarListView';
 import EditCardComentarios from './componentes/cards/EditCardComentarios';
 import EditCardEvaluacion from './componentes/cards/EditCardEvaluacion';
 import EditarCardTrayectoriaLaboral from './componentes/cards/EditarCardTrayectoriaLaboral';
+import CreateModal from './componentes/modals/CreateModal';
+
+// function agregarComentario(tipo, comentario, nota){
+//     switch(tipo){
+//         case 'upward-feedback':
+//             const updatedContent = [{}]
+//             location.state
+//     }
+// }
+
 
 function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
+    const [modal, setModal] = useState(false);
+    let content = null;
+
     const location = useLocation();
     const navigate = useNavigate();
-    let content = null;
+
+    const handleCloseCreateModal = () => {
+        setModal(false);
+    };
+
+    const handleOpenCreateModal = () => {
+        setModal(true);
+    };
+
+    const handleSubmitCreate = async (tipo, dataObject) => {
+        // const { empleado_cet, fecha, nota, comentario} = req.body;
+        if(location.state === null){
+            return;
+        }
+        console.log('request');
+        const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+        console.log(response.data);
+        if(response.data.creado){
+            let updatedContent;
+            switch(tipo){
+                case 'upward-feedback':
+                    updatedContent = [response.data.data, ...location.state.empleado.upwardfeedback];
+                    location.state.empleado.upwardfeedback = updatedContent;
+                case 'cliente-proveedor':
+                    updatedContent = [response.data.data, ...location.state.empleado.clienteproveedor];
+                    location.state.empleado.clienteproveedor = updatedContent;
+                case 'evaluacion':
+                    updatedContent = [response.data.data, ...location.state.empleado.evaluacion];
+                    location.state.empleado.evaluacion = updatedContent;
+                case 'trayectoria':
+                    updatedContent = [response.data.data, ...location.state.empleado.trayectorialaboral];
+                    location.state.empleado.trayectorialaboral = updatedContent;
+                // case 'proyeccion-puesto':
+                //     updatedContent = [response.data.data, ...location.state.empleado.]
+            }
+        }
+    };
+
+    const handleDelete = async (tipo, id) => {
+        if(location.state === null){
+            return
+        }
+
+        console.log('Delete request');
+        const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+        console.log(response);
+        if(response.data.borrado){
+            let updatedContent;
+            switch(tipo){
+                case 'upward-feedback':
+                    updatedContent = location.state.empleado.upwardfeedback.filter((data) => {
+                        return data.id !== id;
+                    });
+                    location.state.empleado.upwardfeedback = updatedContent;
+            }
+        }
+        setModal(false);
+    };
 
     useEffect(() => {
         if(location.state === null){
@@ -23,7 +94,7 @@ function Editar(){
     if(editarView === 'upward-feedback'){
         if(location.state !== null){
             renderedItems = location.state.empleado.upwardfeedback.map((data) => {
-                return <EditCardComentarios data={data}/>
+                return <EditCardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){
@@ -62,7 +133,8 @@ function Editar(){
                 cantTrayectoriaLaboral={location.state !== null ? location.state.empleado.trayectorialaboral.length : 0} 
                 cantPuestoProyeccion={0}
             />
-            <EditarListView renderedItems={renderedItems} editarView={editarView}/>
+            <EditarListView renderedItems={renderedItems} tipo={editarView} openModal={handleOpenCreateModal}/>
+            {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal} cet={location.state !== null ? location.state.cet.id : null}/> : null}
         </div>
     );
 };
