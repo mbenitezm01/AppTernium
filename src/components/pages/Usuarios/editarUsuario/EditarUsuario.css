@@ -9,3 +9,8 @@
     margin-right:auto;
     margin-top: 5%;
 }
+
+#erase-user-div{
+    display: flex;
+    flex-direction: row-reverse;
+}
