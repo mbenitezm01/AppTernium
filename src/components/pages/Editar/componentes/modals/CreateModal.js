@@ -190,7 +190,6 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
         }
     };
 
-    console.log(fecha);
     return (
         <div className="modal">
             <form className="create-modal" onSubmit={handleSubmit}>
