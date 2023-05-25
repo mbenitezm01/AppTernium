@@ -4,10 +4,11 @@ import './Editar.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PerfilSideBar from './componentes/PerfilSideBar';
 import EditarListView from './componentes/EditarListView';
-import EditCardComentarios from './componentes/cards/EditCardComentarios';
-import EditCardEvaluacion from './componentes/cards/EditCardEvaluacion';
-import EditarCardTrayectoriaLaboral from './componentes/cards/EditarCardTrayectoriaLaboral';
+import CardComentarios from './componentes/cards/CardComentarios';
+import CardEvaluacion from './componentes/cards/CardEvaluacion';
+import CardTrayectoriaLaboral from './componentes/cards/CardTrayectoriaLaboral';
 import CreateModal from './componentes/modals/CreateModal';
+import EditModal from './componentes/modals/EditModal';
 
 // function agregarComentario(tipo, comentario, nota){
 //     switch(tipo){
@@ -21,16 +22,18 @@ import CreateModal from './componentes/modals/CreateModal';
 function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
     const [modal, setModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
     let content = null;
 
     const location = useLocation();
     const navigate = useNavigate();
-
+    console.log(location.state);
     //const [empleado, setEmpleado] = useState(location.state.emplaedo.empleado || null);
-    const [clienteproveedor, setClienteProveedor] = useState(location.state.empleado.clienteproveedor || null);
-    const [upwardfeedback, setUpwardFeedback] = useState(location.state.empleado.upwardfeedback || null);
-    const [trayectorialaboral, setTrayectoriaLaboral] = useState(location.state.empleado.trayectorialaboral || null);
-    const [evaluacion, setEvaluacion] = useState(location.state.empleado.evaluacion || null);
+    const [clienteproveedor, setClienteProveedor] = useState(null);
+    const [upwardfeedback, setUpwardFeedback] = useState(null);
+    const [trayectorialaboral, setTrayectoriaLaboral] = useState(null);
+    const [evaluacion, setEvaluacion] = useState(null);
+    const [contentEdit, setContentEdit] = useState(null);
 
     const handleCloseCreateModal = () => {
         setModal(false);
@@ -39,6 +42,40 @@ function Editar(){
     const handleOpenCreateModal = () => {
         setModal(true);
     };
+
+    const handleCloseEditModal = () => {
+        setEditModal(false);
+    }
+
+    const handleOpenEditModal = (tipo, id) => {
+        switch(tipo){
+            case 'upward-feedback':
+                content = upwardfeedback.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'cliente-proveedor':
+                content = clienteproveedor.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'trayectoria':
+                content = trayectorialaboral.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'evaluacion':
+                content = evaluacion.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+        }
+        setEditModal(true);
+    }
 
     const handleSubmitCreate = async (tipo, dataObject) => {
         console.log(tipo, dataObject);
@@ -83,8 +120,8 @@ function Editar(){
         }
 
         console.log('Delete request');
+        console.log(tipo, id)
         const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
-        console.log(response);
         if(response.data.borrado){
             let updatedContent;
             switch(tipo){
@@ -111,39 +148,100 @@ function Editar(){
                     setEvaluacion(updatedContent);
             }
         }
-        setModal(false);
     };
 
+    const handleEdit = async (tipo, dataObject) => {
+        console.log('Edit Request');
+        const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
+
+        if(response.data.editado){
+            let updatedContent;
+            switch(tipo){
+                case 'upward-feedback':
+                    updatedContent = upwardfeedback.map(data => {
+                        if(data.id === dataObject.id){
+                            return {...data, ...dataObject}
+                        }
+                        return data;
+                    });
+                    setUpwardFeedback(updatedContent);
+                    break;
+                case 'cliente-proveedor':
+                    updatedContent = clienteproveedor.map(data => {
+                        if(data.id === dataObject.id){
+                            return {...data, ...dataObject}
+                        }
+                        return data;
+                    });                    
+                    setClienteProveedor(updatedContent);
+                    break;
+                case 'evaluacion':
+                    updatedContent = evaluacion.map(data => {
+                        if(data.id === dataObject.id){
+                            console.log(dataObject);
+                            return {...data, ...dataObject}
+                        }
+                        return data;
+                    });
+                    setEvaluacion(updatedContent);
+                    break;
+                case 'trayectoria':
+                    updatedContent = trayectorialaboral.map(data => {
+                        if(data.id === dataObject.id){
+                            return {...data, ...dataObject}
+                        }
+                        return data;
+                    });
+                    setTrayectoriaLaboral(updatedContent);
+                    break;
+                // case 'proyeccion-puesto':
+                //     updatedContent = [response.data.data, ...location.state.empleado.]
+            }
+
+        }
+        setEditModal(false);
+    };
+
+    const fetchInfoEmpleado = async () => {
+        console.log('Request');
+        const response = await axios.get(`http://localhost:5050/api/info-empleado/${location.state.cet.id}`);
+        setClienteProveedor(response.data.clienteproveedor);
+        setTrayectoriaLaboral(response.data.trayectorialaboral);
+        setUpwardFeedback(response.data.upwardfeedback);
+        setEvaluacion(response.data.evaluacion);
+    };
     useEffect(() => {
         if(location.state === null){
             navigate('/busqueda');
         }
 
+        fetchInfoEmpleado();
+        
     }, []);
 
     let renderedItems = null;
     if(editarView === 'upward-feedback'){
         if(upwardfeedback !== null){
             renderedItems = upwardfeedback.map((data) => {
-                return <EditCardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete}/>
+                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){
         if(clienteproveedor !== null){
             renderedItems = clienteproveedor.map((data) => {
-                return <EditCardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete}/>
+                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if (editarView === 'evaluacion'){
         if(evaluacion !== null){
             renderedItems = evaluacion.map((data) => {
-                return <EditCardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete}/>
+                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'trayectoria'){
         if(trayectorialaboral !== null){
             renderedItems = trayectorialaboral.map(data => {
-                return <EditarCardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete}/>
+                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'proyeccion-puesto'){
@@ -155,14 +253,15 @@ function Editar(){
             <PerfilSideBar 
                 setEditarView={setEditarView} 
                 empleado={location.state.empleado.empleado} 
-                cantClienteProveedor={clienteproveedor.length || 0} 
-                cantUpwardFeedback={upwardfeedback.length || 0} 
-                cantEvaluacion={evaluacion.length || 0} 
-                cantTrayectoriaLaboral={trayectorialaboral.length || 0} 
+                cantClienteProveedor={clienteproveedor !== null ? clienteproveedor.length : 0} 
+                cantUpwardFeedback={upwardfeedback !== null ?  upwardfeedback.length : 0} 
+                cantEvaluacion={evaluacion !== null ? evaluacion.length : 0} 
+                cantTrayectoriaLaboral={trayectorialaboral !== null ?  trayectorialaboral.length : 0} 
                 cantPuestoProyeccion={0}
             />
             <EditarListView renderedItems={renderedItems} tipo={editarView} openModal={handleOpenCreateModal}/>
             {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal} cet={location.state !== null ? location.state.cet.id : null}/> : null}
+            {editModal ? <EditModal tipo={editarView} data={contentEdit} handleSubmitCreate={handleEdit} closeModal={handleCloseEditModal} /> : null}
         </div>
     );
 };
