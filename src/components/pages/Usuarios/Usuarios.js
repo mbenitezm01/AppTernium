@@ -13,18 +13,14 @@ function ListaUsuarios() {
         console.log('Editar', rowData)
     }
 
-    function handleDelete(rowData) {
-        console.log('Eliminar', rowData)
-    }
-
     const data = React.useMemo(
         () => [
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
-            { id: 12, usuario: "pepe", correo: "[blanco]@ternium.mx" },
+            { id: 12, correo: "[blanco]@ternium.mx" },
+            { id: 13, correo: "[blanco]@ternium.mx" },
+            { id: 14, correo: "[blanco]@ternium.mx" },
+            { id: 15, correo: "[blanco]@ternium.mx" },
+            { id: 16, correo: "[blanco]@ternium.mx" },
+            { id: 17, correo: "[blanco]@ternium.mx" },
 
         ],
         []
@@ -33,17 +29,21 @@ function ListaUsuarios() {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'ID',
+                Header: 'CET',
                 accessor: 'id',
-            },
-            {
-                Header: 'Usuario',
-                accessor: 'usuario',
             },
             {
                 Header: 'Correo Electronico',
                 accessor: 'correo'
             },
+            // {
+            //     Header: 'Administrador',
+            //     accessor: 'isAdmin'
+            // },
+            // {
+            //     Header: 'Activo',
+            //     accesor: 'isActive'
+            // },
             {
                 Header: () => (
                     <Btn text="Crear nuevo usuario" icon={"add"} />
@@ -51,8 +51,7 @@ function ListaUsuarios() {
                 id: "acciones",
                 Cell: ({ row }) => (
                     <>
-                        <Btn text="Editar" icon={"edit"} onClick={() => handleEdit(row.original)} />
-                        <Btn text="Eliminar" icon={"delete"} onClick={() => handleDelete(row.original)} />
+                        <Btn text="Editar" icon={"edit"} onClick={() => handleEdit(row.original.id)} />
                     </>
                 )
             }
