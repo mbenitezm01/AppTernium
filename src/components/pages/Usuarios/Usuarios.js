@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTable, useRowSelect } from 'react-table'
 import Btn from '../../Btn'
 
@@ -8,6 +8,9 @@ import './listaUsuarios.css'
 
 
 function ListaUsuarios() {
+
+    //const [data, setData] = useState({})
+    const [isLoading, setLoading] = useState(true)
 
     function handleEdit(rowData) {
         console.log('Editar', rowData)
@@ -69,6 +72,9 @@ function ListaUsuarios() {
         prepareRow,
     } = tableInstance
 
+    if (isLoading){
+        return(<div></div>)
+    }
 
     return (
         <div className="listaUsuarios-bg">
