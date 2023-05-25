@@ -358,17 +358,19 @@ function Lista({ data, filtersState, handleSubmit }) {
                     </span>
                     <span>
                         | Go to page:{' '}
-                        <input
-                            type="number"
-                            defaultValue={pageIndex + 1}
-                            onChange={e => {
-                                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                                gotoPage(page)
-                            }}
-                            style={{ width: '100px' }}
-                        />
                     </span>{' '}
+
+                    <input
+                        type="number"
+                        defaultValue={pageIndex + 1}
+                        onChange={e => {
+                            const page = e.target.value ? Number(e.target.value) - 1 : 0
+                            gotoPage(page)
+                        }}
+                        style={{ width: '100px' }}
+                    />
                     <select
+                        type="paginationSize"
                         value={pageSize}
                         onChange={e => {
                             setPageSize(Number(e.target.value))
@@ -381,27 +383,27 @@ function Lista({ data, filtersState, handleSubmit }) {
                         ))}
                     </select>
                 
-            {selectedFlatRows.length === 2?
-                <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
-                <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
-            }
+                    {selectedFlatRows.length === 2?
+                        <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
+                        <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
+                    }
             
-            {/*
-            <pre>
-            <code>
-                    {JSON.stringify(
-                        {
-                            selectedRowIds: selectedRowIds,
-                            'selectedFlatRows[].original': selectedFlatRows.map(
-                                d => d.original
-                                ),
-                            },
-                            null,
-                            2
-                            )}
+                    {/*
+                        <pre>
+                            <code>
+                                {JSON.stringify(
+                                {
+                                    selectedRowIds: selectedRowIds,
+                                    'selectedFlatRows[].original': selectedFlatRows.map(
+                                        d => d.original
+                                        ),
+                                    },
+                                    null,
+                                    2
+                                )}
                             </code>
-                            </pre>
-                        */}
+                        </pre>
+                    */}
                 </div>
             </div>
         </>

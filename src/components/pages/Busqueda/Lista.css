@@ -82,6 +82,7 @@
 .pagination {
   height: 50px;
   margin-top: 10px;
+
   position: sticky;
   bottom: 0;
   background-color: white;
@@ -89,7 +90,7 @@
 
 .pagination button {
   font-size: 14px;
-  padding: 5px 10px;
+  padding: 10px;
   border: none;
   background-color: #f9f9f9;
   cursor: pointer;
@@ -102,9 +103,16 @@
 
 .pagination span {
   margin-left: 10px;
+  margin-top: 10px;
 }
 
 .pagination input[type="number"] {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.pagination select[type="paginationSize"] {
+  margin-left: 10px;
   padding: 5px;
 }
 
