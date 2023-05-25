@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useTable, useRowSelect } from 'react-table'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import Btn from '../../Btn'
 
 //Importacion de estilos
@@ -9,52 +11,70 @@ import './listaUsuarios.css'
 
 function ListaUsuarios() {
 
-    //const [data, setData] = useState({})
+    const [data, setData] = useState([])
     const [isLoading, setLoading] = useState(true)
 
-    function handleEdit(rowData) {
-        console.log('Editar', rowData)
+    const navigate = useNavigate()
+
+    const fetchList = useCallback(async () => {
+        const response = await axios.get(`http://localhost:5050/api/usuarios`);
+        setData(response.data);
+        setLoading(false)
+    }, []);
+
+    useEffect(() => {
+        fetchList()
+        //console.log(data[0].activo)
+    }, [fetchList])
+
+    // const data = React.useMemo(
+    //     () => [
+    //         { id: 12, correo: "[blanco]@ternium.mx" },
+    //         { id: 13, correo: "[blanco]@ternium.mx" },
+    //         { id: 14, correo: "[blanco]@ternium.mx" },
+    //         { id: 15, correo: "[blanco]@ternium.mx" },
+    //         { id: 16, correo: "[blanco]@ternium.mx" },
+    //         { id: 17, correo: "[blanco]@ternium.mx" },
+
+    //     ],
+    //     []
+    // )
+
+    function handleEdit(cet) {
+        //console.log('Editar', cet)
+        navigate(`/editar-usuario/${cet}`)
     }
 
-    const data = React.useMemo(
-        () => [
-            { id: 12, correo: "[blanco]@ternium.mx" },
-            { id: 13, correo: "[blanco]@ternium.mx" },
-            { id: 14, correo: "[blanco]@ternium.mx" },
-            { id: 15, correo: "[blanco]@ternium.mx" },
-            { id: 16, correo: "[blanco]@ternium.mx" },
-            { id: 17, correo: "[blanco]@ternium.mx" },
-
-        ],
-        []
-    )
+    function createUserHandler(){
+        navigate('/crear-usuario')
+    }
 
     const columns = React.useMemo(
         () => [
             {
                 Header: 'CET',
-                accessor: 'id',
+                accessor: 'empleado_cet',
             },
             {
                 Header: 'Correo Electronico',
                 accessor: 'correo'
             },
-            // {
-            //     Header: 'Administrador',
-            //     accessor: 'isAdmin'
-            // },
-            // {
-            //     Header: 'Activo',
-            //     accesor: 'isActive'
-            // },
+            {
+                Header: 'Administrador',
+                accessor: 'admin'
+            },
+            {
+                Header: 'Activo',
+                accesor: 'activo'
+            },
             {
                 Header: () => (
-                    <Btn text="Crear nuevo usuario" icon={"add"} />
+                    <Btn text="Crear nuevo usuario" icon={"add"} onClick={createUserHandler}/>
                 ),
                 id: "acciones",
                 Cell: ({ row }) => (
                     <>
-                        <Btn text="Editar" icon={"edit"} onClick={() => handleEdit(row.original.id)} />
+                        <Btn text="Editar" icon={"edit"} onClick={() => handleEdit(row.original.empleado_cet)} />
                     </>
                 )
             }

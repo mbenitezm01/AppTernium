@@ -45,7 +45,7 @@ function EditarUsuario(){
 
     function eraseUserHandler(){
         axios.delete(`http://localhost:5050/api/info-usuario/${cet.id}`)
-        //alert("Erase user");
+        alert("Usuario Borrado");
         //shennanigans
         navigate('/usuarios')
     }
