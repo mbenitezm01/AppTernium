@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useNavigate} from "react-router-dom";
 import './EditarUsuario.css'
+import axios from "axios";
 import { Table } from "react-bootstrap";
 
 function EditarUsuario(){
@@ -11,70 +13,49 @@ function EditarUsuario(){
     activo: true
     }
 
+    const navigate = useNavigate()
+
+    const [isLoading, setLoading] = useState(true)
+
+    const [info, setInfo] = useState({});
+    const cet = useParams();
+
+    const fetchInfoEmpleado = useCallback(async () => {
+        const response = await axios.get(`http://localhost:5050/api/info-usuario/${cet.id}`);
+        setInfo(response.data[0])
+        setLoading(false)
+    }, []);
+
+    useEffect(() => {
+        fetchInfoEmpleado()
+    }, [fetchInfoEmpleado])
+
     function clickHandler(){
-        // editar dato
-        // llamar usuario.fetchData
+        const newData = {
+                            correo: document.getElementById("edit-email").value,
+                            admin: document.getElementById("admin-toggle").checked? 1:0, 
+                            activo: document.getElementById("active-toggle").checked? true:false
+                        }
         
-        let alertText = ""
-        // const newCET = document.getElementById("editCET").value
-        // const newUsr = document.getElementById("editUsername").value
-        const newPass = document.getElementById("edit-password").value
-        const newEmail = document.getElementById("edit-email").value
-
-
-        // if (newCET !== currCET){
-        //     alertText += "New CET: " + newCET + "\n"
-        //     setCET(newCET)
-        // }
-        // if (newUsr !== currUsr){
-        //     alertText += "New usr: " + newUsr + "\n"
-        //     setUsr(newUsr)
-        // }
-
-        if (newPass !== currPass){
-            alertText += "New pass: " + newPass + "\n"
-            setPass(newPass)
-        }
-        if (newEmail !== currEmail){
-            alertText += "New email: " + newEmail + "\n"
-            setEmail(newEmail)
-        }
+        axios.patch(`http://localhost:5050/api/info-usuario/${cet.id}`, newData)
+        //console.log(newData)
         
-        // determina permisos de administrador
-        var isAdmin = document.getElementById("admin-toggle")
-        if (isAdmin.checked){
-            alertText += "is admin\n";
-        } else {
-            alertText += "is not admin\n";
-        }
-
-        // determina permisos de actividad
-        var isActive = document.getElementById("active-toggle")
-        if(isActive.checked){
-            alertText += "is active\n";
-        } else {
-            alertText += "is not active\n";
-        }
-
-        if (alertText !== ""){
-            alert(alertText)
-        }
         
     }
-    //const [currUsr, setUsr] = useState(user.username)
-    const [currCET, setCET] = useState(user.cet)
-    const [currPass, setPass] = useState(user.psswrd)
-    const [currEmail, setEmail] = useState(user.correo)
-    const [currAdmin, setAdmin] = useState(user.admin)
-    const [currActivo, setActivo] = useState(user.activo)
-
-    
-    
-
-
 
     function eraseUserHandler(){
-        alert("Erase user");
+        axios.delete(`http://localhost:5050/api/info-usuario/${cet.id}`)
+        //alert("Erase user");
+        //shennanigans
+        navigate('/usuarios')
+    }
+
+    function changePasswordHandler(){
+        navigate(`/editar-usuario/password/${cet.id}`)
+    }
+
+    if (isLoading){
+        return(<div></div>)
     }
 
 
@@ -83,27 +64,30 @@ function EditarUsuario(){
             <div id="erase-user-div">
                 <button id="delete-user-button" onClick={eraseUserHandler}>Eliminar Usuario</button>
             </div>
-            <Table>
-                <tr>
+            <Table id = "edit-user-table">
+                <tbody>
+                    <tr>
                     <td>CET</td>
-                    <td>{currCET}</td>
-                </tr>
-                <tr>
-                    <td>Correo</td>
-                    <td><input id="edit-email" defaultValue={user.correo}></input></td>
-                </tr>
-                <tr>
-                    <td>Contraseña</td>
-                    <td><input id="edit-password" defaultValue={user.psswrd}></input></td>
-                </tr>
-                <tr>
-                    <td>Admin</td>
-                    <td><input type="checkbox" id="admin-toggle" defaultChecked></input></td>
-                </tr>
-                <tr>
-                    <td>Activo</td>
-                    <td><input type="checkbox" id="active-toggle" defaultChecked></input></td>
-                </tr>
+                    <td>{info.empleado_cet}</td>
+                    </tr>
+                    <tr>
+                        <td>Correo</td>
+                        <td><input id="edit-email" defaultValue={info.correo}></input></td>
+                    </tr>
+                    <tr>
+                        <td>Contraseña</td>
+                        <td><button onClick={changePasswordHandler}>Cambiar Contraseña</button></td>
+                    </tr>
+                    <tr>
+                        <td>Admin</td>
+                        <td><input type="checkbox" id="admin-toggle" defaultChecked></input></td>
+                    </tr>
+                    <tr>
+                        <td>Activo</td>
+                        <td><input type="checkbox" id="active-toggle" defaultChecked></input></td>
+                    </tr>
+                </tbody>
+                
             </Table>
 
             <button onClick={clickHandler}>Actualizar</button>

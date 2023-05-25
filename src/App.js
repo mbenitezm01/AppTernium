@@ -9,6 +9,7 @@ import Ficha from './components/pages/Ficha/Ficha';
 import Usuarios from './components/pages/Usuarios/Usuarios';
 import EditarUsuario from './components/pages/Usuarios/editarUsuario/EditarUsuario';
 import CrearUsuario from './components/pages/Usuarios/editarUsuario/CrearUsuario';
+import EditarPassword from './components/pages/Usuarios/editarUsuario/EditarPassword';
 
 //Imports de los componentes de las paginas
 
@@ -22,8 +23,9 @@ function App() {
           <Route><Route path='/busqueda' element={<Busqueda />} /></Route>
           <Route><Route path='/ficha/:id' element={<Ficha />} /></Route>
           <Route><Route path='/usuarios' element={<Usuarios />} /></Route>
-          <Route><Route path='/editar-usuario' element={<EditarUsuario />} /></Route>
+          <Route><Route path='/editar-usuario/:id' element={<EditarUsuario />} /></Route>
           <Route><Route path='/crear-usuario' element={<CrearUsuario />} /></Route>
+          <Route><Route path='/editar-usuario/password/:id' element={<EditarPassword />} /></Route>
         </Routes>
       </BrowserRouter>
     </div>
