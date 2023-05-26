@@ -3,6 +3,7 @@ import { useTable, useRowSelect } from 'react-table'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Btn from '../../Btn'
+import { AiFillCheckCircle } from 'react-icons/ai'
 
 //Importacion de estilos
 import './listaUsuarios.css'
@@ -24,11 +25,11 @@ function ListaUsuarios() {
 
     useEffect(() => {
         fetchList()
-        //console.log(data[0].activo)
+        console.log(data)
     }, [fetchList])
 
     // const data = React.useMemo(
-    //     () => [
+    //     () => [ 
     //         { id: 12, correo: "[blanco]@ternium.mx" },
     //         { id: 13, correo: "[blanco]@ternium.mx" },
     //         { id: 14, correo: "[blanco]@ternium.mx" },
@@ -60,12 +61,16 @@ function ListaUsuarios() {
                 accessor: 'correo'
             },
             {
+                id: 'admin',
                 Header: 'Administrador',
-                accessor: 'admin'
+                accessor: 'admin',
+                Cell: ({ value }) => value ? <AiFillCheckCircle className='lista-key' /> : ''
             },
             {
+                id: 'activo',
                 Header: 'Activo',
-                accesor: 'activo'
+                accesor: 'activo',
+                Cell: ({ value }) => value ? <AiFillCheckCircle className='lista-key' /> : ''
             },
             {
                 Header: () => (

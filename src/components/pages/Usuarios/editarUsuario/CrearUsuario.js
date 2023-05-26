@@ -5,7 +5,7 @@ import axios from "axios";
 function CrearUsuario(){
 
     function clickHandler(){
-        const allGood = true
+        let allGood = true
         //alert("crear usuario")
         let newAdmin = document.getElementById("create-admin-toggle").checked? 1 : 0;
         let newActive = document.getElementById("create-active-toggle").checked? true : false;
