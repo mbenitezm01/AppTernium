@@ -5,13 +5,6 @@ import axios from "axios";
 import { Table } from "react-bootstrap";
 
 function EditarUsuario(){
-    let user = {cet:"1234", 
-    username:"juanPerez",  
-    psswrd:"juan12345", 
-    correo:"juan@ternium.com",
-    admin: 1, 
-    activo: true
-    }
 
     const navigate = useNavigate()
 
@@ -19,6 +12,9 @@ function EditarUsuario(){
 
     const [info, setInfo] = useState({});
     const cet = useParams();
+
+    const [adminCheck, setAdmin] = useState(0)
+    const [activeCheck, setActive] = useState(false)
 
     const fetchInfoEmpleado = useCallback(async () => {
         const response = await axios.get(`http://localhost:5050/api/info-usuario/${cet.id}`);
@@ -30,28 +26,41 @@ function EditarUsuario(){
         fetchInfoEmpleado()
     }, [fetchInfoEmpleado])
 
+    useEffect(() => {
+        setAdmin(info.admin)
+        setActive(info.activo)
+    },[info])
+
     function clickHandler(){
         const newData = {
-                            correo: document.getElementById("edit-email").value,
-                            admin: document.getElementById("admin-toggle").checked? 1:0, 
-                            activo: document.getElementById("active-toggle").checked? true:false
-                        }
+            correo: document.getElementById("edit-email").value,
+            admin: document.getElementById("admin-toggle").checked? 1:0, 
+            activo: document.getElementById("active-toggle").checked? true:false
+        }
         
-        axios.patch(`http://localhost:5050/api/info-usuario/${cet.id}`, newData)
-        //console.log(newData)
-        
-        
+        if (window.confirm("Guardar cambios?")){
+            axios.patch(`http://localhost:5050/api/info-usuario/${cet.id}`, newData)
+        }
     }
 
     function eraseUserHandler(){
-        axios.delete(`http://localhost:5050/api/info-usuario/${cet.id}`)
-        alert("Usuario Borrado");
-        //shennanigans
-        navigate('/usuarios')
+        if (window.confirm("Deseas eliminar este usuario?\nEsta acción no se puede revertir.")){
+            axios.delete(`http://localhost:5050/api/info-usuario/${cet.id}`)
+            navigate('/usuarios')
+        }
+        
     }
 
     function changePasswordHandler(){
         navigate(`/editar-usuario/password/${cet.id}`)
+    }
+
+    function adminClickHandler(){
+        setAdmin((adminCheck===0)?1:0)
+    }
+
+    function activeClickHandler(){
+        setActive(!activeCheck)
     }
 
     if (isLoading){
@@ -80,11 +89,11 @@ function EditarUsuario(){
                     </tr>
                     <tr>
                         <td>Admin</td>
-                        <td><input type="checkbox" id="admin-toggle" defaultChecked></input></td>
+                        <td><input type="checkbox" id="admin-toggle" checked={adminCheck} onClick={adminClickHandler}></input></td>
                     </tr>
                     <tr>
                         <td>Activo</td>
-                        <td><input type="checkbox" id="active-toggle" defaultChecked></input></td>
+                        <td><input type="checkbox" id="active-toggle" checked={activeCheck} onClick={activeClickHandler}></input></td>
                     </tr>
                 </tbody>
                 

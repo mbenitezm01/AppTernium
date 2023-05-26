@@ -38,7 +38,9 @@ function CrearUsuario(){
                 empleado_cet: newCet,
                 activo: newActive
             }
-            axios.post("http://localhost:5050/api/agregar-usuario", newUserData)
+            if (window.confirm("Crear nuevo usuario?")){
+                axios.post("http://localhost:5050/api/agregar-usuario", newUserData)
+            }
         }
     }
 
