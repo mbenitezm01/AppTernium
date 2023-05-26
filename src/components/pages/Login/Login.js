@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./Login.css"
 
 import './Login.css';
 import axios from 'axios';
@@ -46,7 +47,7 @@ const Login = () => {
     };
   
     return (
-      <div>
+      <div class="login-container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div>
