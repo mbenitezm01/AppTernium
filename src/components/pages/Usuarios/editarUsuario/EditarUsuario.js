@@ -3,7 +3,8 @@ import { useParams, useNavigate} from "react-router-dom";
 import './EditarUsuario.css'
 import axios from "axios";
 import { Table } from "react-bootstrap";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from "react-icons/ai";
+import {BsArrowBarUp} from 'react-icons/bs'
 
 function EditarUsuario(){
 
@@ -77,7 +78,7 @@ function EditarUsuario(){
         <div id="editar-usuario">
             <div id="erase-user-div">
                 <button id="return-to-table" onClick={returnHandler}><AiOutlineArrowLeft/> Regresar</button>
-                <button id="delete-user-button" onClick={eraseUserHandler}>Eliminar Usuario</button>
+                <button id="delete-user-button" onClick={eraseUserHandler}><AiFillDelete/>Eliminar Usuario</button>
             </div>
             <Table id = "edit-user-table">
                 <tbody>
@@ -91,7 +92,7 @@ function EditarUsuario(){
                     </tr>
                     <tr>
                         <td>Contraseña</td>
-                        <td><button onClick={changePasswordHandler}>Cambiar Contraseña</button></td>
+                        <td><button onClick={changePasswordHandler}>Cambiar Contraseña <AiFillEdit/></button></td>
                     </tr>
                     <tr>
                         <td>Admin</td>
@@ -105,7 +106,7 @@ function EditarUsuario(){
                 
             </Table>
 
-            <button onClick={clickHandler}>Actualizar</button>
+            <button onClick={clickHandler}>Actualizar <BsArrowBarUp/></button>
             
         </div>
     )

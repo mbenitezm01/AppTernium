@@ -41,7 +41,7 @@ function CrearUsuario(){
                 correo: newCorreo,
                 contrasena: newPass,
                 admin: newAdmin,
-                empleado_cet: newCet,
+                empleado_cet: +newCet,
                 activo: newActive
             }
             if (window.confirm("Crear nuevo usuario?")){

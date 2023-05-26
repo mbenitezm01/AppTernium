@@ -25,7 +25,6 @@ function ListaUsuarios() {
 
     useEffect(() => {
         fetchList()
-        console.log(data)
     }, [fetchList])
 
     // const data = React.useMemo(

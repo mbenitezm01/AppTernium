@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Table } from "react-bootstrap";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import {BsArrowBarUp} from 'react-icons/bs'
+
 import './CrearUsuario.css'
 
 function EditarPassword(){
@@ -21,7 +23,9 @@ function EditarPassword(){
                 alert("Las contraseñas no coinciden.\nPor favor verifica las contraseñas.");
                 break;
             case (pass1 === pass2):
-                axios.patch(`http://localhost:5050/api/info-usuario/password/${cet.id}`, {contrasena: pass1})
+                if (window.confirm("Crear nuevo usuario?")){
+                    axios.patch(`http://localhost:5050/api/info-usuario/password/${cet.id}`, {contrasena: pass1})
+                }
                 break;
         }
     }
@@ -47,7 +51,7 @@ function EditarPassword(){
                     </tr>
                 </tbody>
             </Table>
-            <button onClick={clickHandler}>Cambiar contraseña</button>
+            <button onClick={clickHandler}>Cambiar contraseña <BsArrowBarUp/></button>
         </div>
     )
 } export default EditarPassword
