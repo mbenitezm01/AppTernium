@@ -1,8 +1,14 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import axios from "axios";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+
+import './CrearUsuario.css'
 
 function CrearUsuario(){
+
+    const navigate = useNavigate()
 
     function clickHandler(){
         let allGood = true
@@ -44,8 +50,15 @@ function CrearUsuario(){
         }
     }
 
+    function returnHandler(){
+        navigate('/usuarios')
+    }
+
     return(
         <div id="crear-usuario">
+            <div className= "header-buttons">
+                <button className="return-button" onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+            </div>
             <Table>
                 <tr>
                     <td>CET</td>

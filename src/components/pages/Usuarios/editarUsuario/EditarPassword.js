@@ -1,10 +1,13 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Table } from "react-bootstrap";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import './CrearUsuario.css'
 
 function EditarPassword(){
 
+    const navigate = useNavigate()
     const cet = useParams();
 
     function clickHandler(){
@@ -23,8 +26,15 @@ function EditarPassword(){
         }
     }
 
+    function returnHandler(){
+        navigate(`/editar-usuario/${cet.id}`)
+    }
+
     return(
         <div>
+            <div className="header-buttons">
+                <button onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+            </div>
             <Table>
                 <tbody>
                     <tr>

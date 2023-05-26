@@ -69,8 +69,10 @@ function ListaUsuarios() {
             {
                 id: 'activo',
                 Header: 'Activo',
-                accesor: 'activo',
-                Cell: ({ value }) => value ? <AiFillCheckCircle className='lista-key' /> : ''
+                accessor: 'activo',
+                Cell: ({ value }) => {
+                    return value ? <AiFillCheckCircle className='lista-key' /> : ''
+                }
             },
             {
                 Header: () => (

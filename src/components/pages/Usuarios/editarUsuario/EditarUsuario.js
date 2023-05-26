@@ -3,6 +3,7 @@ import { useParams, useNavigate} from "react-router-dom";
 import './EditarUsuario.css'
 import axios from "axios";
 import { Table } from "react-bootstrap";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function EditarUsuario(){
 
@@ -51,6 +52,10 @@ function EditarUsuario(){
         
     }
 
+    function returnHandler(){
+        navigate('/usuarios')
+    }
+
     function changePasswordHandler(){
         navigate(`/editar-usuario/password/${cet.id}`)
     }
@@ -71,6 +76,7 @@ function EditarUsuario(){
     return(
         <div id="editar-usuario">
             <div id="erase-user-div">
+                <button id="return-to-table" onClick={returnHandler}><AiOutlineArrowLeft/> Regresar</button>
                 <button id="delete-user-button" onClick={eraseUserHandler}>Eliminar Usuario</button>
             </div>
             <Table id = "edit-user-table">
