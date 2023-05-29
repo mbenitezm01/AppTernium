@@ -1,0 +1,54 @@
+
+
+/* .listaUsuarios-bg {
+    
+} */
+
+.listaUsuarios-bg{
+    border: 1px solid black;
+    width: 100%;
+
+}
+
+.listaUsuarios-bg table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    
+}
+
+.listaUsuarios-bg th {
+    border-bottom: 2px solid black;
+    width: 25%;
+    text-align: center;
+}
+
+.listaUsuarios-bg tr {
+    border-bottom: 1px solid black;
+}
+
+.listaUsuarios-bg td {
+    padding: 8px;
+    
+    border-bottom: 1px solid #ddd;
+}
+
+.listaUsuarios-bg tr:hover {
+    /* Agrega estilos a las filas al pasar el cursor sobre ellas */
+    background-color: #f5f5f5;
+}
+
+.listaUsuarios-bg button {
+
+    font-size: 1rem;
+    
+
+
+}
+
+.listaUsuarios-bg .icon {
+
+    width: 20px;
+    height: 20px;
+
+}

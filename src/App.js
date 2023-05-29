@@ -10,6 +10,9 @@ import Usuarios from './components/pages/Usuarios/Usuarios';
 import Editar from './components/pages/Editar/Editar';
 import Comparacion from './components/pages/Comparacion/Comparacion';
 import Login from './components/pages/Login/Login'
+import EditarUsuario from './components/pages/Usuarios/editarUsuario/EditarUsuario';
+import CrearUsuario from './components/pages/Usuarios/editarUsuario/CrearUsuario';
+import EditarPassword from './components/pages/Usuarios/editarUsuario/EditarPassword';
 
 //Imports de los componentes de las paginas
 
@@ -27,6 +30,9 @@ function App() {
           <Route><Route path='/comparacion' element={<Comparacion />} /></Route>
           <Route><Route path='/login' element={<Login />} /></Route>
 
+          <Route><Route path='/editar-usuario/:id' element={<EditarUsuario />} /></Route>
+          <Route><Route path='/crear-usuario' element={<CrearUsuario />} /></Route>
+          <Route><Route path='/editar-usuario/password/:id' element={<EditarPassword />} /></Route>
         </Routes>
       </BrowserRouter>
     </div>
@@ -34,3 +40,5 @@ function App() {
 }
 
 export default App;
+
+// lineas a borrar:
