@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
 import axios from "axios";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -10,6 +10,10 @@ import './CrearUsuario.css'
 function CrearUsuario(){
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
+    }, []);
 
     function clickHandler(){
         let allGood = true

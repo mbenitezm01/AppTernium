@@ -25,6 +25,7 @@ function EditarUsuario(){
     }, []);
 
     useEffect(() => {
+        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
         fetchInfoEmpleado()
     }, [fetchInfoEmpleado])
 

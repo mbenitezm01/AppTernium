@@ -32,7 +32,7 @@ const Login = () => {
         if(response.data.valido){
             sessionStorage.setItem('refreshToken', response.data.refreshToken);
             sessionStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('admin', response.data.admin);
+            localStorage.setItem('tipo_usuario', response.data.tipo_usuario);
             localStorage.setItem('nombre', response.data.nombre);
             localStorage.setItem('correo', response.data.correo);
             localStorage.setItem('id_usuario', response.data.id_usuario);

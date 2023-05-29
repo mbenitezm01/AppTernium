@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Table } from "react-bootstrap";
@@ -10,6 +10,10 @@ import './CrearUsuario.css'
 function EditarPassword(){
 
     const navigate = useNavigate()
+    useEffect(() => {
+        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
+    }, []);
+    
     const cet = useParams();
 
     function clickHandler(){

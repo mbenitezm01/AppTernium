@@ -15,7 +15,7 @@ function Header(){
             <div className="header-bg">
             <img src={Logo} className="logo"/>
                 <Link to={"/busqueda"}  style={{width:'200px', margin:'0'}}> <Btn text={'Busqueda'} icon={'search'}/> </Link>
-                <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link>
+                {localStorage.getItem('tipo_usuario') !== "observador" ? <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link> : null}
 
             </div>
         </div>
