@@ -10,21 +10,28 @@ import Usuarios from './components/pages/Usuarios/Usuarios';
 import Editar from './components/pages/Editar/Editar';
 import Comparacion from './components/pages/Comparacion/Comparacion';
 import Login from './components/pages/Login/Login'
-
 //Imports de los componentes de las paginas
+
+const Layout = ({ children }) =>(
+
+<>
+    <Header />
+    {children}
+  </>
+);
+
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header/>
         <Routes>
           <Route path='' element={<Navigate to="/busqueda" replace={true} />}/>
-          <Route><Route path='/busqueda' element={<Busqueda />} /></Route>
-          <Route><Route path='/ficha/:id' element={<Ficha />} /></Route>
-          <Route><Route path='/ficha/:id/editar' element={<Editar />} /></Route>
-          <Route><Route path='/usuarios' element={<Usuarios />} /></Route>
-          <Route><Route path='/comparacion' element={<Comparacion />} /></Route>
+          <Route><Route path='/busqueda' element={<Layout><Busqueda /></Layout>} /></Route>
+          <Route><Route path='/ficha/:id' element={<Layout><Ficha /></Layout>} /></Route>
+          <Route><Route path='/ficha/:id/editar' element={<Layout><Editar /></Layout>} /></Route>
+          <Route><Route path='/usuarios' element={<Layout><Usuarios /></Layout>} /></Route>
+          <Route><Route path='/comparacion' element={<Layout><Comparacion /></Layout>} /></Route>
           <Route><Route path='/login' element={<Login />} /></Route>
 
         </Routes>

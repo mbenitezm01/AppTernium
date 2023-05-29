@@ -59,7 +59,7 @@ const Login = () => {
           <label htmlFor="password">Contraseña:</label>
           <input type="password" value={password} id="password" onChange={handlePasswordChange} />
           </div>
-        <button type="submit">Login</button>
+        <button type="submit">Iniciar Sesion</button>
       </form>
     </div>
     );
