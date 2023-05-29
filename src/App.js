@@ -26,7 +26,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='' element={<Navigate to="/busqueda" replace={true} />}/>
+          <Route path='' element={<Navigate to="/login" replace={true} />}/>
           <Route><Route path='/busqueda' element={<Layout><Busqueda /></Layout>} /></Route>
           <Route><Route path='/ficha/:id' element={<Layout><Ficha /></Layout>} /></Route>
           <Route><Route path='/ficha/:id/editar' element={<Layout><Editar /></Layout>} /></Route>
