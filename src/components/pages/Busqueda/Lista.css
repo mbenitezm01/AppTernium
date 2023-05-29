@@ -85,7 +85,8 @@
 
   position: sticky;
   bottom: 0;
-  background-color: white;
+  border-top: 1px solid grey;
+
 }
 
 .pagination button {
@@ -115,6 +116,7 @@
   margin-left: 10px;
   padding: 5px;
 }
+
 
 .lista-key {
   color: green;
