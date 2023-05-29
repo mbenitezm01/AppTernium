@@ -42,6 +42,7 @@ function EditarUsuario(){
         
         if (window.confirm("Guardar cambios?")){
             axios.patch(`http://localhost:5050/api/info-usuario/${cet.id}`, newData)
+            alert("Cambios guardados exitosamente")
         }
     }
 
