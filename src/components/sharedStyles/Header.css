@@ -3,7 +3,13 @@
     height: 71px;
     width: 100%;
     display: flex;
+    justify-content: space-between;
 }
+
+.header-bg .left{
+    margin-left: 50px;
+}
+
 
 img.logo {
     height: 59px;
