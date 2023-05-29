@@ -1,101 +1,69 @@
 body {
     margin: 0;
     padding: 0;
-    background: url('./The-Color-Orange.jpg') no-repeat center center fixed; /*Imagen de meustra
-    */
-    background-size: cover;
   }
-
+  
   .login-container {
-    width: 25%;
-    margin: 0 ;
+    display: flex;
+    justify-content: space-between; /* Cambiado a "space-between" para separar los elementos */
+    align-items: center;
+    height: 100vh;
+    
+   
+  }
+  
+  .login-image {
+    width: 75%; /* La imagen ocupa el 75% del ancho de la pantalla */
+    height: 100vh;
+    background-image: url('./TerniumLoginImg1.jpg');
+    background-size: cover;
+    background-position: right;
+    background-repeat: no-repeat;
+  }
+  
+  .login-form {
+    width: 300px;
     padding: 20px;
     background-color: #f2f2f2;
-    border: 1px solid #ccc;
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-
-  .login-container h2 {
+  
+  .login-form h2 {
     text-align: center;
+    margin-top: 0;
     margin-bottom: 20px;
   }
-
-  .login-container label {
-    display: block;
-    margin-bottom: 8px;
+  
+  .form-group {
+    margin-bottom: 20px;
   }
-
-  .login-container input[type="email"],
-  .login-container input[type="password"] {
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
+    border-radius: 3px;
   }
-
-  .login-container button[type="submit"] {
+  
+  button[type='submit'] {
+    display: block;
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #ff9100;
     color: #fff;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;<style>
-    body {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      height: 100vh;
-      background: url('./The-Color-Orange.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-  
-    .login-container {
-      width: 25%;
-      margin-left: 20px;
-      padding: 20px;
-      background-color: #f2f2f2;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-  
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-  
-    .login-container label {
-      display: block;
-      margin-bottom: 8px;
-    }
-  
-    .login-container input[type="email"],
-    .login-container input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-  
-    .login-container button[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  
-    .login-container button[type="submit"]:hover {
-      background-color: #45a049;
-    }
+    border-radius: 3px;
+    cursor: pointer;
   }
-
-  .login-container button[type="submit"]:hover {
-    background-color: #45a049;
+  
+  button[type='submit']:hover {
+    background-color: #ff9100;
   }
+  
