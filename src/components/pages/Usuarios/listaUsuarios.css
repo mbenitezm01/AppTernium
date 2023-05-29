@@ -1,3 +1,37 @@
+.listaUsuarios-bg {
+    width: 100vw;
+    height: 10%;
+}
+
+.listaUsuarios-bg{
+    border: 1px solid black;
+    width: 100%;
+
+
+}
+
+
+.listaUsuarios-bg table{
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    
+    
+}
+.my-column-style {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.listaUsuarios-bg th {
+    border-bottom: 2px solid black;
+}
+
+.listaUsuarios-bg tr {
+    border-bottom: 1px solid black;
+    
+}
 
 
 /* .listaUsuarios-bg {
