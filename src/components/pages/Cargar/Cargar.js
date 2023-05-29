@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import { read, utils, writeFile } from 'xlsx';
+import { read, utils } from 'xlsx';
+
+import './Cargar.css';
 
 const Cargar = () => {
     const [state, setState] = useState();
+
+    const [selectedCategory, setSelectedCategory] = useState('empleados');
 
     const handleImport = ($event) => {
         const files = $event.target.files;
@@ -11,7 +15,7 @@ const Cargar = () => {
             const file = files[0];
             const reader = new FileReader();
             reader.onload = (event) => {
-                const wb = read(event.target.result, {cellDates: true});
+                const wb = read(event.target.result, { cellDates: true });
                 const sheets = wb.SheetNames;
 
                 if (sheets.length) {
@@ -24,19 +28,60 @@ const Cargar = () => {
     }
 
     const handleClick = async () => {
-        //const response = await axios.post(`http://localhost:5050/api/agregar-empleados`, state);
-        
+        //console.log(state)
+        const response = await axios.post(`http://localhost:5050/api/agregar-empleados`, state);
+        console.log(response.data);
+        alert(response.data.mensaje)
+
     }
 
-    useEffect(() => {
-        console.log(JSON.stringify(state))
-    },[state])
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+    };
 
     return (
-        <>
-        <input type="file" name="file" className="custom-file-input" id="inputGroupFile" required onChange={handleImport} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-        <button onClick={handleClick}>Submit</button>
-        </>
-    )
+        <div>
+            <h1>Cargar Archivo</h1>
+            <div>
+                <ul className="category-tabs">
+                    <li
+                        className={selectedCategory === 'empleados' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('empleados')}
+                    >
+                        Empleados
+                    </li>
+                    <li
+                        className={selectedCategory === 'evaluaciones' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('evaluaciones')}
+                    >
+                        Evaluaciones
+                    </li>
+                    <li
+                        className={selectedCategory === 'upward feedback' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('upward feedback')}
+                    >
+                        Upward Feedback
+                    </li>
+                    <li
+                        className={selectedCategory === 'cliente proveedor' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('cliente proveedor')}
+                    >
+                        Cliente Proveedor
+                    </li>
+                    <li
+                        className={selectedCategory === 'trayectoria laboral' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('trayectoria laboral')}
+                    >
+                        Trayectoria Laboral
+                    </li>
+                </ul>
+            </div>
+            <div className="file-upload-section">
+                <h2>Cargar datos a {selectedCategory}</h2>
+                <input type="file" name="file" className="custom-file-input" id="inputGroupFile" required onChange={handleImport} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                <button onClick={handleClick}>Subir</button>
+            </div>
+        </div>
+    );
 }
 export default Cargar
