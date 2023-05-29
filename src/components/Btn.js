@@ -9,6 +9,9 @@ import { IoMdArrowRoundBack } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
 import { IoSearchSharp } from 'react-icons/io5'
 import { HiUsers } from 'react-icons/hi'
+import { VscLock } from 'react-icons/vsc'
+import { AiOutlineMail } from 'react-icons/ai'
+
 import { BiAddToQueue } from 'react-icons/bi'
 
 
@@ -24,7 +27,9 @@ const components = {
     return: IoMdArrowRoundBack,
     logout: FiLogOut,
     search: IoSearchSharp,
-    users: HiUsers
+    users: HiUsers,
+    lock: VscLock,
+    email: AiOutlineMail
 };
 
 function btnIcon(icon) {

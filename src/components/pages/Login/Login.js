@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./Login.css"
 
 import './Login.css';
 import axios from 'axios';
@@ -21,46 +22,49 @@ const Login = () => {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
-      // Prepare the login data
-      const loginData = {
-        email: email,
-        password: password,
-      };
       
       try{
-        const response = await axios.post(`http://localhost:5051/auth/login`, {
+        const response = await axios.post(`http://localhost:5050/auth/login`, {
             correo: email,
             contrasena: password,
-          });
-          console.log(response.data)
-          navigate("/busqueda")
-      }
-
-      catch{
-        alert("no se puede")
-
-      }
+        });
+        console.log(response.data);
+        if(response.data.valido){
+            sessionStorage.setItem('refreshToken', response.data.refreshToken);
+            sessionStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('admin', response.data.admin);
+            localStorage.setItem('nombre', response.data.nombre);
+            localStorage.setItem('correo', response.data.correo);
+            localStorage.setItem('id_usuario', response.data.id_usuario);
+            localStorage.setItem('cet', response.data.cet);
+            navigate("/busqueda")
+        }
+    }catch{
+        alert('Usuario o contraseña incorrecta.');
+    }
       
 
     };
   
     return (
-      <div>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email:</label>
-            <input type="email" value={email} onChange={handleEmailChange} />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input type="password" value={password} onChange={handlePasswordChange} />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
+        <div className="login-container">
+            <div className="login-image"></div>
+            <form onSubmit={handleSubmit} className="login-form">
+                <h2>Login</h2>
+                <div className="form-group">
+                <label htmlFor="email">Email:</label>
+                <input type="email" value={email} id="email" onChange={handleEmailChange} />
+                </div>
+                <div className="form-group">
+                <label htmlFor="password">Contraseña:</label>
+                <input type="password" value={password} id="password" onChange={handlePasswordChange} />
+                </div>
+                <button type="submit">Iniciar Sesion</button>
+            </form>
+        </div>
     );
   };
   
   export default Login;
+
+
