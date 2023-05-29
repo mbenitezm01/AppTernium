@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import axios from "axios";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import {BsArrowBarUp} from 'react-icons/bs'
 import { useNavigate } from "react-router-dom";
 
 import './CrearUsuario.css'
@@ -46,6 +47,8 @@ function CrearUsuario(){
             }
             if (window.confirm("Crear nuevo usuario?")){
                 axios.post("http://localhost:5050/api/agregar-usuario", newUserData)
+                alert("Usuario creado exitosamente")
+                navigate('/usuarios')
             }
         }
     }
@@ -82,7 +85,7 @@ function CrearUsuario(){
                 </tr>
             </Table>
 
-            <button onClick={clickHandler}>Crear Usuario</button>
+            <button onClick={clickHandler}>Crear Usuario <BsArrowBarUp/></button>
             
         </div>
     )
