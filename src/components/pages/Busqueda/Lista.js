@@ -49,31 +49,6 @@ function Lista({ data, filtersState, handleSubmit }) {
         }
     }
 
-
-    /*
-    const data = React.useMemo(
-        () => [
-            { cet: 1, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 2, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 3, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 4, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 5, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 6, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 7, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 8, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 9, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 10, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 11, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 12, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 13, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 14, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 15, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            
-        ],
-        []
-    )
-    */
-
     const columns = React.useMemo(
         () => [
             {
@@ -269,23 +244,6 @@ function Lista({ data, filtersState, handleSubmit }) {
     return (
         <>
             <div className="lista-bg">
-                {/* Te dice las paginas
-            <pre>
-                <code>
-                    {JSON.stringify(
-                        {
-                            pageIndex,
-                            pageSize,
-                            pageCount,
-                            canNextPage,
-                            canPreviousPage,
-                        },
-                        null,
-                        2
-                    )}
-                </code>
-            </pre>
-            */}
                 <div className='table-wrapper'>
                     <table {...getTableProps()} className='table-container table sticky'>
                         <thead>
@@ -386,23 +344,6 @@ function Lista({ data, filtersState, handleSubmit }) {
                         <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
                         <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
                     }
-            
-                    {/*
-                        <pre>
-                            <code>
-                                {JSON.stringify(
-                                {
-                                    selectedRowIds: selectedRowIds,
-                                    'selectedFlatRows[].original': selectedFlatRows.map(
-                                        d => d.original
-                                        ),
-                                    },
-                                    null,
-                                    2
-                                )}
-                            </code>
-                        </pre>
-                    */}
                 </div>
             </div>
         </>
