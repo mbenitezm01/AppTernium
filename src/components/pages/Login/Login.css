@@ -15,7 +15,7 @@ body {
   .login-image {
     width: 75%; /* La imagen ocupa el 75% del ancho de la pantalla */
     height: 100vh;
-    background-image: url('./TerniumLoginImg1.jpg');
+    background-image: url('./terniumfoto.jpg');
     background-size: cover;
     background-position: right;
     background-repeat: no-repeat;
