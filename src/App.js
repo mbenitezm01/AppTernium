@@ -38,9 +38,9 @@ function App() {
           <Route><Route path='/comparacion' element={<Layout><Comparacion /></Layout>} /></Route>
           <Route><Route path='/login' element={<Login />} /></Route>
 
-          <Route><Route path='/editar-usuario/:id' element={<EditarUsuario />} /></Route>
-          <Route><Route path='/crear-usuario' element={<CrearUsuario />} /></Route>
-          <Route><Route path='/editar-usuario/password/:id' element={<EditarPassword />} /></Route>
+          <Route><Route path='/editar-usuario/:id' element={<Layout><EditarUsuario /></Layout>} /></Route>
+          <Route><Route path='/crear-usuario' element={<Layout><CrearUsuario /></Layout>} /></Route>
+          <Route><Route path='/editar-usuario/password/:id' element={<Layout><EditarPassword /></Layout>} /></Route>
         </Routes>
       </BrowserRouter>
     </div>

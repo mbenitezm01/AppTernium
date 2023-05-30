@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Btn from '../../Btn'
 import { AiFillCheckCircle } from 'react-icons/ai'
+import './Usuarios.css'
 
 //Importacion de estilos
 import './listaUsuarios.css'
