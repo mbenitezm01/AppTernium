@@ -91,8 +91,8 @@ function Lista({ data, filtersState, handleSubmit }) {
             },
             {
                 Header: 'Jefe',
-                accessor: 'jefe_cet',
-                filter: 'exactText',
+                accessor: 'jefe_nombre',
+                filter: 'includeString',
                 sortable: true,
             },
             {
@@ -207,7 +207,7 @@ function Lista({ data, filtersState, handleSubmit }) {
             value: filtersState.cet,
         },
         {
-            id: 'jefe_cet',
+            id: 'jefe_nombre',
             value: filtersState.jefe,
         },
         {
