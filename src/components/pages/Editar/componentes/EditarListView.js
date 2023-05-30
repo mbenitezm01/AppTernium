@@ -2,7 +2,6 @@ import { HiOutlineDocumentAdd } from 'react-icons/hi';
 import NoCard from './cards/NoCard';
 
 export default function EditarListView({ renderedItems, openModal }){
-    console.log(renderedItems);
     return(
         <div className='edit-list-view'>
             <div className="agregar">

@@ -83,34 +83,46 @@ function Editar(){
         if(location.state === null){
             return;
         }
-
         console.log('request');
-        const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
-        console.log(response.data);
-        if(response.data.creado){
-            let updatedContent = null;
-            console.log(response.data.data, tipo);
-            switch(tipo){
-                case 'upward-feedback':
-                    updatedContent = [response.data.data, ...upwardfeedback];
-                    setUpwardFeedback(updatedContent);
-                    break;
-                case 'cliente-proveedor':
-                    updatedContent = [response.data.data, ...clienteproveedor];
-                    setClienteProveedor(updatedContent);
-                    break;
-                case 'evaluacion':
-                    updatedContent = [response.data.data, ...evaluacion];
-                    setEvaluacion(updatedContent);
-                    break;
-                case 'trayectoria':
-                    updatedContent = [response.data.data, ...trayectorialaboral];
-                    setTrayectoriaLaboral(updatedContent);
-                    break;
-                // case 'proyeccion-puesto':
-                //     updatedContent = [response.data.data, ...location.state.empleado.]
+
+
+        if(localStorage.getItem('tipo_usuario') === 'editor'){            
+            const response = await axios.post('http://localhost:5050/api/pendiente', {
+                data: JSON.stringify(dataObject),
+                id_usuario: parseInt(localStorage.getItem('id_usuario')),
+                empleado_cet: parseInt(localStorage.getItem('cet')),
+                tabla: editarView,
+                metodo: 'crear'
+            })
+            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+        }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
+            const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+            console.log(response.data);
+            if(response.data.creado){
+                let updatedContent = null;
+                console.log(response.data.data, tipo);
+                switch(tipo){
+                    case 'upward-feedback':
+                        updatedContent = [response.data.data, ...upwardfeedback];
+                        setUpwardFeedback(updatedContent);
+                        break;
+                    case 'cliente-proveedor':
+                        updatedContent = [response.data.data, ...clienteproveedor];
+                        setClienteProveedor(updatedContent);
+                        break;
+                    case 'evaluacion':
+                        updatedContent = [response.data.data, ...evaluacion];
+                        setEvaluacion(updatedContent);
+                        break;
+                    case 'trayectoria':
+                        updatedContent = [response.data.data, ...trayectorialaboral];
+                        setTrayectoriaLaboral(updatedContent);
+                        break;
+                    // case 'proyeccion-puesto':
+                    //     updatedContent = [response.data.data, ...location.state.empleado.]
+                }
             }
-        }
+        }        
         setModal(false);
     };
 
@@ -121,83 +133,104 @@ function Editar(){
 
         console.log('Delete request');
         console.log(tipo, id)
-        const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
-        if(response.data.borrado){
-            let updatedContent;
-            switch(tipo){
-                case 'upward-feedback':
-                    updatedContent = upwardfeedback.filter((data) => {
-                        return data.id !== id;
-                    });
-                    setUpwardFeedback(updatedContent);
-                    break;
-                case 'cliente-proveedor':
-                    updatedContent = clienteproveedor.filter((data) => {
-                        return data.id !== id;
-                    });
-                    setClienteProveedor(updatedContent);
-                case 'trayectoria':
-                    updatedContent = trayectorialaboral.filter((data) => {
-                        return data.id !== id;
-                    });
-                    setTrayectoriaLaboral(updatedContent);
-                case 'evaluacion':
-                    updatedContent = evaluacion.filter((data) => {
-                        return data.id !== id;
-                    });
-                    setEvaluacion(updatedContent);
+        if(localStorage.getItem('tipo_usuario') === 'editor'){
+            const response = await axios.post('http://localhost:5050/api/pendiente', {
+                data: `${id}`,
+                id_usuario: parseInt(localStorage.getItem('id_usuario')),
+                empleado_cet: parseInt(localStorage.getItem('cet')),
+                tabla: editarView,
+                metodo: 'borrar'
+            });
+            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+        }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
+            const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+            if(response.data.borrado){
+                let updatedContent;
+                switch(tipo){
+                    case 'upward-feedback':
+                        updatedContent = upwardfeedback.filter((data) => {
+                            return data.id !== id;
+                        });
+                        setUpwardFeedback(updatedContent);
+                        break;
+                    case 'cliente-proveedor':
+                        updatedContent = clienteproveedor.filter((data) => {
+                            return data.id !== id;
+                        });
+                        setClienteProveedor(updatedContent);
+                    case 'trayectoria':
+                        updatedContent = trayectorialaboral.filter((data) => {
+                            return data.id !== id;
+                        });
+                        setTrayectoriaLaboral(updatedContent);
+                    case 'evaluacion':
+                        updatedContent = evaluacion.filter((data) => {
+                            return data.id !== id;
+                        });
+                        setEvaluacion(updatedContent);
+                }
             }
         }
+        
     };
 
     const handleEdit = async (tipo, dataObject) => {
         console.log('Edit Request');
-        const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
-
-        if(response.data.editado){
-            let updatedContent;
-            switch(tipo){
-                case 'upward-feedback':
-                    updatedContent = upwardfeedback.map(data => {
-                        if(data.id === dataObject.id){
-                            return {...data, ...dataObject}
-                        }
-                        return data;
-                    });
-                    setUpwardFeedback(updatedContent);
-                    break;
-                case 'cliente-proveedor':
-                    updatedContent = clienteproveedor.map(data => {
-                        if(data.id === dataObject.id){
-                            return {...data, ...dataObject}
-                        }
-                        return data;
-                    });                    
-                    setClienteProveedor(updatedContent);
-                    break;
-                case 'evaluacion':
-                    updatedContent = evaluacion.map(data => {
-                        if(data.id === dataObject.id){
-                            console.log(dataObject);
-                            return {...data, ...dataObject}
-                        }
-                        return data;
-                    });
-                    setEvaluacion(updatedContent);
-                    break;
-                case 'trayectoria':
-                    updatedContent = trayectorialaboral.map(data => {
-                        if(data.id === dataObject.id){
-                            return {...data, ...dataObject}
-                        }
-                        return data;
-                    });
-                    setTrayectoriaLaboral(updatedContent);
-                    break;
-                // case 'proyeccion-puesto':
-                //     updatedContent = [response.data.data, ...location.state.empleado.]
+        if(localStorage.getItem('tipo_usuario') === 'editor'){
+            const response = await axios.post('http://localhost:5050/api/pendiente', {
+                data: JSON.stringify(dataObject),
+                id_usuario: parseInt(localStorage.getItem('id_usuario')),
+                empleado_cet: parseInt(localStorage.getItem('cet')),
+                tabla: editarView,
+                metodo: 'editar'
+            });
+            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+        }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
+            const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
+            if(response.data.editado){
+                let updatedContent;
+                switch(tipo){
+                    case 'upward-feedback':
+                        updatedContent = upwardfeedback.map(data => {
+                            if(data.id === dataObject.id){
+                                return {...data, ...dataObject}
+                            }
+                            return data;
+                        });
+                        setUpwardFeedback(updatedContent);
+                        break;
+                    case 'cliente-proveedor':
+                        updatedContent = clienteproveedor.map(data => {
+                            if(data.id === dataObject.id){
+                                return {...data, ...dataObject}
+                            }
+                            return data;
+                        });                    
+                        setClienteProveedor(updatedContent);
+                        break;
+                    case 'evaluacion':
+                        updatedContent = evaluacion.map(data => {
+                            if(data.id === dataObject.id){
+                                console.log(dataObject);
+                                return {...data, ...dataObject}
+                            }
+                            return data;
+                        });
+                        setEvaluacion(updatedContent);
+                        break;
+                    case 'trayectoria':
+                        updatedContent = trayectorialaboral.map(data => {
+                            if(data.id === dataObject.id){
+                                return {...data, ...dataObject}
+                            }
+                            return data;
+                        });
+                        setTrayectoriaLaboral(updatedContent);
+                        break;
+                    // case 'proyeccion-puesto':
+                    //     updatedContent = [response.data.data, ...location.state.empleado.]
+                }
             }
-
         }
         setEditModal(false);
     };
@@ -211,7 +244,7 @@ function Editar(){
         setEvaluacion(response.data.evaluacion);
     };
     useEffect(() => {
-        if(location.state === null){
+        if(location.state === null || localStorage.getItem('tipo_usuario') === 'observador' || location.state.cet.id === localStorage.getItem('cet')){
             navigate('/busqueda');
         }
 
