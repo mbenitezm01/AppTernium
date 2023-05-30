@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useTable, useRowSelect } from 'react-table'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import Btn from '../../Btn'
 import { AiFillCheckCircle } from 'react-icons/ai'
@@ -105,6 +105,7 @@ function ListaUsuarios() {
 
     return (
         <div className="listaUsuarios-bg">
+            <Link to={"/usuarios/pendientes"}  style={{width:'200px', margin:'0'}}> <Btn text={'Notificaciones'} icon={'search'}/> </Link>
             <table {...getTableProps()}>
                 <thead>
                     {// Loop over the header rows

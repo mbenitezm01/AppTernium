@@ -1,0 +1,42 @@
+.accordion{
+    padding: 2px;
+    width: 100%;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+}
+
+.accordion:last-child{
+    border-bottom: 1px solid #666;
+}
+
+.title-accordion{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.body-accordion{
+    text-align: left;
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 15px;
+}
+.string {
+    color: green;
+}
+.number {
+    color: darkorange;
+}
+.boolean {
+    color: blue;
+}
+.null {
+    color: magenta;
+}
+.key {
+    color: red;
+}

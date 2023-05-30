@@ -13,6 +13,7 @@ import Login from './components/pages/Login/Login'
 import EditarUsuario from './components/pages/Usuarios/editarUsuario/EditarUsuario';
 import CrearUsuario from './components/pages/Usuarios/editarUsuario/CrearUsuario';
 import EditarPassword from './components/pages/Usuarios/editarUsuario/EditarPassword';
+import Pendiente from './components/pages/Usuarios/pendiente/Pendiente';
 
 //Imports de los componentes de las paginas
 
@@ -37,7 +38,7 @@ function App() {
           <Route><Route path='/usuarios' element={<Layout><Usuarios /></Layout>} /></Route>
           <Route><Route path='/comparacion' element={<Layout><Comparacion /></Layout>} /></Route>
           <Route><Route path='/login' element={<Login />} /></Route>
-
+          <Route><Route path='/usuarios/pendientes' element={<Layout><Pendiente /></Layout>}/></Route>
           <Route><Route path='/editar-usuario/:id' element={<EditarUsuario />} /></Route>
           <Route><Route path='/crear-usuario' element={<CrearUsuario />} /></Route>
           <Route><Route path='/editar-usuario/password/:id' element={<EditarPassword />} /></Route>
