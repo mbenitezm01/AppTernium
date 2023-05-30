@@ -3,7 +3,9 @@
     height: 71px;
     width: 100%;
     display: flex;
+    justify-content: space-between;
 }
+
 
 img.logo {
     height: 59px;
