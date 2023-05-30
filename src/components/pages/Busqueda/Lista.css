@@ -174,6 +174,21 @@
   transform: translateY(0);
 }
 
-.Btn button{
-  background-color: aqua;
+.BtnCompOff{
+  color: lightgray;
+  margin: 5px;
+  margin-left: 10px;
+  
 }
+
+.BtnCompOn{
+  margin: 5px;  
+  margin-left: 10px;
+
+}
+
+.logoComp{
+  font-size: 30px;
+  margin-left: 5px;
+}
+

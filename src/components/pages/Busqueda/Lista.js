@@ -6,9 +6,11 @@ import { AiFillCheckCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import Btn from '../../Btn';
 import { Link } from "react-router-dom"
+import { MdOutlineCompareArrows } from 'react-icons/md'
 
 //Importacion de estilos
 import './Lista.css'
+
 
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -341,8 +343,18 @@ function Lista({ data, filtersState, handleSubmit }) {
                     </select>
                 
                     {selectedFlatRows.length === 2?
-                        <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
-                        <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
+                        <button className='BtnCompOn' onClick={onCompareClick}>
+                            {'Comparacion'}
+                            <MdOutlineCompareArrows className='logoComp'/>
+                        </button>
+                        :
+                        <button className='BtnCompOff'>
+                            {'Comparacion'}
+                            <MdOutlineCompareArrows className='logoComp'/>
+                        </button>
+
+                        //<Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
+                        //<Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
                     }
                 </div>
             </div>
