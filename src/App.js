@@ -43,7 +43,7 @@ function App() {
           <Route><Route path='/editar-usuario/:id' element={<Layout><EditarUsuario /></Layout>} /></Route>
           <Route><Route path='/crear-usuario' element={<Layout><CrearUsuario /></Layout>} /></Route>
           <Route><Route path='/editar-usuario/password/:id' element={<Layout><EditarPassword /></Layout>} /></Route>
-          <Route><Route path='/cargar' element={<Layout></Layout><Cargar /><Layout/>} /></Route>
+          <Route><Route path='/cargar' element={<Layout><Cargar /></Layout>} /></Route>
         </Routes>
       </BrowserRouter>
     </div>
