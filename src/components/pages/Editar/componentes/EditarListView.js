@@ -7,8 +7,8 @@ export default function EditarListView({ renderedItems, openModal }){
             <div className="agregar">
                 <button className='agregar-btn' onClick={openModal}><p>Agregar</p><HiOutlineDocumentAdd /></button>
             </div>
-            <div className={renderedItems.length === 0 ? 'edit-list-no' : 'edit-list'}>
-                {renderedItems.length === 0 ? <NoCard /> : renderedItems}
+            <div className={renderedItems === null ? 'edit-list-no' : 'edit-list'}>
+                {renderedItems === null ? <NoCard /> : renderedItems}
             </div>
         </div>
         

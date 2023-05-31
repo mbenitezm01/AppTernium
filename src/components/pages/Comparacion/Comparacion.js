@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import axios from 'axios';
 import { FichaComparacion } from './FichaComparacion';
@@ -7,6 +7,7 @@ import './Comparacion.css'
 function Comparacion(){
     const [params, setParams] = useSearchParams();
     const [info, setInfo] = useState([]);
+    const navigate = useNavigate();
 
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
@@ -20,13 +21,18 @@ function Comparacion(){
 
     // useEffect
     useEffect(() => {
+        if(localStorage.length === 0) navigate('/login');
         fetchInfoEmpleado();
     }, []);
 
     return(
         <div className='comparacion'>
-            {info.length > 0 ? <FichaComparacion info={info[0]}/> : null}
-            {info.length > 0 ? <FichaComparacion info={info[1]}/> : null}
+            <div className='left'>
+                {info.length > 0 ? <FichaComparacion info={info[0]}/> : null}
+            </div>
+            <div className='right'>
+                {info.length > 0 ? <FichaComparacion info={info[1]}/> : null}
+            </div>
         </div>
     )
 }

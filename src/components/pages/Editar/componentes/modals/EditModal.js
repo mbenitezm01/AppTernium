@@ -1,21 +1,28 @@
-import { useState, useCallback } from "react";
+import { useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 
-export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, cet }) {
-    // No todos se usan al mismo tiempo, se usan para crear y modificar los valores de cada
-    // una de las evaluaciones, comentarios, puestos de proyeccion, entre otros.
-    const [comentario, setComentario] = useState('');
-    const [nota, setNota] = useState(0);
-    const [potencial, setPotencial] = useState('AP (MT)');
-    const [curva, setCurva] = useState('TX DIMA CI');
-    const [puesto, setPuesto] = useState('');
-    const [fecha, setFecha] = useState('');
 
-    // Estas variables son responsables de crear los campos a llenar en el modal.
+export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }) {
+    let tempComentario;
+    if(tipo === 'evaluacion'){
+        tempComentario = data[0].comentario
+    }else if(tipo === 'trayectoria'){
+        tempComentario = data[0].empresa;
+        console.log(data[0].empresa);
+    }else{
+        tempComentario = data[0].comentarios;
+    }
+    let tempNota = tipo === 'evaluacion' ? data[0].performance : data[0].nota;
+    console.log(data[0].potencial);
+    const [comentario, setComentario] = useState(tempComentario);
+    const [nota, setNota] = useState(tempNota);
+    const [potencial, setPotencial] = useState(data[0].potencial);
+    const [curva, setCurva] = useState(data[0].curva);
+    const [puesto, setPuesto] = useState(data[0].puesto);
+    const [fecha, setFecha] = useState(data[0].fecha.slice(0, 10));
+
     let content = null;
     let name = null;
-
-    // Aqui se evalua que se debe de desplegar en el Modal.
     if(tipo === 'upward-feedback'){
         name = 'Upward Feedback';
         content = (
@@ -85,6 +92,7 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 <div>
                     <span style={{marginRight: '10px'}}>Curva</span>
                     <select
+                        value={curva}
                         name="Curva"
                         className="curva"
                         onChange={(e) => setCurva(e.target.value)}
@@ -96,6 +104,7 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 <div>
                     <span style={{marginRight: '10px'}}>Potencial</span>
                     <select 
+                        value={potencial}
                         name="Curva"
                         className="curva"
                         onChange={(e) => setPotencial(e.target.value)}
@@ -107,7 +116,7 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 </div>
             </>
         )
-        
+        console.log(potencial, curva);
     }else if (tipo === 'trayectoria'){
         name = 'Trayectoria Laboral';
         content = (
@@ -140,15 +149,14 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(comentario, nota);
         if(tipo === 'upward-feedback'){
             if(comentario === '' && nota === 0){
                 alert('Debe de agregar los datos de todos los campos');
             }else{
                 handleSubmitCreate(tipo, {
-                    empleado_cet: cet,
+                    id: data[0].id,
                     nota: nota,
-                    comentario: comentario
+                    comentarios: comentario
                 });
             }
         }else if(tipo === 'cliente-proveedor'){
@@ -156,9 +164,9 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 alert('Debe de agregar los datos de todos los campos');
             }else{
                 handleSubmitCreate(tipo, {
-                    empleado_cet: cet,
+                    id: data[0].id,
                     nota: nota,
-                    comentario: comentario
+                    comentarios: comentario
                 });
             }
         }else if(tipo === 'evaluacion'){
@@ -166,7 +174,7 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 alert('Debe de agregar los datos de todos los campos');
             }else{
                 handleSubmitCreate(tipo, {
-                    empleado_cet: cet,
+                    id: data[0].id,
                     performance: nota,
                     potencial: potencial,
                     curva: curva,
@@ -177,8 +185,8 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
             if(comentario === '' && puesto === '' && fecha === ''){
                 alert('Debe de agregar los datos de todos los campos')
             }else{
-                handleSubmitCreate(tipo, {
-                    empleado_cet: cet,
+                handleSubmitCreate(tipo,  {
+                    id: data[0].id,
                     fecha: fecha,
                     empresa: comentario,
                     puesto: puesto
@@ -191,8 +199,8 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
     };
 
     return (
-        <div className="modal">
-            <form className="create-modal" onSubmit={handleSubmit}>
+        <div className="modal" onSubmit={handleSubmit}>
+            <form className="create-modal">
                 <div className="create-modal-header">
                     <p>{name}</p>
                     <GrClose className='close-modal-icon' onClick={closeModal} style={{cursor: 'pointer'}}/>
