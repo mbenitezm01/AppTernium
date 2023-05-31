@@ -1,5 +1,6 @@
 .accordion{
-    padding: 2px;
+    position: relative;
+    padding: 10px;
     width: 100%;
     border-top: 1px solid #666;
     border-left: 1px solid #666;
@@ -16,27 +17,22 @@
     justify-content: space-between;
 }
 
-.body-accordion{
+.btns-accordion{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.txt-align-left{
     text-align: left;
 }
 
-pre {
-    outline: 1px solid #ccc;
+.body-accordion{
+    border: 1px solid gray;
+    text-align: left;
     padding: 5px;
-    margin: 15px;
 }
-.string {
-    color: green;
-}
-.number {
-    color: darkorange;
-}
-.boolean {
-    color: blue;
-}
-.null {
-    color: magenta;
-}
-.key {
-    color: red;
+
+.btn-submit-accordion{
+    font-weight: 500;
+    font-size: medium;
 }
