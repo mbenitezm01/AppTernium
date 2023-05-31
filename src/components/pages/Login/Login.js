@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css"
 
@@ -11,6 +11,12 @@ const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        if(localStorage.length > 0){
+            navigate('/busqueda');
+        }
+    }, []);
   
     const handleEmailChange = (e) => {
       setEmail(e.target.value);

@@ -1,4 +1,4 @@
-//import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import Sidebar from './Sidebar.js'
@@ -9,6 +9,7 @@ import Lista from './Lista.js'
 import './Busqueda.css'
 
 function Busqueda(){
+    const navigate = useNavigate();
 
     const [data, setData] = useState([]);
 
@@ -39,6 +40,9 @@ function Busqueda(){
     }, []);
     
     useEffect(() => {
+        if(localStorage.length === 0){
+            navigate('/login');
+        }
         fetchList();
     }, [fetchList]);
     

@@ -25,7 +25,8 @@ function ListaUsuarios() {
     }, []);
 
     useEffect(() => {
-        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
+        if(localStorage.length === 0) navigate('/login');
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
         fetchList()
     }, [fetchList])
 

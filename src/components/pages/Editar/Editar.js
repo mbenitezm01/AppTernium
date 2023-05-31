@@ -122,7 +122,10 @@ function Editar(){
                     //     updatedContent = [response.data.data, ...location.state.empleado.]
                 }
             }
-        }        
+        }else if(localStorage.getItem('tipo_usuario') === 'observador'){
+            alert('Usted es solo observador')
+            return;
+        }    
         setModal(false);
     };
 
@@ -170,6 +173,8 @@ function Editar(){
                         setEvaluacion(updatedContent);
                 }
             }
+        }else if(localStorage.getItem('tipo_usuario') === 'observador'){
+            alert('Usted es solo observador')
         }
         
     };
@@ -231,6 +236,8 @@ function Editar(){
                     //     updatedContent = [response.data.data, ...location.state.empleado.]
                 }
             }
+        }else if(localStorage.getItem('tipo_usuario') === 'observador'){
+            alert('Usted es solo observador')
         }
         setEditModal(false);
     };
@@ -244,7 +251,7 @@ function Editar(){
         setEvaluacion(response.data.evaluacion);
     };
     useEffect(() => {
-        if(location.state === null || localStorage.getItem('tipo_usuario') === 'observador' || location.state.cet.id === localStorage.getItem('cet')){
+        if(location.state === null || location.state.cet.id === localStorage.getItem('cet')){
             navigate('/busqueda');
         }
 

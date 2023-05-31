@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button"
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom"
 import Btn from './Btn'
 
 //Importacion de estilos
@@ -10,16 +9,30 @@ import './sharedStyles/Header.css'
 import Logo from '../media/images/logo.png'
 
 function Header(){
+    const navigate = useNavigate();
+    const handleLogOut = async () => {
+        try{
+            const response = await axios.post('http://localhost:5050/auth/logout', {
+                refreshToken: sessionStorage.getItem('refreshToken')
+            });
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate('/login');
+        }catch{
+            alert('Error en el sistema, volver a intentar');
+        }
+        
+    };
     return(
         <div>
             <div className="header-bg">
                 <div>
                     <img src={Logo} className="logo"/>
                     <Link to={"/busqueda"}  style={{width:'200px', margin:'0'}}> <Btn text={'Busqueda'} icon={'search'}/> </Link>
-                    <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link>
+                    {localStorage.getItem('tipo_usuario') === 'administrador' ? <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link> : null}
                 </div>
                 <div>
-                    <Link to={"/login"}  style={{width:'200px', margin:'0'}}> <Btn text={'Log out'} icon={'logout'}/> </Link>
+                    <Btn style={{width:'200px', margin:'0'}} text={'Log out'} icon={'logout'} onClick={handleLogOut}/>
                 </div>
 
             </div>

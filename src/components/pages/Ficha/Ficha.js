@@ -60,6 +60,7 @@ function Ficha(){
 
     // useEffect
     useEffect(() => {
+        if(localStorage.length === 0) navigate('/login');
         fetchInfoEmpleado();
     }, []);
 
