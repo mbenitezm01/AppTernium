@@ -69,7 +69,7 @@ function Accordion() {
                 return data.id !== id_pendiente
             });
             setItems(updatedContent);
-            alert('Se ha editado el comentario');
+            alert('Se ha borrado el comentario pendiente');
         }else{
             alert('Error en el sistema, volver a intentar');
         }
