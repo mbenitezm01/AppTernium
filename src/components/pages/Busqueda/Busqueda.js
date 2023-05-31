@@ -23,6 +23,7 @@ function Busqueda(){
         perfMax: undefined,
         est3: '',
         est4: '',
+        est5: '',
         jefe: '',
         puesto: '',
         key: false,

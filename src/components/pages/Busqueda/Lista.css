@@ -108,12 +108,12 @@
 }
 
 .pagination input[type="number"] {
-  margin-left: 10px;
+  margin: 10px;
   padding: 5px;
 }
 
 .pagination select[type="paginationSize"] {
-  margin-left: 10px;
+  margin: 10px;
   padding: 5px;
 }
 
@@ -173,3 +173,22 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.BtnCompOff{
+  color: lightgray;
+  margin: 5px;
+  margin-left: 10px;
+  
+}
+
+.BtnCompOn{
+  margin: 5px;  
+  margin-left: 10px;
+
+}
+
+.logoComp{
+  font-size: 30px;
+  margin-left: 5px;
+}
+
