@@ -8,6 +8,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
 import { IoSearchSharp } from 'react-icons/io5'
 import { HiUsers } from 'react-icons/hi'
+import { ImUpload3 } from 'react-icons/im'
 
 
 //Importacion de estilo
@@ -20,7 +21,8 @@ const components = {
     return: IoMdArrowRoundBack,
     logout: FiLogOut,
     search: IoSearchSharp,
-    users: HiUsers
+    users: HiUsers,
+    upload: ImUpload3,
 };
 
 function btnIcon(icon) {

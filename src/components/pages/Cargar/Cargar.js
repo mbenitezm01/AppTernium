@@ -28,8 +28,8 @@ const Cargar = () => {
     }
 
     const handleClick = async () => {
-        //console.log(state)
-        const response = await axios.post(`http://localhost:5050/api/agregar-empleados`, state);
+        console.log(selectedCategory)
+        const response = await axios.post(`http://localhost:5050/api/agregar-${selectedCategory}`, state);
         console.log(response.data);
         alert(response.data.mensaje)
 
@@ -57,20 +57,20 @@ const Cargar = () => {
                         Evaluaciones
                     </li>
                     <li
-                        className={selectedCategory === 'upward feedback' ? 'active' : ''}
-                        onClick={() => handleCategoryChange('upward feedback')}
+                        className={selectedCategory === 'upward-feedback' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('upward-feedback')}
                     >
                         Upward Feedback
                     </li>
                     <li
-                        className={selectedCategory === 'cliente proveedor' ? 'active' : ''}
-                        onClick={() => handleCategoryChange('cliente proveedor')}
+                        className={selectedCategory === 'cliente-proveedor' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('cliente-proveedor')}
                     >
                         Cliente Proveedor
                     </li>
                     <li
-                        className={selectedCategory === 'trayectoria laboral' ? 'active' : ''}
-                        onClick={() => handleCategoryChange('trayectoria laboral')}
+                        className={selectedCategory === 'trayectoria-laboral' ? 'active' : ''}
+                        onClick={() => handleCategoryChange('trayectoria-laboral')}
                     >
                         Trayectoria Laboral
                     </li>

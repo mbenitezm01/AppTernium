@@ -16,7 +16,7 @@ function Header(){
             <img src={Logo} className="logo"/>
                 <Link to={"/busqueda"}  style={{width:'200px', margin:'0'}}> <Btn text={'Busqueda'} icon={'search'}/> </Link>
                 <Link to={"/usuarios"}  style={{width:'200px', margin:'0'}}> <Btn text={'Usuarios'} icon={'users'}/> </Link>
-
+                <Link to={"/cargar"}  style={{width:'250px', margin:'0'}}> <Btn text={'Cargar Archivo'} icon={'upload'}/> </Link>
             </div>
         </div>
     )
