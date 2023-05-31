@@ -25,8 +25,12 @@ function Comparacion(){
 
     return(
         <div className='comparacion'>
-            {info.length > 0 ? <FichaComparacion info={info[0]}/> : null}
-            {info.length > 0 ? <FichaComparacion info={info[1]}/> : null}
+            <div className='left'>
+                {info.length > 0 ? <FichaComparacion info={info[0]}/> : null}
+            </div>
+            <div className='right'>
+                {info.length > 0 ? <FichaComparacion info={info[1]}/> : null}
+            </div>
         </div>
     )
 }
