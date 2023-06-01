@@ -1,5 +1,5 @@
 //import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
 //Importacion de estilos
@@ -12,12 +12,16 @@ function Sidebar({ filterState, setFilterState, handleSubmit, data }) {
     const [est5Unique, setEst5Unique] = useState();
     const [puestoUnique, setPuestoUnique] = useState();
 
+    const [clearCalled, setClearCalled] = useState(false);
+
     useEffect(() => {
         setEst3Unique(Array.from(new Set(data.map(({ estructura_3 }) => estructura_3))))
         setEst4Unique(Array.from(new Set(data.map(({ estructura_4 }) => estructura_4))))
         setEst5Unique(Array.from(new Set(data.map(({ estructura_5 }) => estructura_5))))
         setPuestoUnique(Array.from(new Set(data.map(({ puesto }) => puesto))))
     }, [data]);
+
+    const formRef = useRef(null);
 
     const handleChange = (e) => {
         setFilterState({ ...filterState, [e.target.name]: e.target.value });
@@ -58,6 +62,25 @@ function Sidebar({ filterState, setFilterState, handleSubmit, data }) {
         handleSubmit.current();
     }
 
+    useEffect(() => {
+        if(clearCalled){
+            handleSubmit.current();
+            setClearCalled(false);
+        }
+    }, [filterState])
+
+    const handleClear = () => {
+        formRef.current.reset();
+
+        const clearedInputValues = Object.fromEntries(
+            Object.keys(filterState).map((key) => [key, ''])
+          );
+        setClearCalled(true);
+        setFilterState(clearedInputValues);
+        
+        //handleSubmit.current();
+    }
+
     const returnUnique = (varName) => {
         let options = null;
         if (varName !== undefined && varName.length > 0) {
@@ -77,7 +100,7 @@ function Sidebar({ filterState, setFilterState, handleSubmit, data }) {
                 Filtros
             </div>
             <div className='filter-box'>
-                <Form>
+                <Form ref={formRef}>
                     <Form.Group className='filters'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control name='name' placeholder='Buscar' onChange={handleChange} autocomplete='off'/>
@@ -157,13 +180,16 @@ function Sidebar({ filterState, setFilterState, handleSubmit, data }) {
                         <Form.Check name='key' onChange={handleChangeCheck} autocomplete='off'/>
                     </Form.Group>
 
-
-                    <Button variant='primary' onClick={handleClick} className='submit-btn'>
-                        Submit
-                    </Button>
                 </Form>
+            </div>
 
-
+            <div className='buttons'>
+            <Button variant='primary' onClick={handleClick} className='submit-btn'>
+                        Buscar
+            </Button>
+            <Button variant='primary' onClick={handleClear} className='clear-btn'>
+                        Eliminar filtros
+            </Button>
             </div>
         </div>
     )

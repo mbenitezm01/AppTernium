@@ -1,3 +1,4 @@
 .view-container {
+    overflow: hidden;
     display: flex;
 }

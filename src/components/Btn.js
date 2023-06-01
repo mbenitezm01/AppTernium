@@ -41,7 +41,7 @@ function btnIcon(icon) {
 
 const Btn = ({ text, icon, onClick, state }) => {
     return (
-        <button disabled={state} onClick={onClick}>
+        <button className='Btn' disabled={state} onClick={onClick}>
             {text}
             {btnIcon(icon)}
         </button>
