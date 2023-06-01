@@ -40,7 +40,8 @@
 
 .submit-btn {
     background-color: #007cb1 !important;
-    margin: 0;
+    margin-left: 0 !important;
+    margin-top: 30px;
     border: none;
 }
 
