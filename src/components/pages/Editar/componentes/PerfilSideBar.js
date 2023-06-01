@@ -13,7 +13,7 @@ export default function PerfilSideBar({ empleado, cantUpwardFeedback, cantClient
     return (
         <div className="perfil">
             <div className="perfil-header">
-                <FaUserCircle style={{fontSize: '60px'}}/>
+                <FaUserCircle className="perfil-foto"/>
                 <p>{empleado === null ? '' : empleado.nombre}</p>
             </div>
             <div className='perfil-body'>
