@@ -18,16 +18,16 @@ function Busqueda(){
     const [filterState, setFilterState] = useState({
         name: '',
         cet: '',
-        antMin: undefined,
-        antMax: undefined,
-        perfMin: undefined,
-        perfMax: undefined,
+        antMin: '',
+        antMax: '',
+        perfMin: '',
+        perfMax: '',
         est3: '',
         est4: '',
         est5: '',
         jefe: '',
         puesto: '',
-        key: false,
+        key: '',
     });
 
     

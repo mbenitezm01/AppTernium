@@ -225,6 +225,10 @@ function Lista({ data, filtersState, handleSubmit }) {
             value: filtersState.est4,
         },
         {
+            id: 'estructura_5',
+            value: filtersState.est5,
+        },
+        {
             id: 'puesto',
             value: filtersState.puesto,
         },
@@ -310,18 +314,20 @@ function Lista({ data, filtersState, handleSubmit }) {
                         {'>>'}
                     </button>{' '}
                     <span>
-                        Page{' '}
+                        Página{' '}
                         <strong>
                             {pageIndex + 1} of {pageOptions.length}
                         </strong>{' '}
                     </span>
                     <span>
-                        | Go to page:{' '}
+                        | Ir a página:{' '}
                     </span>{' '}
 
                     <input
                         type="number"
                         defaultValue={pageIndex + 1}
+                        min='1'
+                        max={pageOptions.length}
                         onChange={e => {
                             const page = e.target.value ? Number(e.target.value) - 1 : 0
                             gotoPage(page)
@@ -330,6 +336,7 @@ function Lista({ data, filtersState, handleSubmit }) {
                     />
                     <select
                         type="paginationSize"
+                        style={{fontSize:'0.8rem'}}
                         value={pageSize}
                         onChange={e => {
                             setPageSize(Number(e.target.value))
@@ -337,7 +344,7 @@ function Lista({ data, filtersState, handleSubmit }) {
                     >
                         {[10, 20, 30, 40, 50].map(pageSize => (
                             <option key={pageSize} value={pageSize}>
-                                Show {pageSize}
+                                Mostrar {pageSize}
                             </option>
                         ))}
                     </select>
