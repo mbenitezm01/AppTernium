@@ -35,7 +35,7 @@ function App() {
           <Route path='' element={<Navigate to="/login" replace={true} />}/>
           <Route><Route path='/busqueda' element={<Layout><Busqueda /></Layout>} /></Route>
           <Route><Route path='/ficha/:id' element={<Layout><Ficha /></Layout>} /></Route>
-          <Route><Route path='/ficha/:id/editar' element={<Layout><Editar /></Layout>} /></Route>
+          <Route><Route path='/ficha/:id/editar' element={<Editar />} /></Route>
           <Route><Route path='/usuarios' element={<Layout><Usuarios /></Layout>} /></Route>
           <Route><Route path='/comparacion' element={<Layout><Comparacion /></Layout>} /></Route>
           <Route><Route path='/login' element={<Login />} /></Route>
