@@ -9,6 +9,7 @@ import CardEvaluacion from './componentes/cards/CardEvaluacion';
 import CardTrayectoriaLaboral from './componentes/cards/CardTrayectoriaLaboral';
 import CreateModal from './componentes/modals/CreateModal';
 import EditModal from './componentes/modals/EditModal';
+import DeleteModal from './componentes/modals/BorrarModal';
 
 // function agregarComentario(tipo, comentario, nota){
 //     switch(tipo){
@@ -23,6 +24,7 @@ function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
     const [modal, setModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
     let content = null;
 
     const location = useLocation();
@@ -264,29 +266,63 @@ function Editar(){
         
     }, []);
 
+    const handleDeleteClick = (tipo, id) => {
+        switch(tipo){
+            case 'upward-feedback':
+                content = upwardfeedback.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'cliente-proveedor':
+                content = clienteproveedor.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'trayectoria':
+                content = trayectorialaboral.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'evaluacion':
+                content = evaluacion.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+        }
+        setDeleteModal(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setDeleteModal(false);
+    }
+
     let renderedItems = null;
     if(editarView === 'upward-feedback'){
         if(upwardfeedback !== null){
             renderedItems = upwardfeedback.map((data) => {
-                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){
         if(clienteproveedor !== null){
             renderedItems = clienteproveedor.map((data) => {
-                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if (editarView === 'evaluacion'){
         if(evaluacion !== null){
             renderedItems = evaluacion.map((data) => {
-                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'trayectoria'){
         if(trayectorialaboral !== null){
             renderedItems = trayectorialaboral.map(data => {
-                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'proyeccion-puesto'){
@@ -296,6 +332,7 @@ function Editar(){
     return (
         <div className='editar-ficha'>
             <PerfilSideBar 
+                cet={location.state.cet.id}
                 setEditarView={setEditarView} 
                 empleado={location.state.empleado.empleado} 
                 cantClienteProveedor={clienteproveedor !== null ? clienteproveedor.length : 0} 
@@ -307,6 +344,7 @@ function Editar(){
             <EditarListView renderedItems={renderedItems} tipo={editarView} openModal={handleOpenCreateModal}/>
             {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal} cet={location.state !== null ? location.state.cet.id : null}/> : null}
             {editModal ? <EditModal tipo={editarView} data={contentEdit} handleSubmitCreate={handleEdit} closeModal={handleCloseEditModal} /> : null}
+            {deleteModal ? <DeleteModal tipo={editarView} data={contentEdit} handleDelte={handleDelete} onClose={handleCloseDeleteModal}/> : null}
         </div>
     );
 };
