@@ -124,8 +124,7 @@
 }
 
 .submit-btn{
-    margin-top: 20px;
-    margin-left: 20px;
+    margin-top: 10px;
     color: white;
     background-color: #f30;
     width: 100px;
@@ -187,6 +186,7 @@
 .create-modal-footer{
     display: flex;
     align-items: left;
+    margin-left: 20px;
 }
 
 textarea{

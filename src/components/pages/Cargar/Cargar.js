@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { read, utils } from 'xlsx';
 
@@ -6,8 +7,16 @@ import './Cargar.css';
 
 const Cargar = () => {
     const [state, setState] = useState();
+    const navigate = useNavigate();
 
     const [selectedCategory, setSelectedCategory] = useState('empleados');
+
+    useEffect(() => {
+        if(sessionStorage.length === 0){
+            localStorage.clear();
+             navigate('/login');
+        }
+    }, []);
 
     const handleImport = ($event) => {
         const files = $event.target.files;

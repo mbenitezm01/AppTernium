@@ -41,7 +41,8 @@ function Busqueda(){
     }, []);
     
     useEffect(() => {
-        if(localStorage.length === 0){
+        if(sessionStorage.length === 0){
+            localStorage.clear();
             navigate('/login');
         }
         fetchList();

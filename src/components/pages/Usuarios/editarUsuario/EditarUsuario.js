@@ -25,7 +25,11 @@ function EditarUsuario(){
     }, []);
 
     useEffect(() => {
-        if(localStorage.length === 0) navigate('/login');
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        
         if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
         fetchInfoEmpleado()
     }, [fetchInfoEmpleado])
