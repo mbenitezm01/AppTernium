@@ -87,7 +87,7 @@ function Editar(){
 
 
         if(localStorage.getItem('tipo_usuario') === 'editor'){            
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: JSON.stringify(dataObject),
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -96,7 +96,7 @@ function Editar(){
             })
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
             console.log(response.data);
             if(response.data.creado){
                 let updatedContent = null;
@@ -137,7 +137,7 @@ function Editar(){
         console.log('Delete request');
         console.log(tipo, id)
         if(localStorage.getItem('tipo_usuario') === 'editor'){
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: `${id}`,
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -146,7 +146,7 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`);
             if(response.data.borrado){
                 let updatedContent;
                 switch(tipo){
@@ -182,7 +182,7 @@ function Editar(){
     const handleEdit = async (tipo, dataObject) => {
         console.log('Edit Request');
         if(localStorage.getItem('tipo_usuario') === 'editor'){
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: JSON.stringify(dataObject),
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -191,7 +191,7 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
+            const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
             if(response.data.editado){
                 let updatedContent;
                 switch(tipo){
@@ -244,7 +244,7 @@ function Editar(){
 
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response = await axios.get(`http://localhost:5050/api/info-empleado/${location.state.cet.id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${location.state.cet.id}`);
         setClienteProveedor(response.data.clienteproveedor);
         setTrayectoriaLaboral(response.data.trayectorialaboral);
         setUpwardFeedback(response.data.upwardfeedback);
