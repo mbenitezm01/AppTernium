@@ -54,16 +54,13 @@ function Ficha(){
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response = await axios.get(`http://localhost:5050/api/info-empleado/${cet.id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${cet.id}`);
         setInfo(response.data);
     };
 
     // useEffect
     useEffect(() => {
-        if(sessionStorage.length === 0) {
-            localStorage.clear();
-            navigate('/login');
-        }
+        if(localStorage.length === 0) navigate('/login');
         fetchInfoEmpleado();
     }, []);
 
