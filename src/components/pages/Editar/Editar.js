@@ -251,6 +251,11 @@ function Editar(){
         setEvaluacion(response.data.evaluacion);
     };
     useEffect(() => {
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        
         if(location.state === null || location.state.cet.id === localStorage.getItem('cet')){
             navigate('/busqueda');
         }
