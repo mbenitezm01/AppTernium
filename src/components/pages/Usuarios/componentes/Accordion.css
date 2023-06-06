@@ -33,6 +33,7 @@
 }
 
 .btn-submit-accordion{
+    border: 1px solid black;
     font-weight: 500;
     font-size: medium;
 }

@@ -48,7 +48,7 @@ function Accordion() {
                 handleDeletePendiente(id_pendiente);
             }
         }catch{
-            alert('Error en el sistema, volver a intentar');
+            alert('Volver a intentar');
         }
     };
 
@@ -57,21 +57,27 @@ function Accordion() {
         if(response.data.editado){
             handleDeletePendiente(id_pendiente);
         }else{
-            alert('Error en el sistema, volver a intentar');
+            alert('Volver a intentar');
         }
     }
 
     const handleDeletePendiente = async (id_pendiente) => {
-        const res = await axios.delete(`http://localhost:5050/api/pendiente/${id_pendiente}`);
-        if(res.data.borrado){
+        const response = await axios.delete(`http://localhost:5050/api/pendiente/${id_pendiente}`);
+        if(response.data.borrado){
             let updatedContent = items.filter(data => {
                 return data.id !== id_pendiente
             });
             setItems(updatedContent);
             alert('Se ha borrado el comentario pendiente');
         }else{
-            alert('Error en el sistema, volver a intentar');
+            alert('Volver a intentar');
         }
+    };
+
+    const handleFetchComentario = async (tipo, id) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`);
+        console.log(response.data);
+        return response.data;
     };
 
     const handleClickSubmit =  (id_pendiente, tipo, dataObject, metodo) => {
@@ -87,22 +93,73 @@ function Accordion() {
     }
 
     const content = items.map((item, index) => {
-        console.log(item);
         const json = JSON.parse(item.data);
+        let temp = null;
+        if(item.metodo !== 'crear'){
+            temp = json.id !== undefined ? handleFetchComentario(item.tabla, json.id) : handleFetchComentario(item.tabla, json);
+        }
+        console.log(temp);
         let contentTemp = null;
         if(item.metodo === 'borrar'){
-            contentTemp = (
+            if(item.tabla === 'upward-feedback' || item.tabla === 'cliente-proveedor'){
+                contentTemp = (
                 <div>
-                <p className='txt-align-left'>{item.tabla}</p>
-                <div className='body-accordion'>
-                    <p>Id del comentario a borrar: {item.data}</p>
-                </div>
+                    <p className='txt-align-left'>{item.tabla === 'upward-feedback' ? 'Comentario a borrar de tabla: Upward Feedback' : 'Comentario a borrar de tabla: Cliente Proveedor'}</p>
+                    <div className='body-accordion'>
+                        <p>Nota: {temp.nota}</p>
+                        <p>Comentario: {temp.comentarios}</p>
+                    </div>
                     <div className='btns-accordion'>
-                        <button onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
-                        <button onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
                     </div>
                 </div>
-            )
+                )
+            }else if(item.tabla === 'evaluacion'){
+                contentTemp = (
+                <div >
+                    <p className='txt-align-left'>Comentario a borrar de tabla: Evaluacion</p>
+                    <div className='body-accordion'>
+                        <p>Performance: {temp.performance}</p>
+                        <p>Curva: {temp.curva}</p>
+                        <p>Potencial: {temp.potencial}</p>
+                        <p>Comentario: {temp.comentario}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }else if(item.tabla === 'trayectoria'){
+                contentTemp = (
+                <div>
+                    <p className='txt-align-left'>Comentario a borrar de tabla: Trayectoria Laboral</p>
+                    <div className='body-accordion'>
+                        <p>Cet: {temp.empleado_cet}</p>
+                        <p>Fecha: {temp.fecha}</p>
+                        <p>Empresa: {temp.empresa}</p>
+                        <p>Puesto: {temp.puesto}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }
+            // contentTemp = (
+            //     <div>
+            //         <div className='body-accordion'>
+            //             <p>Id del comentario a borrar: {item.data}</p>
+            //             <p></p>
+            //         </div>
+            //         <div className='btns-accordion'>
+            //             <button onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
+            //             <button onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+            //         </div>
+            //     </div>
+            // )
         }else{
             if(item.tabla === 'upward-feedback' || item.tabla === 'cliente-proveedor'){
                 contentTemp = (
@@ -113,8 +170,8 @@ function Accordion() {
                         <p>Comentario: {json.comentarios}</p>
                     </div>
                     <div className='btns-accordion'>
-                        <button onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
-                        <button onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
                     </div>
                 </div>
                 )
@@ -129,7 +186,7 @@ function Accordion() {
                         <p>Comentario: {json.comentario}</p>
                     </div>
                     <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
                         <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
                     </div>
                 </div>
@@ -145,8 +202,8 @@ function Accordion() {
                         <p>Puesto: {json.puesto}</p>
                     </div>
                     <div className='btns-accordion'>
-                        <button onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
-                        <button onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
                     </div>
                 </div>
                 )
@@ -154,26 +211,20 @@ function Accordion() {
         }
         
         return (
-            <div key={item.data} className='accordion'>
+            <div key={index} className='accordion'>
                 <div className='title-accordion'>
-                <div style={{ display: 'flex' }}>
-                    {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
-                    {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
-                    {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
-                    <p>{item.nombre}</p>
+                    <div style={{ display: 'flex', marginBottom: '10px'}}>
+                        {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
+                        {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
+                        {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
+                        <p>Editor: {item.nombre}</p>
+                    </div>
                 </div>
-                <button className='btn-accordion' onClick={() =>handleClick(index)}><AiOutlinePlus /></button>
-                </div>
-                {/*index === activeIndex && <div className='p-accordion'><pre
-                    dangerouslySetInnerHTML={{
-                        __html: syntaxHighlight(JSON.stringify(JSON.parse(item.data), undefined, 4))
-                    }}
-                /></div>*/}
-                {/*index === activeIndex && <p className='p-accordion'>{item.data}</p>*/}
-                {index === activeIndex && contentTemp.props.children}
+                {contentTemp.props.children}
             </div>
         );
 });
+
 return (
     <div>
         {content}
