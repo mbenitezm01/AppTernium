@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { AiOutlinePlus, AiOutlineDelete, AiOutlineEdit, AiOutlineCloudUpload } from 'react-icons/ai';
-import { syntaxHighlight } from "./utils/syntaxHighlighting";
 import axios from 'axios';
 import './Accordion.css';
 
