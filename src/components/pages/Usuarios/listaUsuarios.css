@@ -1,15 +1,29 @@
 .listaUsuarios-bg {
-    width: 100vw;
-    height: 10%;
+    max-width: 85%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.listaUsuarios-bg{
-    border: 1px solid black;
-    width: 100%;
-
-
+.usuarios-fondo{
+    padding-top: 50px;
+    background-color: #f1f1f1;
+    height: 100vh;
 }
 
+
+.button-notificaciones {
+    display: block;
+    margin-bottom: 20px;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.logo-notificaciones{
+    margin-left: 7px;
+    font-size: 20px;
+}
 
 .listaUsuarios-bg table{
     width: 100%;

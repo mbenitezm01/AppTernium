@@ -5,6 +5,8 @@ import axios from 'axios'
 import Btn from '../../Btn'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import './Usuarios.css'
+import { IoSearchSharp } from 'react-icons/io5'
+
 
 //Importacion de estilos
 import './listaUsuarios.css'
@@ -17,6 +19,10 @@ function ListaUsuarios() {
     const [isLoading, setLoading] = useState(true)
 
     const navigate = useNavigate()
+
+    const onNotificacionClick = () => {
+        navigate("/usuarios/pendientes")
+    }
 
     const fetchList = useCallback(async () => {
         const response = await axios.get(`http://localhost:5050/api/usuarios`);
@@ -109,8 +115,12 @@ function ListaUsuarios() {
     }
 
     return (
+        <div className="usuarios-fondo">
         <div className="listaUsuarios-bg">
-            <Link to={"/usuarios/pendientes"}  style={{width:'200px', margin:'0'}}> <Btn text={'Notificaciones'} icon={'search'}/> </Link>
+            <button className='button-notificaciones' onClick={onNotificacionClick}>
+            {'Notificaciones'}
+            <IoSearchSharp className='logo-notificaciones'></IoSearchSharp>
+            </button>
             <table {...getTableProps()}>
                 <thead>
                     {// Loop over the header rows
@@ -120,7 +130,7 @@ function ListaUsuarios() {
                                 {// Loop over the headers in each row
                                     headerGroup.headers.map(column => (
                                         // Apply the header cell props
-                                        <th {...column.getHeaderProps()}>
+                                        <th  style={{textAlign: 'center'}} {...column.getHeaderProps()}>
                                             {// Render the header
                                                 column.render('Header')}
                                         </th>
@@ -141,7 +151,7 @@ function ListaUsuarios() {
                                         row.cells.map(cell => {
                                             // Apply the cell props
                                             return (
-                                                <td {...cell.getCellProps()}>
+                                                <td style={{textAlign: 'center'}} {...cell.getCellProps()}>
                                                     {// Render the cell contents
                                                         cell.render('Cell')}
                                                 </td>
@@ -153,6 +163,7 @@ function ListaUsuarios() {
                 </tbody>
             </table>
 
+        </div>
         </div>
 
     )

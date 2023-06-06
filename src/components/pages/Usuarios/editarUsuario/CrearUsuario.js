@@ -67,35 +67,37 @@ function CrearUsuario(){
     }
 
     return(
-        <div id="crear-usuario">
-            <div className= "header-buttons">
-                <button className="return-button" onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
-            </div>
-            <Table>
-                <tr>
-                    <td>CET</td>
-                    <td><input id="create-cet"></input></td>
-                </tr>
-                <tr>
-                    <td>Correo</td>
-                    <td><input id="create-email"></input></td>
-                </tr>
-                <tr>
-                    <td>Contraseña</td>
-                    <td><input id="create-password"></input></td>
-                </tr>
-                <tr>
-                    <td>Admin</td>
-                    <td><input type="checkbox" id="create-admin-toggle"></input></td>
-                </tr>
-                <tr>
-                    <td>Activo</td>
-                    <td><input type="checkbox" id="create-active-toggle" defaultChecked></input></td>
-                </tr>
-            </Table>
+        <div className="crear-usuario-fondo">
+            <div className="crear-usuario">
+                <div className= "header-buttons">
+                    <button className="return-button" onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+                </div>
+                <Table>
+                    <tr>
+                        <td>CET</td>
+                        <td><input id="create-cet"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Correo</td>
+                        <td><input id="create-email"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Contraseña</td>
+                        <td><input id="create-password"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Admin</td>
+                        <td><input type="checkbox" id="create-admin-toggle"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Activo</td>
+                        <td><input type="checkbox" id="create-active-toggle" defaultChecked></input></td>
+                    </tr>
+                </Table>
 
-            <button onClick={clickHandler}>Crear Usuario <BsArrowBarUp/></button>
-            
+                <button onClick={clickHandler}>Crear Usuario <BsArrowBarUp/></button>
+                
+            </div>
         </div>
     )
 } export default CrearUsuario
