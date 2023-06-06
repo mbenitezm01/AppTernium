@@ -1,5 +1,5 @@
 .editar-ficha{
-    height: calc(100vh - 71px);
+    height: 100vh;
     display: flex;
 }
 
@@ -9,11 +9,17 @@
 }
 
 .perfil-header{
+    position: relative;
     color: white;
     font-weight: bold;
     height:30%;
     background-image: linear-gradient(70deg,#f30,#f90);
     overflow-wrap: break-word;
+}
+
+.perfil-foto{
+    font-size: 6rem;
+    margin-top: 10px;
 }
 
 .perfil-body{
@@ -50,7 +56,9 @@
 }
 
 .edit-card{
-    background-color: #c9c9c9;
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.4));
+    border-radius: 10px;
+    background-color: #e1e1e1;
     margin-bottom: 30px;
     width: 100%;
     display: flex;
@@ -73,11 +81,13 @@
     padding: 10px;
     font-size: large;
     /* background-image: linear-gradient(70deg,#538d1b,#0095a6); */
-    background-color: rgb(212, 212, 212);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-image: linear-gradient(70deg,#f30,#f90);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #f30;
+    color: rgb(255, 255, 255);
     font-weight: bold;
 }
 
@@ -86,6 +96,7 @@
     width: 30px;
     height: 30px;
     border-radius: 100%;
+    color: white;
 }
 
 .edit-card-btns:hover{
@@ -93,14 +104,20 @@
 }
 
 .agregar{
-    background-color: rgb(102, 102, 102);
+    background-color: #e1e1e1;
     padding: 10px;
     position: sticky;
     top: 0;
     display: flex;
-    justify-content: end;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
 }
 
+.agregar p{
+    font-size: large;
+    font-weight: bold;
+}
 .agregar-btn{
     all: unset;
     color: white;
@@ -110,6 +127,32 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 5px;
+    transition: background-color .5s ease, border-color .5s ease;    
+}
+
+.regresar-btn{
+    cursor: pointer;
+    font-size: x-large;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px;
+    border-radius: 100%;
+}
+
+.regresar-btn:hover{
+    background-color: #e1e1e1;
+    color: black;
+}
+
+.submit-btn{
+    margin-top: 10px;
+    color: white;
+    background-color: #f30;
+    width: 100px;
+    padding: 5px;
+    text-align: center;
     border-radius: 5px;
     transition: background-color .5s ease,border-color .5s ease;    
 }
@@ -149,9 +192,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    text-decoration: underline;
-    text-decoration-color: #f30;
-    background-color: rgb(102, 102, 102, 0.8);
+    color: white;
+    background-image: linear-gradient(70deg,#f30,#f90);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -162,6 +204,12 @@
     border-bottom: 1px solid gray;
     display: flex;
     flex-direction: column;
+}
+
+.create-modal-footer{
+    display: flex;
+    align-items: left;
+    margin-left: 20px;
 }
 
 textarea{
@@ -179,11 +227,31 @@ textarea{
     border-radius: 5px;
     padding: 5px;
     transition: background-color .5s ease,border-color .5s ease;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 .close-modal-icon:hover{
     background-color: #999;
+}
+
+.delete-modal{
+    width: 30%;
+    height: 10rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.delete-btns-modal{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.delete-btn-modal:hover{
+    cursor: pointer;
+    background-color: black;
+    color: white;
 }
 
 .no-card{

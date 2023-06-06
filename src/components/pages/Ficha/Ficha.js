@@ -60,6 +60,10 @@ function Ficha(){
 
     // useEffect
     useEffect(() => {
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
         fetchInfoEmpleado();
     }, []);
 

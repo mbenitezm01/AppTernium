@@ -11,7 +11,12 @@ function EditarPassword(){
 
     const navigate = useNavigate()
     useEffect(() => {
-        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
     }, []);
     
     const cet = useParams();

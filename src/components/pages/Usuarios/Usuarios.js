@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import Btn from '../../Btn'
 import { AiFillCheckCircle } from 'react-icons/ai'
+import './Usuarios.css'
 
 //Importacion de estilos
 import './listaUsuarios.css'
@@ -24,7 +25,11 @@ function ListaUsuarios() {
     }, []);
 
     useEffect(() => {
-        if(localStorage.getItem('tipo_usuario') === 'observador') navigate('/busqueda');
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
         fetchList()
     }, [fetchList])
 

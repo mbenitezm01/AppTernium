@@ -1,0 +1,66 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .category-tabs {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .category-tabs li {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .category-tabs li:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .category-tabs li.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+  }
+  
+  .file-upload-section {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  
+  .file-upload-section h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .file-upload-section input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  .file-upload-section button {
+    background-color: #007cb1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .file-upload-section button:hover {
+    background-color: #015aaa;
+  }
+  

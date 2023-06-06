@@ -1,4 +1,4 @@
-//import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import Sidebar from './Sidebar.js'
@@ -9,6 +9,7 @@ import Lista from './Lista.js'
 import './Busqueda.css'
 
 function Busqueda(){
+    const navigate = useNavigate();
 
     const [data, setData] = useState([]);
 
@@ -17,27 +18,33 @@ function Busqueda(){
     const [filterState, setFilterState] = useState({
         name: '',
         cet: '',
-        antMin: undefined,
-        antMax: undefined,
-        perfMin: undefined,
-        perfMax: undefined,
+        antMin: '',
+        antMax: '',
+        perfMin: '',
+        perfMax: '',
         est3: '',
         est4: '',
+        est5: '',
         jefe: '',
         puesto: '',
-        key: false,
+        key: '',
     });
 
     
     const fetchList = useCallback(async () => {
         console.log('Request');
-        const response = await axios.get(`http://localhost:5050/api/empleados`);
+        console.log(process.env)
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/empleados`);
         setData(response.data);
         
 
     }, []);
     
     useEffect(() => {
+        if(sessionStorage.length === 0){
+            localStorage.clear();
+            navigate('/login');
+        }
         fetchList();
     }, [fetchList]);
     

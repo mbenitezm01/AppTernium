@@ -6,9 +6,11 @@ import { AiFillCheckCircle } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import Btn from '../../Btn';
 import { Link } from "react-router-dom"
+import { MdOutlineCompareArrows } from 'react-icons/md'
 
 //Importacion de estilos
 import './Lista.css'
+
 
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -48,31 +50,6 @@ function Lista({ data, filtersState, handleSubmit }) {
 
         }
     }
-
-
-    /*
-    const data = React.useMemo(
-        () => [
-            { cet: 1, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 2, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 3, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 4, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 5, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 6, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 7, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 8, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 9, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 10, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 11, nombre: "Pedro", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 12, nombre: "Fernanda", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 13, nombre: "Sebastian", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 14, nombre: "Mike", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            { cet: 15, nombre: "Alfonso", est3: "blanco", est4: "negro", puesto: "manager", jefe: "tomas", antiguedad: "6", performance: "super", calif: "97", potencial: "SS", keyT: "Yes" },
-            
-        ],
-        []
-    )
-    */
 
     const columns = React.useMemo(
         () => [
@@ -116,8 +93,8 @@ function Lista({ data, filtersState, handleSubmit }) {
             },
             {
                 Header: 'Jefe',
-                accessor: 'jefe_cet',
-                filter: 'exactText',
+                accessor: 'jefe_nombre',
+                filter: 'includeString',
                 sortable: true,
             },
             {
@@ -232,7 +209,7 @@ function Lista({ data, filtersState, handleSubmit }) {
             value: filtersState.cet,
         },
         {
-            id: 'jefe_cet',
+            id: 'jefe_nombre',
             value: filtersState.jefe,
         },
         {
@@ -246,6 +223,10 @@ function Lista({ data, filtersState, handleSubmit }) {
         {
             id: 'estructura_4',
             value: filtersState.est4,
+        },
+        {
+            id: 'estructura_5',
+            value: filtersState.est5,
         },
         {
             id: 'puesto',
@@ -269,23 +250,6 @@ function Lista({ data, filtersState, handleSubmit }) {
     return (
         <>
             <div className="lista-bg">
-                {/* Te dice las paginas
-            <pre>
-                <code>
-                    {JSON.stringify(
-                        {
-                            pageIndex,
-                            pageSize,
-                            pageCount,
-                            canNextPage,
-                            canPreviousPage,
-                        },
-                        null,
-                        2
-                    )}
-                </code>
-            </pre>
-            */}
                 <div className='table-wrapper'>
                     <table {...getTableProps()} className='table-container table sticky'>
                         <thead>
@@ -350,18 +314,20 @@ function Lista({ data, filtersState, handleSubmit }) {
                         {'>>'}
                     </button>{' '}
                     <span>
-                        Page{' '}
+                        Página{' '}
                         <strong>
                             {pageIndex + 1} of {pageOptions.length}
                         </strong>{' '}
                     </span>
                     <span>
-                        | Go to page:{' '}
+                        | Ir a página:{' '}
                     </span>{' '}
 
                     <input
                         type="number"
                         defaultValue={pageIndex + 1}
+                        min='1'
+                        max={pageOptions.length}
                         onChange={e => {
                             const page = e.target.value ? Number(e.target.value) - 1 : 0
                             gotoPage(page)
@@ -370,6 +336,7 @@ function Lista({ data, filtersState, handleSubmit }) {
                     />
                     <select
                         type="paginationSize"
+                        style={{fontSize:'0.8rem'}}
                         value={pageSize}
                         onChange={e => {
                             setPageSize(Number(e.target.value))
@@ -377,32 +344,25 @@ function Lista({ data, filtersState, handleSubmit }) {
                     >
                         {[10, 20, 30, 40, 50].map(pageSize => (
                             <option key={pageSize} value={pageSize}>
-                                Show {pageSize}
+                                Mostrar {pageSize}
                             </option>
                         ))}
                     </select>
                 
                     {selectedFlatRows.length === 2?
-                        <Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
-                        <Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
+                        <button className='BtnCompOn' onClick={onCompareClick}>
+                            {'Comparacion'}
+                            <MdOutlineCompareArrows className='logoComp'/>
+                        </button>
+                        :
+                        <button className='BtnCompOff'>
+                            {'Comparacion'}
+                            <MdOutlineCompareArrows className='logoComp'/>
+                        </button>
+
+                        //<Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
+                        //<Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
                     }
-            
-                    {/*
-                        <pre>
-                            <code>
-                                {JSON.stringify(
-                                {
-                                    selectedRowIds: selectedRowIds,
-                                    'selectedFlatRows[].original': selectedFlatRows.map(
-                                        d => d.original
-                                        ),
-                                    },
-                                    null,
-                                    2
-                                )}
-                            </code>
-                        </pre>
-                    */}
                 </div>
             </div>
         </>

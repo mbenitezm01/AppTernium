@@ -9,6 +9,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io'
 import { FiLogOut } from 'react-icons/fi'
 import { IoSearchSharp } from 'react-icons/io5'
 import { HiUsers } from 'react-icons/hi'
+import { ImUpload3 } from 'react-icons/im'
 import { VscLock } from 'react-icons/vsc'
 import { AiOutlineMail } from 'react-icons/ai'
 
@@ -28,6 +29,7 @@ const components = {
     logout: FiLogOut,
     search: IoSearchSharp,
     users: HiUsers,
+    upload: ImUpload3,
     lock: VscLock,
     email: AiOutlineMail
 };
@@ -39,7 +41,7 @@ function btnIcon(icon) {
 
 const Btn = ({ text, icon, onClick, state }) => {
     return (
-        <button disabled={state} onClick={onClick}>
+        <button className='Btn' disabled={state} onClick={onClick}>
             {text}
             {btnIcon(icon)}
         </button>
