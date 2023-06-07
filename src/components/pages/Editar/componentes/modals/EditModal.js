@@ -31,7 +31,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
     const [cetJefe, setCetJefe] = useState(data[0].jefe_cet);
     const [antiguedad, setAntiguedad] = useState(data[0].antiguedad);
     const [keyTalent, setKeyTalent] = useState(data[0].key_talent);
-    const [fechaNacimiento, setFechaNacimiento] = useState(data[0].fecha_nacimiento.slice(0, 10));
+    const [fechaNacimiento, setFechaNacimiento] = useState(data[0].fecha_nacimiento !== undefined ? data[0].fecha_nacimiento.slice(0, 10): null);
     const [universidad, setUniversidad] = useState(data[0].universidad);
     const [direccion, setDireccion] = useState(data[0].direccion);
     const [pc, setPc] = useState(data[0].pc);
