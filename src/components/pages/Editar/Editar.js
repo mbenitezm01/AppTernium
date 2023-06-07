@@ -249,9 +249,9 @@ function Editar(){
                             return data;
                         });
                         setPuestoProyeccion(updatedContent);
-                    // case 'info-personal':
-                    //     setInfoPersonal(...infoPersonal, ...dataObject);
-                    //     break;
+                    case 'info-personal':
+                        setInfoPersonal(dataObject);
+                        break;
                 }
             }
         }else if(localStorage.getItem('tipo_usuario') === 'observador'){

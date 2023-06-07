@@ -18,7 +18,7 @@ function CardInfoPersonal({ data, tipo, handleClickEdit }) {
                 <p>Estructura 5: {data.estructura_5}</p>
                 <p>CET de Jefe: {data.jefe_cet}</p>
                 <p>Antiguedad: {data.antiguedad}</p>
-                <p>Key talent: {data.keyTalent ? <IoIosCheckmarkCircle style={{color: '#00FF00'}}/> : <IoIosCloseCircle style={{color: '#FF0000'}}/>}</p>
+                <p>Key talent: {data.key_talent ? <IoIosCheckmarkCircle style={{color: '#357a38'}}/> : <IoIosCloseCircle style={{color: '#b30000'}}/>}</p>
                 <p>Fecha de nacimiento: {data.fecha_nacimiento.slice(0, 10)}</p>
                 <p>Universidad: {data.universidad}</p>
                 <p>Direccion: {data.direccion}</p>
