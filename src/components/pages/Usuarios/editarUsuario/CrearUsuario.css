@@ -17,3 +17,24 @@
     background-color: #f1f1f1;
     height: 100vh;
 }
+
+.tabla-crear-usuario{
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+
+}
+
+.tabla-crear-usuario tr{
+    border-bottom: 1px solid lightgray;
+    height: 50px;
+}
+
+.tabla-crear-usuario .left{
+    text-align: left;
+    width: 80%;
+}
+
+.tabla-crear-usuario .right{
+    text-align: left;
+}
