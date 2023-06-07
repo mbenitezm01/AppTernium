@@ -11,6 +11,7 @@ import CreateModal from './componentes/modals/CreateModal';
 import EditModal from './componentes/modals/EditModal';
 import DeleteModal from './componentes/modals/BorrarModal';
 import CardPuestoProyeccion from './componentes/cards/CardPuestoProyeccion';
+import CardInfoPersonal from './componentes/cards/CardInfoPersonal';
 
 function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
@@ -25,7 +26,7 @@ function Editar(){
     const [trayectorialaboral, setTrayectoriaLaboral] = useState(null);
     const [evaluacion, setEvaluacion] = useState(null);
     const [puestoproyeccion, setPuestoProyeccion] = useState(null);
-    const [infoEmpleado, setInfoEmpleado] = useState(null);
+    const [infoPersonal, setInfoPersonal] = useState(null);
     const [contentEdit, setContentEdit] = useState(null);
 
     const handleCloseCreateModal = () => {
@@ -75,6 +76,8 @@ function Editar(){
                 });
                 setContentEdit(content);
                 break;
+            case 'info-personal':
+                setContentEdit([infoPersonal]);
         }
         setEditModal(true);
     }
@@ -246,6 +249,9 @@ function Editar(){
                             return data;
                         });
                         setPuestoProyeccion(updatedContent);
+                    // case 'info-personal':
+                    //     setInfoPersonal(...infoPersonal, ...dataObject);
+                    //     break;
                 }
             }
         }else if(localStorage.getItem('tipo_usuario') === 'observador'){
@@ -262,7 +268,7 @@ function Editar(){
         setUpwardFeedback(response.data.upwardfeedback);
         setEvaluacion(response.data.evaluacion);
         setPuestoProyeccion(response.data.puestoproyeccion);
-        setInfoEmpleado(response.data.empleado);
+        setInfoPersonal(response.data.empleado);
     };
     useEffect(() => {
         if(sessionStorage.length === 0) {
@@ -321,32 +327,36 @@ function Editar(){
     if(editarView === 'upward-feedback'){
         if(upwardfeedback !== null){
             renderedItems = upwardfeedback.map((data) => {
-                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='upward-feedback' handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){
         if(clienteproveedor !== null){
             renderedItems = clienteproveedor.map((data) => {
-                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='cliente-proveedor' handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if (editarView === 'evaluacion'){
         if(evaluacion !== null){
             renderedItems = evaluacion.map((data) => {
-                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
+                return <CardEvaluacion data={data} tipo='evaluacion' handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'trayectoria'){
         if(trayectorialaboral !== null){
             renderedItems = trayectorialaboral.map(data => {
-                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
+                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'puesto-proyeccion'){
         if(puestoproyeccion !== null){
             renderedItems = puestoproyeccion.map(data => {
-                return <CardPuestoProyeccion data={data} tipo='puesto-proyeccion' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
+                return <CardPuestoProyeccion data={data} tipo='puesto-proyeccion' handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
+        }
+    }else if(editarView === 'info-personal'){
+        if(infoPersonal !== null){
+            renderedItems = <CardInfoPersonal data={infoPersonal} tipo='info-personal' handleClickEdit={handleOpenEditModal}/>
         }
     }
     return (
@@ -354,7 +364,7 @@ function Editar(){
             <PerfilSideBar 
                 cet={id}
                 setEditarView={setEditarView} 
-                empleado={infoEmpleado !== null ? infoEmpleado : null} 
+                empleado={infoPersonal !== null ? infoPersonal : null} 
                 cantClienteProveedor={clienteproveedor !== null ? clienteproveedor.length : 0} 
                 cantUpwardFeedback={upwardfeedback !== null ?  upwardfeedback.length : 0} 
                 cantEvaluacion={evaluacion !== null ? evaluacion.length : 0} 

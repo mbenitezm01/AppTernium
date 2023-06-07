@@ -22,9 +22,9 @@ export default function PerfilSideBar({ cet, empleado, cantUpwardFeedback, cantC
                 <p>{empleado === null ? '' : empleado.nombre}</p>
             </div>
             <div className='perfil-body'>
-                <div className='editar-btn' onClick={() => handleClickView('')}>
+                <div className='editar-btn' onClick={() => handleClickView('info-personal')}>
                     <div className='btn-icon'>
-                        <GrContactInfo /><p>Información general</p>
+                        <GrContactInfo /><p>Información personal</p>
                     </div>
                 </div>
                 <div className='info-general'></div>

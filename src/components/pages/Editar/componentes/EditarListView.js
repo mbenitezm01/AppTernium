@@ -19,12 +19,15 @@ export default function EditarListView({ renderedItems, openModal, tipo }){
         case 'cliente-proveedor':
             label = 'Cliente proveedor';
             break;
+        case 'info-personal':
+            label = 'Información personal';
+            break;
     }
     return(
         <div className='edit-list-view'>
             <div className="agregar">
                 <p>{label}</p>
-                <button className='agregar-btn' onClick={openModal}><p>Agregar</p><HiOutlineDocumentAdd /></button>
+                {tipo === 'info-personal' ? null : <button className='agregar-btn' onClick={openModal}><p>Agregar</p><HiOutlineDocumentAdd /></button>}
             </div>
             <div className={(renderedItems === null || renderedItems.length === 0) ? 'edit-list-no' : 'edit-list'}>
                 {(renderedItems === null || renderedItems.length === 0) ? <NoCard /> : renderedItems}
