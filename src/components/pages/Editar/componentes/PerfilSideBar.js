@@ -4,6 +4,7 @@ import { BiFileBlank } from 'react-icons/bi';
 import { CgNotes } from 'react-icons/cg';
 import { MdWorkOutline } from 'react-icons/md';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
+import { GrContactInfo } from 'react-icons/gr';
 
 export default function PerfilSideBar({ cet, empleado, cantUpwardFeedback, cantClienteProveedor, cantEvaluacion, cantTrayectoriaLaboral, cantPuestoProyeccion ,setEditarView }){
     const navigate = useNavigate();
@@ -21,6 +22,12 @@ export default function PerfilSideBar({ cet, empleado, cantUpwardFeedback, cantC
                 <p>{empleado === null ? '' : empleado.nombre}</p>
             </div>
             <div className='perfil-body'>
+                <div className='editar-btn' onClick={() => handleClickView('')}>
+                    <div className='btn-icon'>
+                        <GrContactInfo /><p>Información general</p>
+                    </div>
+                </div>
+                <div className='info-general'></div>
                 <div className='editar-btn' onClick={() => handleClickView('upward-feedback')}>
                     <div className='btn-icon'>
                         <CgNotes /><p>Upward Feedback</p>
@@ -39,7 +46,7 @@ export default function PerfilSideBar({ cet, empleado, cantUpwardFeedback, cantC
                     </div>
                     <p>{cantTrayectoriaLaboral}</p>
                 </div>
-                <div className='editar-btn' onClick={() => handleClickView('proyeccion-puesto')}>
+                <div className='editar-btn' onClick={() => handleClickView('puesto-proyeccion')}>
                     <div className='btn-icon'>
                         <HiOutlineClipboardDocumentCheck /><p>Proyeccion de Puesto</p>
                     </div>

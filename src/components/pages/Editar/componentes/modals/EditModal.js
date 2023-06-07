@@ -3,23 +3,28 @@ import { GrClose } from 'react-icons/gr';
 
 
 export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }) {
+    console.log(data);
     let tempComentario;
     if(tipo === 'evaluacion'){
         tempComentario = data[0].comentario
     }else if(tipo === 'trayectoria'){
         tempComentario = data[0].empresa;
         console.log(data[0].empresa);
-    }else{
+    }else if(tipo === 'upward-feedback' || tipo === 'cliente-proveedor'){
         tempComentario = data[0].comentarios;
     }
-    let tempNota = tipo === 'evaluacion' ? data[0].performance : data[0].nota;
-    console.log(data[0].potencial);
+    let tempNota = null;
+    if(tipo === 'evaluacion'){
+        tempNota = data[0].performance
+    }else if(tipo === 'upward-feedback' || tipo === 'cliente-proveedor' || tipo === 'trayectoria'){
+        tempNota = data[0].nota;
+    }
     const [comentario, setComentario] = useState(tempComentario);
     const [nota, setNota] = useState(tempNota);
     const [potencial, setPotencial] = useState(data[0].potencial);
     const [curva, setCurva] = useState(data[0].curva);
     const [puesto, setPuesto] = useState(data[0].puesto);
-    const [fecha, setFecha] = useState(data[0].fecha.slice(0, 10));
+    const [fecha, setFecha] = useState(data[0].fecha !== undefined ? data[0].fecha.slice(0, 10) : null);
 
     let content = null;
     let name = null;
@@ -143,8 +148,19 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
             </>
         )
         
-    }else if (tipo === 'proyeccion-puesto'){
+    }else if (tipo === 'puesto-proyeccion'){
         name = 'Proyección de Puesto';
+        content = (
+            <>
+                <input style={{marginBottom: '10px'}}
+                    value={puesto}
+                    type='text'
+                    className="input-box comentario"
+                    placeholder="Puesto..."
+                    onChange={(e) => setPuesto(e.target.value)}
+                />  
+            </>
+        )
     }
 
     const handleSubmit = (event) => {
@@ -193,11 +209,18 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
                 })
             }
 
-        }else if(tipo === 'proyeccion-puesto'){
-
+        }else if(tipo === 'puesto-proyeccion'){
+            if(puesto === ''){
+                alert('Debe de agregar los datos de todos los campos');
+            }else{
+                handleSubmitCreate(tipo, {
+                    id: data[0].id,
+                    puesto: puesto
+                })
+            }
         }
     };
-
+    console.log(puesto);
     return (
         <div className="modal" onSubmit={handleSubmit}>
             <form className="create-modal">
