@@ -9,6 +9,7 @@
 }
 
 .perfil-header{
+    position: relative;
     color: white;
     font-weight: bold;
     height:30%;
@@ -130,6 +131,21 @@
     transition: background-color .5s ease, border-color .5s ease;    
 }
 
+.regresar-btn{
+    cursor: pointer;
+    font-size: x-large;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px;
+    border-radius: 100%;
+}
+
+.regresar-btn:hover{
+    background-color: #e1e1e1;
+    color: black;
+}
+
 .submit-btn{
     margin-top: 10px;
     color: white;
@@ -216,6 +232,26 @@ textarea{
 
 .close-modal-icon:hover{
     background-color: #999;
+}
+
+.delete-modal{
+    width: 30%;
+    height: 10rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.delete-btns-modal{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.delete-btn-modal:hover{
+    cursor: pointer;
+    background-color: black;
+    color: white;
 }
 
 .no-card{
