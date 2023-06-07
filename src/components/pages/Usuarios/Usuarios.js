@@ -121,7 +121,7 @@ function ListaUsuarios() {
             {'Notificaciones'}
             <IoSearchSharp className='logo-notificaciones'></IoSearchSharp>
             </button>
-            <table {...getTableProps()}>
+            <table className='table-usuarios'{...getTableProps()}>
                 <thead>
                     {// Loop over the header rows
                         headerGroups.map(headerGroup => (
@@ -130,12 +130,12 @@ function ListaUsuarios() {
                                 {// Loop over the headers in each row
                                     headerGroup.headers.map(column => (
                                         // Apply the header cell props
-                                        <th  style={{textAlign: 'center'}} {...column.getHeaderProps()}>
+                                        <th {...column.getHeaderProps()}>
                                             {// Render the header
                                                 column.render('Header')}
                                         </th>
                                     ))}
-                            </tr>
+                            </tr> 
                         ))}
                 </thead>
                 {/* Apply the table body props */}
@@ -151,7 +151,7 @@ function ListaUsuarios() {
                                         row.cells.map(cell => {
                                             // Apply the cell props
                                             return (
-                                                <td style={{textAlign: 'center'}} {...cell.getCellProps()}>
+                                                <td {...cell.getCellProps()}>
                                                     {// Render the cell contents
                                                         cell.render('Cell')}
                                                 </td>

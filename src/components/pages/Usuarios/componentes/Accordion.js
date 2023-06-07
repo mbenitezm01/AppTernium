@@ -234,7 +234,7 @@ function Accordion() {
         return (
                 <div key={index} className='accordion'>
                     <div className='title-accordion'>
-                        <div style={{ display: 'flex', marginBottom: '10px'}}>
+                        <div style={{ display: 'flex', marginBottom: '10px', fontWeight: 'bold'}}>
                             {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
                             {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
                             {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}

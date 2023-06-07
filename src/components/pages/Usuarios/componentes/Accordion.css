@@ -45,4 +45,9 @@
     border: 1px solid black;
     font-weight: 500;
     font-size: medium;
+    margin-top: 10px;
+}
+
+.title-accordion .nombre-editor{
+    font-weight: bold;
 }
