@@ -174,21 +174,16 @@
   transform: translateY(0);
 }
 
-.BtnCompOff{
-  color: lightgray;
-  margin: 5px;
-  margin-left: 10px;
-  
-}
-
-.BtnCompOn{
-  margin: 5px;  
-  margin-left: 10px;
-
-}
-
-.logoComp{
+.logo-comparacion{
   font-size: 30px;
   margin-left: 5px;
 }
+
+.logo-print{
+  font-size: 25px;
+  margin-left: 5px;
+}
+
+
+
 
