@@ -114,7 +114,7 @@ function Accordion() {
     }
 
     const content = items.map((item, index) => {
-        const json = JSON.parse(item.data);
+        const json = item.data;
         let temp = null;
         if(item.metodo !== 'crear'){
             temp = json.id !== undefined ? handleFetchComentario(item.tabla, json.id) : handleFetchComentario(item.tabla, json);
