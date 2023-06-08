@@ -33,14 +33,16 @@ function Busqueda(){
     
     const fetchList = useCallback(async () => {
         console.log('Request');
-        const response = await axios.get(`http://localhost:5050/api/empleados`);
+        console.log(process.env)
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/empleados`);
         setData(response.data);
         
 
     }, []);
     
     useEffect(() => {
-        if(localStorage.length === 0){
+        if(sessionStorage.length === 0){
+            localStorage.clear();
             navigate('/login');
         }
         fetchList();

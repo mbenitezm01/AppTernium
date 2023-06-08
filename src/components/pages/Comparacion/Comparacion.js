@@ -12,8 +12,8 @@ function Comparacion(){
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response1 = await axios.get(`http://localhost:5050/api/info-empleado/${params.get('ficha1')}`);
-        const response2 = await axios.get(`http://localhost:5050/api/info-empleado/${params.get('ficha2')}`);
+        const response1 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha1')}`);
+        const response2 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha2')}`);
         if(response1.data.encontrado && response2.data.encontrado){
             setInfo([response1.data, response2.data]);
         }
@@ -21,7 +21,10 @@ function Comparacion(){
 
     // useEffect
     useEffect(() => {
-        if(localStorage.length === 0) navigate('/login');
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
         fetchInfoEmpleado();
     }, []);
 

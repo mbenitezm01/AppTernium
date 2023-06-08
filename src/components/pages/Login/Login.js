@@ -13,7 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     useEffect(() => {
-        if(localStorage.length > 0){
+        if(sessionStorage.length > 0){
             navigate('/busqueda');
         }
     }, []);
