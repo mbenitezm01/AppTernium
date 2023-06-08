@@ -2,8 +2,29 @@ import { useState, useEffect } from 'react';
 import { AiOutlinePlus, AiOutlineDelete, AiOutlineEdit, AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from 'axios';
 import './Accordion.css';
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+
+
 
 function Accordion() {
+
+    const navigate = useNavigate()
+
+    function returnHandler(){
+        navigate('/usuarios')
+    }
+
+    useEffect(() => {
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
+    }, []);
+
+
     const [items, setItems] = useState([]);
     const [activeIndex, setActiveIndex] = useState(-1);
     const handleClick = (index) => {
@@ -93,7 +114,7 @@ function Accordion() {
     }
 
     const content = items.map((item, index) => {
-        const json = JSON.parse(item.data);
+        const json = item.data;
         let temp = null;
         if(item.metodo !== 'crear'){
             temp = json.id !== undefined ? handleFetchComentario(item.tabla, json.id) : handleFetchComentario(item.tabla, json);
@@ -211,22 +232,25 @@ function Accordion() {
         }
         
         return (
-            <div key={index} className='accordion'>
-                <div className='title-accordion'>
-                    <div style={{ display: 'flex', marginBottom: '10px'}}>
-                        {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
-                        {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
-                        {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
-                        <p>Editor: {item.nombre}</p>
+                <div key={index} className='accordion'>
+                    <div className='title-accordion'>
+                        <div style={{ display: 'flex', marginBottom: '10px', fontWeight: 'bold'}}>
+                            {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
+                            {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
+                            {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
+                            <p>Editor: {item.nombre}</p>
+                        </div>
                     </div>
+                    {contentTemp.props.children} 
                 </div>
-                {contentTemp.props.children}
-            </div>
         );
 });
 
 return (
-    <div>
+    <div className='accordion-fondo'>
+        <div className="return-button">
+            <button onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+        </div>
         {content}
     </div>
 )

@@ -51,15 +51,15 @@ function EditarPassword(){
                 <div className="header-buttons">
                     <button onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
                 </div>
-                <Table>
+                <Table className='tabla-cambio-password'>
                     <tbody>
                         <tr>
-                            <td>Nueva Contraseña</td>
-                            <td><input id="new-pass-1"></input></td>
+                            <td className='left'>Nueva Contraseña</td>
+                            <td className='right'><input id="new-pass-1"></input></td>
                         </tr>
                         <tr>
-                            <td>Confirmar Contraseña</td>
-                            <td><input id="new-pass-2"></input></td>
+                            <td className='left'>Confirmar Contraseña</td>
+                            <td className='right'><input id="new-pass-2"></input></td>
                         </tr>
                     </tbody>
                 </Table>
