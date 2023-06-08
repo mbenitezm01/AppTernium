@@ -137,7 +137,7 @@ function Editar(){
         console.log(tipo, id)
         if(localStorage.getItem('tipo_usuario') === 'editor'){
             const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
-                data: `${id}`,
+                data: `{"id": ${id}}`,
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
                 tabla: editarView,
