@@ -274,7 +274,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
                 handleSubmitCreate(tipo, {
                     id: data[0].id,
                     nota: nota,
-                    comentarios: comentario
+                    comentarios: comentario,
                 });
             }
         }else if(tipo === 'cliente-proveedor'){

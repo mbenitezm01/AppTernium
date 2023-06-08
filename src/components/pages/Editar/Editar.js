@@ -141,7 +141,8 @@ function Editar(){
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
                 tabla: editarView,
-                metodo: 'borrar'
+                metodo: 'borrar',
+                id_obj: id
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
@@ -187,14 +188,15 @@ function Editar(){
     };
 
     const handleEdit = async (tipo, dataObject) => {
-        console.log('Edit Request');
+        console.log('Edit Request', tipo, dataObject.id);
         if(localStorage.getItem('tipo_usuario') === 'editor'){
             const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: JSON.stringify(dataObject),
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
                 tabla: editarView,
-                metodo: 'editar'
+                metodo: 'editar',
+                id_obj: dataObject.id
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
