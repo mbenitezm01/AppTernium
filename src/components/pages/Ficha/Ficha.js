@@ -15,8 +15,12 @@ import SeccionPersonal from './componentes/SeccionPersonal';
 import Feedback from './componentes/Feedback';
 import TrayectoriaLaboral from './componentes/TrayectoriaLaboral';
 import ResumenPerfil from './componentes/ResumenPerfil';
+import DeleteModal from './BorrarModal';
 
 function Ficha(){
+
+    const [deleteModal, setDeleteModal] = useState(false);
+
     // Declaracion de variable para guardar la informacion traida de la API
     const [info, setInfo] = useState({});
 
@@ -197,6 +201,25 @@ function Ficha(){
         }
     };
 
+    const handleDelete = () => {
+        if(localStorage.getItem('tipo_usuario') === 'administrador'){
+            setDeleteModal(true);
+        }
+        else{
+            alert('Solo los administradores tienen permiso de eliminar empleados.');
+        }
+    }
+
+    const handleClickDelete = async () => {
+        const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/eliminar-empleado/${cet.id}`);
+        navigate(`/busqueda`);
+
+    }
+
+    const handleClose = () => {
+        setDeleteModal(false);
+    }
+
     // Se aplica el zoom necesario
     let zoomContent = null;
     let padding = 0;
@@ -219,7 +242,7 @@ function Ficha(){
 
     return(
         <div className='page'>
-            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent} handleEdit={handleClickEdit}/>
+            <Herramientas handleClickZoom={handleClickZoom} handleDownloadPdf={handleDownloadPdf} zoomContent={zoomContent} handleEdit={handleClickEdit} handleDelete={handleDelete}/>
             <div className='main-container' style={{padding: padding}}>
                 {<div ref={printRef}>
                     <div className='main-header'>
@@ -240,6 +263,7 @@ function Ficha(){
                     </div>
                 </div>}
             </div>
+            {deleteModal ? <DeleteModal handleDelete={handleClickDelete} onClose={handleClose}/> : null}
         </div>
     )
 }

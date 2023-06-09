@@ -80,6 +80,9 @@ td{
     min-height: 15rem;
 }
 
+.info tr td {
+    text-align: left !important;
+}
 
 th{
     padding-left: 10px;
@@ -172,6 +175,11 @@ td{
 
 .herramientas button:hover{
     background-color: #555;
+}
+
+.herramientas.btn-eliminar {
+    color: blue;
+    width: 60px;
 }
 
 .resumen-perfil{
