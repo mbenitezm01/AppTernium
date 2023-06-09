@@ -26,24 +26,10 @@ function Accordion() {
 
 
     const [items, setItems] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(-1);
-    const handleClick = (index) => {
-        setActiveIndex(index === activeIndex ? -1 : index);
-    };
-
-    const fetchPendientes = async () => {
-        try{
-            const response = await axios.get('http://localhost:5050/api/pendiente');
-            setItems(response.data);
-        }catch{
-            alert('Error en el sistema, volver a intentar');
-        }
-    };
 
     useEffect(() => {
         fetchPendientes();
     }, []);
-    console.log(items);
     // let content = null;
     // if(activeIndex !== -1){
     //    const data = items[activeIndex].data.split('"');
@@ -53,7 +39,7 @@ function Accordion() {
     // }
     const handleCreate = async (id_pendiente, tipo, dataObject) => {
         try{
-            const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
             if(response.data.creado){
                 handleDeletePendiente(id_pendiente);
             }
@@ -64,7 +50,7 @@ function Accordion() {
 
     const handleDelete = async (id_pendiente, tipo, id) => {
         try{
-            const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id.id}`);
             if(response.data.borrado){
                 handleDeletePendiente(id_pendiente);
             }
@@ -74,7 +60,7 @@ function Accordion() {
     };
 
     const handleEdit = async (id_pendiente, tipo, dataObject) => {
-        const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
+        const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
         if(response.data.editado){
             handleDeletePendiente(id_pendiente);
         }else{
@@ -83,13 +69,12 @@ function Accordion() {
     }
 
     const handleDeletePendiente = async (id_pendiente) => {
-        const response = await axios.delete(`http://localhost:5050/api/pendiente/${id_pendiente}`);
+        const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/pendiente/${id_pendiente}`);
         if(response.data.borrado){
             let updatedContent = items.filter(data => {
-                return data.id !== id_pendiente
+                return data.data.id !== id_pendiente
             });
             setItems(updatedContent);
-            alert('Se ha borrado el comentario pendiente');
         }else{
             alert('Volver a intentar');
         }
@@ -97,7 +82,6 @@ function Accordion() {
 
     const handleFetchComentario = async (tipo, id) => {
         const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`);
-        console.log(response.data);
         return response.data;
     };
 
@@ -105,155 +89,306 @@ function Accordion() {
         console.log(id_pendiente, tipo, dataObject, metodo);
         if(metodo === 'crear'){
             handleCreate(id_pendiente, tipo, dataObject);
+            alert('Se ha creado el comentario pendiente');
         }else if(metodo === 'borrar'){
             handleDelete(id_pendiente, tipo, dataObject);
+            alert('Se ha borrado el comentario pendiente');
         }else if(metodo === 'editar'){
             handleEdit(id_pendiente, tipo, dataObject);
+            alert('Se ha editado el comentario pendiente');
         }
-        setActiveIndex(-1);
     }
 
-    const content = items.map((item, index) => {
-        const json = item.data;
-        let temp = null;
-        if(item.metodo !== 'crear'){
-            temp = json.id !== undefined ? handleFetchComentario(item.tabla, json.id) : handleFetchComentario(item.tabla, json);
+    const fetchPendientes = async () => {
+        try{
+            console.log('Request');
+            const response = await axios.get('http://localhost:5050/api/pendiente');
+            const tempArr = [];
+            // response.data.forEach(data => {
+            for (const data of response.data) {
+                if(data.metodo === 'crear'){
+                    tempArr.push({data, item: null});
+                }else{
+                    // const res = handleFetchComentario(data.tabla, data.data.id);
+                    const res = await axios.get(`${process.env.REACT_APP_API_HOST}/api/${data.tabla}/${data.data.id}`);
+                    tempArr.push({data, item: res.data});
+                }
+            };
+            setItems(tempArr);
+        }catch{
+            alert('Error en el sistema, volver a intentar');
         }
-        console.log(temp);
+    };
+
+    
+    console.log(items);
+    const content = items.map(i => {
         let contentTemp = null;
-        if(item.metodo === 'borrar'){
-            if(item.tabla === 'upward-feedback' || item.tabla === 'cliente-proveedor'){
+        if(i.data.metodo === 'borrar'){
+            if(i.data.tabla === 'upward-feedback' || i.data.tabla === 'cliente-proveedor'){
                 contentTemp = (
-                <div>
-                    <p className='txt-align-left'>{item.tabla === 'upward-feedback' ? 'Comentario a borrar de tabla: Upward Feedback' : 'Comentario a borrar de tabla: Cliente Proveedor'}</p>
-                    <div className='body-accordion'>
-                        <p>Nota: {temp.nota}</p>
-                        <p>Comentario: {temp.comentarios}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }else if(item.tabla === 'evaluacion'){
-                contentTemp = (
-                <div >
-                    <p className='txt-align-left'>Comentario a borrar de tabla: Evaluacion</p>
-                    <div className='body-accordion'>
-                        <p>Performance: {temp.performance}</p>
-                        <p>Curva: {temp.curva}</p>
-                        <p>Potencial: {temp.potencial}</p>
-                        <p>Comentario: {temp.comentario}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }else if(item.tabla === 'trayectoria'){
-                contentTemp = (
-                <div>
-                    <p className='txt-align-left'>Comentario a borrar de tabla: Trayectoria Laboral</p>
-                    <div className='body-accordion'>
-                        <p>Cet: {temp.empleado_cet}</p>
-                        <p>Fecha: {temp.fecha}</p>
-                        <p>Empresa: {temp.empresa}</p>
-                        <p>Puesto: {temp.puesto}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }
-            // contentTemp = (
-            //     <div>
-            //         <div className='body-accordion'>
-            //             <p>Id del comentario a borrar: {item.data}</p>
-            //             <p></p>
-            //         </div>
-            //         <div className='btns-accordion'>
-            //             <button onClick={() => handleDeletePendiente(item.id)}>Borrar</button>
-            //             <button onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-            //         </div>
-            //     </div>
-            // )
-        }else{
-            if(item.tabla === 'upward-feedback' || item.tabla === 'cliente-proveedor'){
-                contentTemp = (
-                <div>
-                    <p className='txt-align-left'>{item.tabla === 'upward-feedback' ? 'Upward Feedback' : 'Cliente Proveedor'}</p>
-                    <div className='body-accordion'>
-                        <p>Nota: {json.nota}</p>
-                        <p>Comentario: {json.comentarios}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }else if(item.tabla === 'evaluacion'){
-                contentTemp = (
-                <div >
-                    <p className='txt-align-left'>Evaluacion</p>
-                    <div className='body-accordion'>
-                        <p>Performance: {json.performance}</p>
-                        <p>Curva: {json.curva}</p>
-                        <p>Potencial: {json.potencial}</p>
-                        <p>Comentario: {json.comentario}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }else if(item.tabla === 'trayectoria'){
-                contentTemp = (
-                <div>
-                    <p className='txt-align-left'>Trayectoria Laboral</p>
-                    <div className='body-accordion'>
-                        <p>Cet: {json.empleado_cet}</p>
-                        <p>Fecha: {json.fecha}</p>
-                        <p>Empresa: {json.empresa}</p>
-                        <p>Puesto: {json.puesto}</p>
-                    </div>
-                    <div className='btns-accordion'>
-                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(item.id)}>Borrar petición</button>
-                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(item.id, item.tabla, JSON.parse(item.data), item.metodo)}>Realizar cambio</button>
-                    </div>
-                </div>
-                )
-            }
-        }
-        
-        return (
-                <div key={index} className='accordion'>
-                    <div className='title-accordion'>
-                        <div style={{ display: 'flex', marginBottom: '10px', fontWeight: 'bold'}}>
-                            {item.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
-                            {item.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
-                            {item.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
-                            <p>Editor: {item.nombre}</p>
+                    <div>
+                        <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>{i.data.tabla === 'upward-feedback' ? 'Upward Feedback' : 'Cliente Proveedor'}</p>
+                        <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a borrar: </p>
+                        <div className='body-accordion'>
+                            <p>Nota: {i.item.nota}</p>
+                            <p>Comentario: {i.item.comentarios}</p>
+                        </div>
+                        <div className='btns-accordion'>
+                            <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                            <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
                         </div>
                     </div>
-                    {contentTemp.props.children} 
+                )
+            }else if(i.data.tabla === 'evaluacion'){
+                contentTemp = (
+                <div >
+                    <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Evaluacion</p>
+                    <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a borrar: </p>
+                    <div className='body-accordion'>
+                        <p>Performance: {i.item.performance}</p>
+                        <p>Curva: {i.item.curva}</p>
+                        <p>Potencial: {i.item.potencial}</p>
+                        <p>Comentario: {i.item.comentario}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }else if(i.data.tabla === 'trayectoria'){
+                contentTemp = (
+                <div>
+                    <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Trayectoria Laboral</p>
+                    <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a borrar: </p>
+                    <div className='body-accordion'>
+                        <p>Cet: {i.item.empleado_cet}</p>
+                        <p>Fecha: {i.item.fecha}</p>
+                        <p>Empresa: {i.item.empresa}</p>
+                        <p>Puesto: {i.item.puesto}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }else if(i.data.tabla === 'puesto-proyeccion'){
+                contentTemp = (
+                    <div>
+                        <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Puesto de proyección</p>
+                        <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Proyección a borrar: </p>
+                        <div className='body-accordion'>
+                            <p>Cet: {i.item.empleado_cet}</p>
+                            <p>Fecha: {i.item.puesto}</p>
+                        </div>
+                        <div className='btns-accordion'>
+                            <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                            <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                        </div>
+                    </div>
+                    )
+            }
+        }else if(i.data.metodo === 'editar'){
+            if(i.data.tabla === 'upward-feedback' || i.data.tabla === 'cliente-proveedor'){
+                contentTemp = (
+                    <>
+                        <div>
+                            <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>{i.data.tabla === 'upward-feedback' ? 'Upward Feedback' : 'Cliente Proveedor'}</p>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario anterior </p>
+                            <div className='body-accordion'>
+                                <p>Nota: {i.item.nota}</p>
+                                <p>Comentario: {i.item.comentarios}</p>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario nuevo </p>
+                            <div className='body-accordion'>
+                                <p>Nota: {i.data.data.nota}</p>
+                                <p>Comentario: {i.data.data.comentarios}</p>
+                            </div>
+                            <div className='btns-accordion'>
+                                <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                                <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                            </div>
+                        </div>
+                    </>
+                )
+            }else if(i.data.tabla === 'evaluacion'){
+                contentTemp = (
+                    <>
+                        <div>
+                            <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Evaluacion</p>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Evaluacion anterior</p>
+                            <div className='body-accordion' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>
+                                <p>Performance: {i.item.performance}</p>
+                                <p>Curva: {i.item.curva}</p>
+                                <p>Potencial: {i.item.potencial}</p>
+                                <p>Comentario: {i.item.comentario}</p>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Evaluacion nueva</p>
+                            <div className='body-accordion'>
+                                <p>Performance: {i.data.data.performance}</p>
+                                <p>Curva: {i.data.data.curva}</p>
+                                <p>Potencial: {i.data.data.potencial}</p>
+                                <p>Comentario: {i.data.data.comentario}</p>
+                            </div>
+                            <div className='btns-accordion'>
+                                <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                                <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                            </div>
+                        </div>
+                    </>
+                )
+            }else if(i.data.tabla === 'trayectoria'){
+                contentTemp = (
+                    <>
+                        <div>
+                            <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Trayectoria Laboral</p>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Trayectoria laboral anterior</p>
+                            <div className='body-accordion'>
+                                <p>Cet: {i.item.empleado_cet}</p>
+                                <p>Fecha: {i.item.fecha}</p>
+                                <p>Empresa: {i.item.empresa}</p>
+                                <p>Puesto: {i.item.puesto}</p>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Trayectoria laboral nueva</p>
+                            <div className='body-accordion'>
+                                <p>Cet: {i.data.data.empleado_cet}</p>
+                                <p>Fecha: {i.data.data.fecha}</p>
+                                <p>Empresa: {i.data.data.empresa}</p>
+                                <p>Puesto: {i.data.data.puesto}</p>
+                            </div>
+                            <div className='btns-accordion'>
+                                <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                                <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                            </div>
+                        </div>
+                    </>
+                )
+            }else if(i.data.tabla === 'puesto-proyeccion'){
+                contentTemp = (
+                    <>
+                        <div>
+                            <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Puesto proyección</p>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Proyección anterior</p>
+                            <div className='body-accordion'>
+                                <p>Cet: {i.item.empleado_cet}</p>
+                                <p>Puesto: {i.item.puesto}</p>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Proyección nueva</p>
+                            <div className='body-accordion'>
+                                <p>Cet: {i.data.data.empleado_cet}</p>
+                                <p>Puesto: {i.data.data.puesto}</p>
+                            </div>
+                            <div className='btns-accordion'>
+                                <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                                <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+        }else if(i.data.metodo === 'crear'){
+            if(i.data.tabla === 'upward-feedback' || i.data.tabla === 'cliente-proveedor'){
+                contentTemp = (
+                    <div>
+                        <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>{i.data.tabla === 'upward-feedback' ? 'Upward Feedback' : 'Cliente Proveedor'}</p>
+                        <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a crear: </p>
+                        <div className='body-accordion'>
+                            <p>Nota: {i.data.data.nota}</p>
+                            <p>Comentario: {i.data.data.comentario}</p>
+                        </div>
+                        <div className='btns-accordion'>
+                            <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                            <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                        </div>
+                    </div>
+                )
+            }else if(i.data.tabla === 'evaluacion'){
+                contentTemp = (
+                <div >
+                    <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Evaluacion</p>
+                    <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a crear: </p>
+                    <div className='body-accordion'>
+                        <p>Performance: {i.data.data.performance}</p>
+                        <p>Curva: {i.data.data.curva}</p>
+                        <p>Potencial: {i.data.data.potencial}</p>
+                        <p>Comentario: {i.data.data.comentario}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }else if(i.data.tabla === 'trayectoria'){
+                contentTemp = (
+                <div>
+                    <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Trayectoria Laboral</p>
+                    <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Comentario a crear: </p>
+                    <div className='body-accordion'>
+                        <p>Cet: {i.data.data.empleado_cet}</p>
+                        <p>Fecha: {i.data.data.fecha}</p>
+                        <p>Empresa: {i.data.data.empresa}</p>
+                        <p>Puesto: {i.data.data.puesto}</p>
+                    </div>
+                    <div className='btns-accordion'>
+                        <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                        <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                    </div>
+                </div>
+                )
+            }else if(i.data.tabla === 'puesto-proyeccion'){
+                contentTemp = (
+                    <div>
+                        <p className='txt-align-left' style={{fontWeight: 'bold', fontSize: 'large'}}>Proyección de puesto</p>
+                        <p className='txt-align-left' style={{marginTop: '10px', fontWeight: 'semi-bold', fontSize: 'medium'}}>Puesto a crear: </p>
+                        <div className='body-accordion'>
+                            <p>Cet: {i.data.data.empleado_cet}</p>
+                            <p>Puesto: {i.data.data.puesto}</p>
+                        </div>
+                        <div className='btns-accordion'>
+                            <button className='btn-submit-accordion' onClick={() => handleDeletePendiente(i.data.id)}>Borrar petición</button>
+                            <button className='btn-submit-accordion' onClick={() => handleClickSubmit(i.data.id, i.data.tabla, i.data.data, i.data.metodo)}>Realizar cambio</button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+        return (
+                <div className='accordion'>
+                    <div className='title-accordion'>
+                        <div style={{ display: 'flex', marginBottom: '10px', fontWeight: 'bold', fontSize: 'larger'}}>
+                            {i.data.metodo === 'crear' ? <span style={{marginRight: '4px'}}><AiOutlineCloudUpload /></span> : null}
+                            {i.data.metodo === 'borrar' ? <span style={{marginRight: '4px'}}><AiOutlineDelete /></span> : null}
+                            {i.data.metodo === 'editar' ? <span style={{marginRight: '4px'}}><AiOutlineEdit /></span> : null}
+                            <p>Editor: {i.data.nombre}</p>
+                        </div>
+                    </div>
+                    {contentTemp !== null ? contentTemp.props.children : null} 
                 </div>
         );
-});
-
-return (
-    <div className='accordion-fondo'>
-        <div className="return-button">
-            <button onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+    });
+    return (
+        <div className='accordion-fondo'>
+            <div className="return-button">
+                <button onClick={returnHandler}><AiOutlineArrowLeft/>Regresar</button>
+            </div>
+            {content}
         </div>
-        {content}
-    </div>
-)
+    )
 
 }
 export default Accordion;
