@@ -10,7 +10,10 @@ export default function Herramientas ({ handleClickZoom, handleDownloadPdf, zoom
             <div className='border-l'>
                 <button className='btn-herramientas' onClick={handleDownloadPdf}><HiDownload /></button>
                 <button className='btn-herramientas' onClick={handleEdit}><MdModeEdit /></button>
-                <button className='btn-eliminar' onClick={handleDelete} style={{width:'100px', position:'absolute', right:'30px'}}>Eliminar</button>
+                {localStorage.getItem('tipo_usuario') === 'administrador' ?
+                    <button className='btn-eliminar' onClick={handleDelete} style={{width:'100px', position:'absolute', right:'30px'}}>Eliminar</button>
+                    : null
+                }
             </div>
         </div>
     );
