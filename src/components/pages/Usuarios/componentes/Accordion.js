@@ -102,10 +102,11 @@ function Accordion() {
     const fetchPendientes = async () => {
         try{
             console.log('Request');
-            const response = await axios.get('http://localhost:5050/api/pendiente');
+            const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/pendiente`);
+
             const tempArr = [];
             // response.data.forEach(data => {
-            for (const data of response.data) {
+            for (const data of response.data.data) {
                 if(data.metodo === 'crear'){
                     tempArr.push({data, item: null});
                 }else{
@@ -114,6 +115,7 @@ function Accordion() {
                     tempArr.push({data, item: res.data});
                 }
             };
+            console.log(tempArr);
             setItems(tempArr);
         }catch{
             alert('Error en el sistema, volver a intentar');
