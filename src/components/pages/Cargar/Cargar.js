@@ -16,6 +16,8 @@ const Cargar = () => {
             localStorage.clear();
              navigate('/login');
         }
+
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
     }, []);
 
     const handleImport = ($event) => {
