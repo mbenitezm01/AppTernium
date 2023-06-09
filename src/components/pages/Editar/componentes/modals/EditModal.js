@@ -73,7 +73,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
         name = 'Evaluaciones';
         content = (
             <>
-                <div>
+                <div style={{marginBottom: '10px'}}>
                     <span style={{marginRight: '10px'}}>Performance</span>
                     <input 
                         value={nota}
@@ -89,7 +89,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
                     placeholder="Comentarios..."
                     onChange={(e) => setComentario(e.target.value)}
                 />
-                <div>
+                <div style={{marginBottom: '10px'}}>
                     <span style={{marginRight: '10px'}}>Curva</span>
                     <select
                         value={curva}
@@ -101,7 +101,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
                         <option value='Otro'>Otro</option>
                     </select>
                 </div>
-                <div>
+                <div style={{marginBottom: '10px'}}>
                     <span style={{marginRight: '10px'}}>Potencial</span>
                     <select 
                         value={potencial}
@@ -121,21 +121,21 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
         name = 'Trayectoria Laboral';
         content = (
             <>
-                <input 
+                <input style={{marginBottom: '10px'}}
                     value={comentario} 
                     type="text" 
                     className="input-box comentario" 
                     placeholder="Empresa..."
                     onChange={(e) => setComentario(e.target.value)}
                 />
-                <input 
+                <input style={{marginBottom: '10px'}}
                     value={puesto}
                     type='text'
                     className="input-box comentario"
                     placeholder="Puesto..."
                     onChange={(e) => setPuesto(e.target.value)}
                 />
-                <input 
+                <input style={{marginBottom: '10px'}}
                     value={fecha}
                     type='date'
                     onChange={(e) => setFecha(e.target.value)}
@@ -209,7 +209,7 @@ export default function EditModal({ tipo, data, closeModal, handleSubmitCreate }
                     {content}
                 </div>
                 <div className="create-modal-footer">
-                    <button className="agregar-btn">Submit</button>
+                    <button className="submit-btn">Submit</button>
                 </div>
             </form>
         </div>

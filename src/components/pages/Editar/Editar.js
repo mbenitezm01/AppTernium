@@ -9,6 +9,7 @@ import CardEvaluacion from './componentes/cards/CardEvaluacion';
 import CardTrayectoriaLaboral from './componentes/cards/CardTrayectoriaLaboral';
 import CreateModal from './componentes/modals/CreateModal';
 import EditModal from './componentes/modals/EditModal';
+import DeleteModal from './componentes/modals/BorrarModal';
 
 // function agregarComentario(tipo, comentario, nota){
 //     switch(tipo){
@@ -23,6 +24,7 @@ function Editar(){
     const [editarView, setEditarView] = useState('upward-feedback');
     const [modal, setModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
     let content = null;
 
     const location = useLocation();
@@ -87,7 +89,7 @@ function Editar(){
 
 
         if(localStorage.getItem('tipo_usuario') === 'editor'){            
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: JSON.stringify(dataObject),
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -96,7 +98,7 @@ function Editar(){
             })
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.post(`http://localhost:5050/api/${tipo}`, dataObject);
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
             console.log(response.data);
             if(response.data.creado){
                 let updatedContent = null;
@@ -137,7 +139,7 @@ function Editar(){
         console.log('Delete request');
         console.log(tipo, id)
         if(localStorage.getItem('tipo_usuario') === 'editor'){
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: `${id}`,
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -146,7 +148,7 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.delete(`http://localhost:5050/api/${tipo}/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`);
             if(response.data.borrado){
                 let updatedContent;
                 switch(tipo){
@@ -182,7 +184,7 @@ function Editar(){
     const handleEdit = async (tipo, dataObject) => {
         console.log('Edit Request');
         if(localStorage.getItem('tipo_usuario') === 'editor'){
-            const response = await axios.post('http://localhost:5050/api/pendiente', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente`, {
                 data: JSON.stringify(dataObject),
                 id_usuario: parseInt(localStorage.getItem('id_usuario')),
                 empleado_cet: parseInt(localStorage.getItem('cet')),
@@ -191,7 +193,7 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.patch(`http://localhost:5050/api/${tipo}`, dataObject);
+            const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
             if(response.data.editado){
                 let updatedContent;
                 switch(tipo){
@@ -244,13 +246,18 @@ function Editar(){
 
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response = await axios.get(`http://localhost:5050/api/info-empleado/${location.state.cet.id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${location.state.cet.id}`);
         setClienteProveedor(response.data.clienteproveedor);
         setTrayectoriaLaboral(response.data.trayectorialaboral);
         setUpwardFeedback(response.data.upwardfeedback);
         setEvaluacion(response.data.evaluacion);
     };
     useEffect(() => {
+        if(sessionStorage.length === 0) {
+            localStorage.clear();
+            navigate('/login');
+        }
+        
         if(location.state === null || location.state.cet.id === localStorage.getItem('cet')){
             navigate('/busqueda');
         }
@@ -259,29 +266,63 @@ function Editar(){
         
     }, []);
 
+    const handleDeleteClick = (tipo, id) => {
+        switch(tipo){
+            case 'upward-feedback':
+                content = upwardfeedback.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'cliente-proveedor':
+                content = clienteproveedor.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'trayectoria':
+                content = trayectorialaboral.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+            case 'evaluacion':
+                content = evaluacion.filter((data) => {
+                    return data.id === id;
+                });
+                setContentEdit(content);
+                break;
+        }
+        setDeleteModal(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setDeleteModal(false);
+    }
+
     let renderedItems = null;
     if(editarView === 'upward-feedback'){
         if(upwardfeedback !== null){
             renderedItems = upwardfeedback.map((data) => {
-                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='upward-feedback' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'cliente-proveedor'){
         if(clienteproveedor !== null){
             renderedItems = clienteproveedor.map((data) => {
-                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardComentarios data={data} tipo='cliente-proveedor' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if (editarView === 'evaluacion'){
         if(evaluacion !== null){
             renderedItems = evaluacion.map((data) => {
-                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardEvaluacion data={data} tipo='evaluacion' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'trayectoria'){
         if(trayectorialaboral !== null){
             renderedItems = trayectorialaboral.map(data => {
-                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleClickEdit={handleOpenEditModal}/>
+                return <CardTrayectoriaLaboral data={data} tipo='trayectoria' handleDelete={handleDelete} handleDeleteClick={handleDeleteClick} handleClickEdit={handleOpenEditModal}/>
             });
         }
     }else if(editarView === 'proyeccion-puesto'){
@@ -291,6 +332,7 @@ function Editar(){
     return (
         <div className='editar-ficha'>
             <PerfilSideBar 
+                cet={location.state.cet.id}
                 setEditarView={setEditarView} 
                 empleado={location.state.empleado.empleado} 
                 cantClienteProveedor={clienteproveedor !== null ? clienteproveedor.length : 0} 
@@ -302,6 +344,7 @@ function Editar(){
             <EditarListView renderedItems={renderedItems} tipo={editarView} openModal={handleOpenCreateModal}/>
             {modal ? <CreateModal tipo={editarView} handleSubmitCreate={handleSubmitCreate} closeModal={handleCloseCreateModal} cet={location.state !== null ? location.state.cet.id : null}/> : null}
             {editModal ? <EditModal tipo={editarView} data={contentEdit} handleSubmitCreate={handleEdit} closeModal={handleCloseEditModal} /> : null}
+            {deleteModal ? <DeleteModal tipo={editarView} data={contentEdit} handleDelte={handleDelete} onClose={handleCloseDeleteModal}/> : null}
         </div>
     );
 };

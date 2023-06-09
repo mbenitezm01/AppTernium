@@ -7,9 +7,17 @@ import { useNavigate } from 'react-router-dom'
 import Btn from '../../Btn';
 import { Link } from "react-router-dom"
 import { MdOutlineCompareArrows } from 'react-icons/md'
+import { HiDownload } from 'react-icons/hi'
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import axios from 'axios';
+
+
+
 
 //Importacion de estilos
 import './Lista.css'
+
 
 
 
@@ -31,12 +39,12 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 
-
-
-
 function Lista({ data, filtersState, handleSubmit }) {
 
     const navigate = useNavigate();
+
+    const printRef = useRef();
+
 
     const onRowClick = (cet) => {
         navigate(`/ficha/${cet}`)
@@ -47,9 +55,25 @@ function Lista({ data, filtersState, handleSubmit }) {
             let id1 = selectedFlatRows[0].cells[1].value;
             let id2 = selectedFlatRows[1].cells[1].value
             navigate(`/comparacion?ficha1=${id1}&ficha2=${id2}`)
-
         }
     }
+
+    const onPrintClick = async () => {
+        
+        const element = printRef.current;
+        const canvas = await html2canvas(element);
+        const data = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF();
+        const imgProperties = pdf.getImageProperties(data);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+        
+        pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`lista_empleados.pdf`);
+        
+      };
+    
 
     const columns = React.useMemo(
         () => [
@@ -225,6 +249,10 @@ function Lista({ data, filtersState, handleSubmit }) {
             value: filtersState.est4,
         },
         {
+            id: 'estructura_5',
+            value: filtersState.est5,
+        },
+        {
             id: 'puesto',
             value: filtersState.puesto,
         },
@@ -246,8 +274,8 @@ function Lista({ data, filtersState, handleSubmit }) {
     return (
         <>
             <div className="lista-bg">
-                <div className='table-wrapper'>
-                    <table {...getTableProps()} className='table-container table sticky'>
+                <div className='table-wrapper' >
+                    {<table {...getTableProps()} className='table-container table sticky' ref={printRef}>
                         <thead>
                             {// Loop over the header rows
                                 headerGroups.map(headerGroup => (
@@ -294,7 +322,7 @@ function Lista({ data, filtersState, handleSubmit }) {
                                     )
                                 })}
                         </tbody>
-                    </table>
+                    </table>}
                 </div>
                 <div className='pagination'>
                     <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -310,18 +338,20 @@ function Lista({ data, filtersState, handleSubmit }) {
                         {'>>'}
                     </button>{' '}
                     <span>
-                        Page{' '}
+                        Página{' '}
                         <strong>
                             {pageIndex + 1} of {pageOptions.length}
                         </strong>{' '}
                     </span>
                     <span>
-                        | Go to page:{' '}
+                        | Ir a página:{' '}
                     </span>{' '}
 
                     <input
                         type="number"
                         defaultValue={pageIndex + 1}
+                        min='1'
+                        max={pageOptions.length}
                         onChange={e => {
                             const page = e.target.value ? Number(e.target.value) - 1 : 0
                             gotoPage(page)
@@ -330,6 +360,7 @@ function Lista({ data, filtersState, handleSubmit }) {
                     />
                     <select
                         type="paginationSize"
+                        style={{fontSize:'0.8rem'}}
                         value={pageSize}
                         onChange={e => {
                             setPageSize(Number(e.target.value))
@@ -337,25 +368,29 @@ function Lista({ data, filtersState, handleSubmit }) {
                     >
                         {[10, 20, 30, 40, 50].map(pageSize => (
                             <option key={pageSize} value={pageSize}>
-                                Show {pageSize}
+                                Mostrar {pageSize}
                             </option>
                         ))}
                     </select>
                 
                     {selectedFlatRows.length === 2?
-                        <button className='BtnCompOn' onClick={onCompareClick}>
+                        <button className='button-comparacion-on' onClick={onCompareClick}>
                             {'Comparacion'}
-                            <MdOutlineCompareArrows className='logoComp'/>
+                            <MdOutlineCompareArrows className='logo-comparacion'/>
                         </button>
                         :
-                        <button className='BtnCompOff'>
+                        <button disabled={selectedFlatRows.length !== 2}>
                             {'Comparacion'}
-                            <MdOutlineCompareArrows className='logoComp'/>
+                            <MdOutlineCompareArrows className='logo-comparacion'/>
                         </button>
-
-                        //<Btn text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/> :
-                        //<Btn state={true} text={'Comparacion'} icon={'compare'} onClick={onCompareClick}/>
                     }
+
+                    <button className = "button-print-on" onClick={onPrintClick}>
+                        Print
+                        <HiDownload className='logo-print'/>
+                    </button>
+
+                    
                 </div>
             </div>
         </>

@@ -1,10 +1,13 @@
-import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
+import { FaUserCircle, FaArrowLeft } from 'react-icons/fa';
 import { BiFileBlank } from 'react-icons/bi';
 import { CgNotes } from 'react-icons/cg';
 import { MdWorkOutline } from 'react-icons/md';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 
-export default function PerfilSideBar({ empleado, cantUpwardFeedback, cantClienteProveedor, cantEvaluacion, cantTrayectoriaLaboral, cantPuestoProyeccion ,setEditarView }){
+export default function PerfilSideBar({ cet, empleado, cantUpwardFeedback, cantClienteProveedor, cantEvaluacion, cantTrayectoriaLaboral, cantPuestoProyeccion ,setEditarView }){
+    const navigate = useNavigate();
+    
     const handleClickView = (view) => {
         setEditarView(view);
     };
@@ -13,7 +16,8 @@ export default function PerfilSideBar({ empleado, cantUpwardFeedback, cantClient
     return (
         <div className="perfil">
             <div className="perfil-header">
-                <FaUserCircle style={{fontSize: '60px'}}/>
+                <FaArrowLeft className='regresar-btn' onClick={() => navigate(`/ficha/${cet}`)}/>
+                <FaUserCircle className="perfil-foto"/>
                 <p>{empleado === null ? '' : empleado.nombre}</p>
             </div>
             <div className='perfil-body'>

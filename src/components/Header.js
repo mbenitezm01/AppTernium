@@ -12,7 +12,7 @@ function Header(){
     const navigate = useNavigate();
     const handleLogOut = async () => {
         try{
-            const response = await axios.post('http://localhost:5050/auth/logout', {
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/auth/logout`, {
                 refreshToken: sessionStorage.getItem('refreshToken')
             });
             localStorage.clear();
