@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./Login.css"
+import './Login.css'
 
 import './Login.css';
 import axios from 'axios';
@@ -43,7 +43,7 @@ const Login = () => {
             localStorage.setItem('correo', response.data.correo);
             localStorage.setItem('id_usuario', response.data.id_usuario);
             localStorage.setItem('cet', response.data.cet);
-            navigate("/busqueda")
+            navigate('/busqueda')
         }
     }catch{
         alert('Usuario o contraseña incorrecta.');
@@ -53,18 +53,18 @@ const Login = () => {
     };
   
     return (
-      <div className="login-container">
-        <form onSubmit={handleSubmit} className="login-form">
+      <div className='login-container'>
+        <form onSubmit={handleSubmit} className='login-form'>
           <h2>Login</h2>
-          <div className="form-group">
-            <input type="email" placeholder="Email" value={email} id="email" onChange={handleEmailChange} />
+          <div className='form-group'>
+            <input type='email' placeholder='Email' value={email} id='email' onChange={handleEmailChange} autocomplete='off'/>
           </div>
-          <div className="form-group">
-            <input type="password" placeholder="Contraseña" value={password} id="password" onChange={handlePasswordChange} />
+          <div className='form-group'>
+            <input type='password' placeholder='Contraseña' value={password} id='password' onChange={handlePasswordChange} />
           </div>
-          <button type="submit">Iniciar Sesion</button>
+          <button type='submit'>Iniciar Sesion</button>
         </form>
-        <div className="login-image"></div>
+        <div className='login-image'></div>
       </div>
     );
   };

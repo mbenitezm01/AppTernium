@@ -16,6 +16,8 @@ const Cargar = () => {
             localStorage.clear();
              navigate('/login');
         }
+
+        if(localStorage.getItem('tipo_usuario') !== 'administrador') navigate('/busqueda');
     }, []);
 
     const handleImport = ($event) => {
@@ -37,10 +39,14 @@ const Cargar = () => {
     }
 
     const handleClick = async () => {
-        console.log(selectedCategory)
-        const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/agregar-${selectedCategory}`, state);
-        console.log(response.data);
-        alert(response.data.mensaje)
+        if(state === undefined){
+            alert('Se ha producido un error. Por favor, seleccionar un archivo válido e intentar nuevamente.')
+        }
+        else{
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/agregar-${selectedCategory}`, state);
+            console.log(response.data);
+            alert(response.data.mensaje)
+        }
 
     }
 
