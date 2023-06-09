@@ -12,8 +12,19 @@ function Comparacion(){
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response1 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha1')}`);
-        const response2 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha2')}`);
+        console.log('Request');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        }
+        const data = {
+            refreshToken: sessionStorage.getItem('refreshToken')
+        }
+        const response1 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha1')}`, data, config);
+        if(response1.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
+        const response2 = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${params.get('ficha2')}`, data, config);
+        if(response2.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
         if(response1.data.encontrado && response2.data.encontrado){
             setInfo([response1.data, response2.data]);
         }
