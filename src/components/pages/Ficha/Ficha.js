@@ -54,7 +54,16 @@ function Ficha(){
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${cet.id}`);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        }
+        const data = {
+            refreshToken: sessionStorage.getItem('refreshToken')
+        }
+        const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${cet.id}`, data, config);
+        if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
         setInfo(response.data);
     };
 

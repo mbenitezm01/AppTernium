@@ -33,11 +33,18 @@ function Busqueda(){
     
     const fetchList = useCallback(async () => {
         console.log('Request');
-        console.log(process.env)
-        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/empleados`);
-        setData(response.data);
-        
-
+        console.log(process.env);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        }
+        const data = {
+            refreshToken: sessionStorage.getItem('refreshToken')
+        }
+        const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/empleados`, data, config);
+        if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
+        setData(response.data.data);
     }, []);
     
     useEffect(() => {

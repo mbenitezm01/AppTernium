@@ -97,33 +97,44 @@ function Editar(){
             })
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
-            console.log(response.data);
-            if(response.data.creado){
-                let updatedContent = null;
-                console.log(response.data.data, tipo);
-                switch(tipo){
-                    case 'upward-feedback':
-                        updatedContent = [response.data.data, ...upwardfeedback];
-                        setUpwardFeedback(updatedContent);
-                        break;
-                    case 'cliente-proveedor':
-                        updatedContent = [response.data.data, ...clienteproveedor];
-                        setClienteProveedor(updatedContent);
-                        break;
-                    case 'evaluacion':
-                        updatedContent = [response.data.data, ...evaluacion];
-                        setEvaluacion(updatedContent);
-                        break;
-                    case 'trayectoria':
-                        updatedContent = [response.data.data, ...trayectorialaboral];
-                        setTrayectoriaLaboral(updatedContent);
-                        break;
-                    case 'puesto-proyeccion':
-                        updatedContent = [response.data.data, ...puestoproyeccion];
-                        setPuestoProyeccion(updatedContent);
-                        break;
+            try{
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                    }
                 }
+                dataObject.refreshToken = sessionStorage.getItem('refreshToken');
+                const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject, config);
+                if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
+                console.log(response.data);
+                if(response.data.creado){
+                    let updatedContent = null;
+                    console.log(response.data.data, tipo);
+                    switch(tipo){
+                        case 'upward-feedback':
+                            updatedContent = [response.data.data, ...upwardfeedback];
+                            setUpwardFeedback(updatedContent);
+                            break;
+                        case 'cliente-proveedor':
+                            updatedContent = [response.data.data, ...clienteproveedor];
+                            setClienteProveedor(updatedContent);
+                            break;
+                        case 'evaluacion':
+                            updatedContent = [response.data.data, ...evaluacion];
+                            setEvaluacion(updatedContent);
+                            break;
+                        case 'trayectoria':
+                            updatedContent = [response.data.data, ...trayectorialaboral];
+                            setTrayectoriaLaboral(updatedContent);
+                            break;
+                        case 'puesto-proyeccion':
+                            updatedContent = [response.data.data, ...puestoproyeccion];
+                            setPuestoProyeccion(updatedContent);
+                            break;
+                    }
+                }
+            }catch{
+                alert('No tienes derecho a realizar estos cambios');
             }
         }else if(localStorage.getItem('tipo_usuario') === 'observador'){
             alert('Usted es solo observador')
@@ -146,40 +157,53 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`);
-            if(response.data.borrado){
-                let updatedContent;
-                switch(tipo){
-                    case 'upward-feedback':
-                        updatedContent = upwardfeedback.filter((data) => {
-                            return data.id !== id;
-                        });
-                        setUpwardFeedback(updatedContent);
-                        break;
-                    case 'cliente-proveedor':
-                        updatedContent = clienteproveedor.filter((data) => {
-                            return data.id !== id;
-                        });
-                        setClienteProveedor(updatedContent);
-                        break;
-                    case 'trayectoria':
-                        updatedContent = trayectorialaboral.filter((data) => {
-                            return data.id !== id;
-                        });
-                        setTrayectoriaLaboral(updatedContent);
-                        break;
-                    case 'evaluacion':
-                        updatedContent = evaluacion.filter((data) => {
-                            return data.id !== id;
-                        });
-                        setEvaluacion(updatedContent);
-                        break;
-                    case 'puesto-proyeccion':
-                        updatedContent = puestoproyeccion.filter((data) => {
-                            return data.id !== id;
-                        });
-                        setPuestoProyeccion(updatedContent);
+            try{
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                    }
                 }
+                const data = {
+                    refreshToken: sessionStorage.getItem('refreshToken')
+                }
+                const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id}`, data, config);
+                if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
+                if(response.data.borrado){
+                    let updatedContent;
+                    switch(tipo){
+                        case 'upward-feedback':
+                            updatedContent = upwardfeedback.filter((data) => {
+                                return data.id !== id;
+                            });
+                            setUpwardFeedback(updatedContent);
+                            break;
+                        case 'cliente-proveedor':
+                            updatedContent = clienteproveedor.filter((data) => {
+                                return data.id !== id;
+                            });
+                            setClienteProveedor(updatedContent);
+                            break;
+                        case 'trayectoria':
+                            updatedContent = trayectorialaboral.filter((data) => {
+                                return data.id !== id;
+                            });
+                            setTrayectoriaLaboral(updatedContent);
+                            break;
+                        case 'evaluacion':
+                            updatedContent = evaluacion.filter((data) => {
+                                return data.id !== id;
+                            });
+                            setEvaluacion(updatedContent);
+                            break;
+                        case 'puesto-proyeccion':
+                            updatedContent = puestoproyeccion.filter((data) => {
+                                return data.id !== id;
+                            });
+                            setPuestoProyeccion(updatedContent);
+                    }
+                }
+            }catch{
+                alert('No tienes derecho a realizar estos cambios');
             }
         }else if(localStorage.getItem('tipo_usuario') === 'observador'){
             alert('Usted es solo observador')
@@ -200,61 +224,72 @@ function Editar(){
             });
             alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
-            const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
-            if(response.data.editado){
-                let updatedContent;
-                switch(tipo){
-                    case 'upward-feedback':
-                        updatedContent = upwardfeedback.map(data => {
-                            if(data.id === dataObject.id){
-                                return {...data, ...dataObject}
-                            }
-                            return data;
-                        });
-                        setUpwardFeedback(updatedContent);
-                        break;
-                    case 'cliente-proveedor':
-                        updatedContent = clienteproveedor.map(data => {
-                            if(data.id === dataObject.id){
-                                return {...data, ...dataObject}
-                            }
-                            return data;
-                        });                    
-                        setClienteProveedor(updatedContent);
-                        break;
-                    case 'evaluacion':
-                        updatedContent = evaluacion.map(data => {
-                            if(data.id === dataObject.id){
-                                console.log(dataObject);
-                                return {...data, ...dataObject}
-                            }
-                            return data;
-                        });
-                        setEvaluacion(updatedContent);
-                        break;
-                    case 'trayectoria':
-                        updatedContent = trayectorialaboral.map(data => {
-                            if(data.id === dataObject.id){
-                                return {...data, ...dataObject}
-                            }
-                            return data;
-                        });
-                        setTrayectoriaLaboral(updatedContent);
-                        break;
-                    case 'puesto-proyeccion':
-                        console.log(dataObject);
-                        updatedContent = puestoproyeccion.map(data => {
-                            console.log(data.id);
-                            if(data.id === dataObject.id){
-                                return {...data, ...dataObject}
-                            }
-                            return data;
-                        });
-                        setPuestoProyeccion(updatedContent);
-                    case 'info-personal':
-                        setInfoPersonal(dataObject);
-                        break;
+            try{
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                    }
                 }
+                dataObject.refreshToken = sessionStorage.getItem('refreshToken');
+                const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject, config);
+                if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
+                if(response.data.editado){
+                    let updatedContent;
+                    switch(tipo){
+                        case 'upward-feedback':
+                            updatedContent = upwardfeedback.map(data => {
+                                if(data.id === dataObject.id){
+                                    return {...data, ...dataObject}
+                                }
+                                return data;
+                            });
+                            setUpwardFeedback(updatedContent);
+                            break;
+                        case 'cliente-proveedor':
+                            updatedContent = clienteproveedor.map(data => {
+                                if(data.id === dataObject.id){
+                                    return {...data, ...dataObject}
+                                }
+                                return data;
+                            });                    
+                            setClienteProveedor(updatedContent);
+                            break;
+                        case 'evaluacion':
+                            updatedContent = evaluacion.map(data => {
+                                if(data.id === dataObject.id){
+                                    console.log(dataObject);
+                                    return {...data, ...dataObject}
+                                }
+                                return data;
+                            });
+                            setEvaluacion(updatedContent);
+                            break;
+                        case 'trayectoria':
+                            updatedContent = trayectorialaboral.map(data => {
+                                if(data.id === dataObject.id){
+                                    return {...data, ...dataObject}
+                                }
+                                return data;
+                            });
+                            setTrayectoriaLaboral(updatedContent);
+                            break;
+                        case 'puesto-proyeccion':
+                            console.log(dataObject);
+                            updatedContent = puestoproyeccion.map(data => {
+                                console.log(data.id);
+                                if(data.id === dataObject.id){
+                                    return {...data, ...dataObject}
+                                }
+                                return data;
+                            });
+                            setPuestoProyeccion(updatedContent);
+                        case 'info-personal':
+                            setInfoPersonal(dataObject);
+                            break;
+                    }
+                }
+            }catch{
+                alert('No tienes derecho a realizar estos cambios');
             }
         }else if(localStorage.getItem('tipo_usuario') === 'observador'){
             alert('Usted es solo observador')
@@ -264,7 +299,16 @@ function Editar(){
 
     const fetchInfoEmpleado = async () => {
         console.log('Request');
-        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${id}`);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        }
+        const data = {
+            refreshToken: sessionStorage.getItem('refreshToken')
+        }
+        const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/info-empleado/${id}`, data, config);
+        if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
         setClienteProveedor(response.data.clienteproveedor);
         setTrayectoriaLaboral(response.data.trayectorialaboral);
         setUpwardFeedback(response.data.upwardfeedback);

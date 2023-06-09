@@ -39,7 +39,13 @@ function Accordion() {
     // }
     const handleCreate = async (id_pendiente, tipo, dataObject) => {
         try{
-            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                }
+            }
+            dataObject.refreshToken = sessionStorage.getItem('refreshToken');
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject, config);
             if(response.data.creado){
                 handleDeletePendiente(id_pendiente);
             }
@@ -50,7 +56,16 @@ function Accordion() {
 
     const handleDelete = async (id_pendiente, tipo, id) => {
         try{
-            const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id.id}`);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+                }
+            }
+            const data = {
+                refreshToken: sessionStorage.getItem('refreshToken')
+            }
+            const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id.id}`, data, config);
+            if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
             if(response.data.borrado){
                 handleDeletePendiente(id_pendiente);
             }
@@ -60,7 +75,14 @@ function Accordion() {
     };
 
     const handleEdit = async (id_pendiente, tipo, dataObject) => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        }
+        dataObject.refreshToken = sessionStorage.getItem('refreshToken');
         const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
+        if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
         if(response.data.editado){
             handleDeletePendiente(id_pendiente);
         }else{
