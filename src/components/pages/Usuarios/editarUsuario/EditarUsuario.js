@@ -82,39 +82,44 @@ function EditarUsuario(){
 
 
     return(
-        <div id="editar-usuario">
-            <div id="erase-user-div">
-                <button id="return-to-table" onClick={returnHandler}><AiOutlineArrowLeft/> Regresar</button>
-                <button id="delete-user-button" onClick={eraseUserHandler}><AiFillDelete/>Eliminar Usuario</button>
-            </div>
-            <Table id = "edit-user-table">
-                <tbody>
-                    <tr>
-                    <td>CET</td>
-                    <td>{info.empleado_cet}</td>
-                    </tr>
-                    <tr>
-                        <td>Correo</td>
-                        <td><input id="edit-email" defaultValue={info.correo}></input></td>
-                    </tr>
-                    <tr>
-                        <td>Contraseña</td>
-                        <td><button onClick={changePasswordHandler}>Cambiar Contraseña <AiFillEdit/></button></td>
-                    </tr>
-                    <tr>
-                        <td>Admin</td>
-                        <td><input type="checkbox" id="admin-toggle" checked={adminCheck} onClick={adminClickHandler}></input></td>
-                    </tr>
-                    <tr>
-                        <td>Activo</td>
-                        <td><input type="checkbox" id="active-toggle" checked={activeCheck} onClick={activeClickHandler}></input></td>
-                    </tr>
-                </tbody>
-                
-            </Table>
+        <div className="editar-usuario-fondo">
+            <div className="editar-usuario">
+                <div id="erase-user-div">
+                    <button id="return-to-table" onClick={returnHandler}><AiOutlineArrowLeft/> Regresar</button>
+                    <button id="delete-user-button" onClick={eraseUserHandler}><AiFillDelete/>Eliminar Usuario</button>
+                </div>
+                <Table className = "edit-user-table">
+                    <tbody>
+                        <tr>
+                            <td className="left">CET</td>
+                            <td className="right">{info.empleado_cet}</td>
+                        </tr>
+                        <tr>
+                            <td className="left">Correo</td>
+                            <td td className="right"><input id="edit-email" defaultValue={info.correo}></input></td>
+                        </tr>
+                        <tr>
+                            <td className="left">Contraseña</td>
+                            <td td className="right">
+                                <button className='button-password' onClick={changePasswordHandler}>Cambiar Contraseña <AiFillEdit/>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="left">Admin</td>
+                            <td td className="right"><input type="checkbox" id="admin-toggle" checked={adminCheck} onClick={adminClickHandler}></input></td>
+                        </tr>
+                        <tr>
+                            <td className="left">Activo</td>
+                            <td td className="right"><input type="checkbox" id="active-toggle" checked={activeCheck} onClick={activeClickHandler}></input></td>
+                        </tr>
+                    </tbody>
+                    
+                </Table>
 
-            <button onClick={clickHandler}>Actualizar <BsArrowBarUp/></button>
-            
+                <button onClick={clickHandler}>Actualizar <BsArrowBarUp/></button>
+                
+            </div>
         </div>
     )
 } export default EditarUsuario

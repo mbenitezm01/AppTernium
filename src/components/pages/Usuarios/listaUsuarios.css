@@ -1,15 +1,29 @@
 .listaUsuarios-bg {
-    width: 100vw;
-    height: 10%;
+    max-width: 85%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.listaUsuarios-bg{
-    border: 1px solid black;
-    width: 100%;
-
-
+.usuarios-fondo{
+    padding-top: 50px;
+    background-color: #f1f1f1;
+    height: 100vh;
 }
 
+
+.button-notificaciones {
+    display: block;
+    margin-bottom: 20px;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.logo-notificaciones{
+    margin-left: 7px;
+    font-size: 20px;
+}
 
 .listaUsuarios-bg table{
     width: 100%;
@@ -86,3 +100,65 @@
     height: 20px;
 
 }
+.table-usuarios th{
+    background-color: white;
+
+}
+
+.table-usuarios th:nth-child(1) {
+    width: 10%;
+    text-align: left;
+}
+
+
+.table-usuarios td:nth-child(1) {
+    width: 10%;
+    text-align: left;
+}
+
+.table-usuarios th:nth-child(2) {
+    width: 30%;
+    text-align: left;
+
+}
+
+.table-usuarios td:nth-child(2) {
+    width: 30%;
+    text-align: left;
+}
+
+.table-usuarios th:nth-child(3) {
+    width: 20%;
+    text-align: center;
+}
+
+.table-usuarios td:nth-child(3) {
+    width: 20%;
+    text-align: center;
+}
+
+.table-usuarios th:nth-child(4) {
+    width: 20%;
+    text-align: center;
+}
+
+.table-usuarios td:nth-child(4) {
+    width: 20%;
+    text-align: center;
+}
+
+.table-usuarios th:nth-child(5) {
+    width: 20%;
+    text-align: right;
+}
+
+.table-usuarios td:nth-child(5) {
+    width: 20%;
+    text-align: right;
+}
+
+.table-header-row{
+    background-color: red;
+}
+
+

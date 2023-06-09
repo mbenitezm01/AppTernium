@@ -13,7 +13,7 @@ function Pendiente() {
         if(localStorage.getItem('tipo_usuario') === 'observador' || localStorage.getItem('tipo_usuario') === 'editor') navigate('/busqueda');
     }, []);
     return (
-        <div className="pendiente" style={{maxHeight: '90vh', width: '100vw', overflowY: 'auto'}}>
+        <div className="pendiente">
             <Accordion/>
         </div>
     )

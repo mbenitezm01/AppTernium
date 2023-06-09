@@ -134,8 +134,19 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
             </>
         )
         
-    }else if (tipo === 'proyeccion-puesto'){
+    }else if (tipo === 'puesto-proyeccion'){
         name = 'Proyección de Puesto';
+        content = (
+            <>
+                <input style={{marginBottom: '10px'}}
+                    value={puesto}
+                    type='text'
+                    className="input-box comentario"
+                    placeholder="Puesto..."
+                    onChange={(e) => setPuesto(e.target.value)}
+                />  
+            </>
+        )
     }
 
     const handleSubmit = (event) => {
@@ -185,8 +196,15 @@ export default function CreateModal  ({ tipo, handleSubmitCreate, closeModal, ce
                 })
             }
 
-        }else if(tipo === 'proyeccion-puesto'){
-
+        }else if(tipo === 'puesto-proyeccion'){
+            if(puesto === ''){
+                alert('Debe de agregar los datos de todos los campos');
+            }else{
+                handleSubmitCreate(tipo, {
+                    empleado_cet: cet,
+                    puesto: puesto
+                })
+            }
         }
     };
 

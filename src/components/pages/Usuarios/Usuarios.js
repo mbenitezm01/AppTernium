@@ -5,6 +5,8 @@ import axios from 'axios'
 import Btn from '../../Btn'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import './Usuarios.css'
+import { IoSearchSharp } from 'react-icons/io5'
+
 
 //Importacion de estilos
 import './listaUsuarios.css'
@@ -17,6 +19,10 @@ function ListaUsuarios() {
     const [isLoading, setLoading] = useState(true)
 
     const navigate = useNavigate()
+
+    const onNotificacionClick = () => {
+        navigate("/usuarios/pendientes")
+    }
 
     const fetchList = useCallback(async () => {
         const response = await axios.get(`http://localhost:5050/api/usuarios`);
@@ -109,9 +115,13 @@ function ListaUsuarios() {
     }
 
     return (
+        <div className="usuarios-fondo">
         <div className="listaUsuarios-bg">
-            <Link to={"/usuarios/pendientes"}  style={{width:'200px', margin:'0'}}> <Btn text={'Notificaciones'} icon={'search'}/> </Link>
-            <table {...getTableProps()}>
+            <button className='button-notificaciones' onClick={onNotificacionClick}>
+            {'Notificaciones'}
+            <IoSearchSharp className='logo-notificaciones'></IoSearchSharp>
+            </button>
+            <table className='table-usuarios'{...getTableProps()}>
                 <thead>
                     {// Loop over the header rows
                         headerGroups.map(headerGroup => (
@@ -125,7 +135,7 @@ function ListaUsuarios() {
                                                 column.render('Header')}
                                         </th>
                                     ))}
-                            </tr>
+                            </tr> 
                         ))}
                 </thead>
                 {/* Apply the table body props */}
@@ -153,6 +163,7 @@ function ListaUsuarios() {
                 </tbody>
             </table>
 
+        </div>
         </div>
 
     )
