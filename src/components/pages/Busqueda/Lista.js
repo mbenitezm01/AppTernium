@@ -384,11 +384,13 @@ function Lista({ data, filtersState, handleSubmit }) {
                             <MdOutlineCompareArrows className='logo-comparacion'/>
                         </button>
                     }
-
+                    
+                    {/*
                     <button className = "button-print-on" onClick={onPrintClick}>
                         Print
                         <HiDownload className='logo-print'/>
                     </button>
+                    */}
 
                     
                 </div>
