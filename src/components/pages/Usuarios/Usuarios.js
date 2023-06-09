@@ -25,7 +25,7 @@ function ListaUsuarios() {
     }
 
     const fetchList = useCallback(async () => {
-        const response = await axios.get(`http://localhost:5050/api/usuarios`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/usuarios`);
         setData(response.data);
         setLoading(false)
     }, []);

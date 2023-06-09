@@ -65,7 +65,6 @@ function Accordion() {
                 refreshToken: sessionStorage.getItem('refreshToken')
             }
             const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/${tipo}/${id.id}`, data, config);
-            if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
             if(response.data.borrado){
                 handleDeletePendiente(id_pendiente);
             }
@@ -81,7 +80,7 @@ function Accordion() {
             }
         }
         dataObject.refreshToken = sessionStorage.getItem('refreshToken');
-        const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject);
+        const response = await axios.patch(`${process.env.REACT_APP_API_HOST}/api/${tipo}`, dataObject, config);
         if(response.data.accessToken !== null) sessionStorage.setItem('accessToken', response.data.accessToken);
         if(response.data.editado){
             handleDeletePendiente(id_pendiente);
@@ -91,7 +90,7 @@ function Accordion() {
     }
 
     const handleDeletePendiente = async (id_pendiente) => {
-        const response = await axios.delete(`${process.env.REACT_APP_API_HOST}/api/pendiente/${id_pendiente}`);
+        const response = await axios.post(`${process.env.REACT_APP_API_HOST}/api/pendiente/${id_pendiente}`);
         if(response.data.borrado){
             let updatedContent = items.filter(data => {
                 return data.data.id !== id_pendiente
@@ -125,6 +124,7 @@ function Accordion() {
         try{
             console.log('Request');
             const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/pendiente`);
+
             const tempArr = [];
             // response.data.forEach(data => {
             for (const data of response.data.data) {
