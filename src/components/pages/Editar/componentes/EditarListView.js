@@ -27,7 +27,7 @@ export default function EditarListView({ renderedItems, openModal, tipo }){
         <div className='edit-list-view'>
             <div className="agregar">
                 <p>{label}</p>
-                {tipo === 'info-personal' ? null : <button className='agregar-btn' onClick={openModal}><p>Agregar</p><HiOutlineDocumentAdd /></button>}
+                {tipo === 'info-personal' ? <button disabled className='agregar-btn-disabled'><p style={{marginBottom: '0px'}}>Agregar</p><HiOutlineDocumentAdd /></button> : <button className='agregar-btn' onClick={openModal}><p>Agregar</p><HiOutlineDocumentAdd /></button>}
             </div>
             <div className={(renderedItems === null || renderedItems.length === 0) ? 'edit-list-no' : 'edit-list'}>
                 {(renderedItems === null || renderedItems.length === 0) ? <NoCard /> : renderedItems}

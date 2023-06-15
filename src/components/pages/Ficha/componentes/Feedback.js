@@ -4,13 +4,13 @@ export default function Feedback({ renderedData, cantidad, promedio, header}){
         <div className="feedback">
             <div className='comment-header'>
                 <div>
-                    <p>{contenidoHeader}: {renderedData !== undefined ? cantidad : 0}</p>
+                    <p>{contenidoHeader} {renderedData !== undefined ? cantidad : 0}</p>
                 </div>
                 <div>
-                    <p>Promedio: {promedio !== undefined ? promedio.toFixed(1) : 0}</p>
+                    <p>Promedio {promedio !== undefined ? promedio.toFixed(1) : 0}</p>
                 </div>
             </div>
-            {renderedData !== undefined ? 
+            {renderedData !== null ? 
             <table className='info'>
                 <thead>
                     <tr>

@@ -16,11 +16,7 @@
     height: 8rem;
     position: relative;
     text-align: center;
-    border-bottom: 2px solid black;
-}
-
-.main-header > p{
-    font-size: 30px;
+    border-bottom: 2px solid #333;
 }
 
 .main-header .logo{
@@ -32,7 +28,23 @@
 }
 
 .main-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding-top: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+}
+
+.key-talent{
+    margin-left: 5px;
+    font-size: 20px;
+    color: #fccd12;
+}
+
+.icon{
+    width: 30px;
 }
 
 .body{
@@ -57,7 +69,7 @@
 
 .header{
     padding-left: 5px;
-    background-color: #a5a5a5;
+    background-color: #607d8b;
     /* background-color: rgb(255, 153, 0); */
     font-size: 20px;
     font-weight: bold;
@@ -72,7 +84,7 @@ td{
     padding: 2px
 }
 
-.info{
+.info-personal{
     border-collapse: collapse;
     width: 100%;
     border: 1px solid black;
@@ -80,17 +92,39 @@ td{
     min-height: 15rem;
 }
 
+.info{
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+    padding: 2px 4px;
+}
+
+.info-personal > tbody > tr:nth-child(odd){
+    background-color: #fff;
+}
+
+.info-personal > tbody > tr:nth-child(even){
+    background-color: #cfd8dc;
+}
+
+/* .info-personal > thead{
+    background-color: #c5c5c5;
+} */
+
+.info-personal tr td {
+    text-align: left !important;
+}
+
 .info tr td {
     text-align: left !important;
 }
 
 th{
-    padding-left: 10px;
+    background-color: #90a4ae;
 }
 
-td{
+th, td{
     padding-left: 10px;
-    /*border-right: 1px solid black*/
 }
 
 .info > tbody > tr:nth-child(odd){
@@ -98,13 +132,12 @@ td{
 }
 
 .info > tbody > tr:nth-child(even){
-    background-color: rgb(212, 212, 212);
+    background-color: #cfd8dc;
 }
 
-.info > thead{
+/* .info > thead{
     background-color: #c5c5c5;
-    /* background-color: rgb(212, 212, 212); */
-}
+} */
 
 .border-r{
     border-right: 1px solid black;
@@ -118,7 +151,7 @@ td{
     padding-left: 5px;
     padding-right: 20rem;
     /* background-color: rgb(255, 153, 0); */
-    background-color: #a5a5a5;
+    background-color: #607d8b;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 5px;

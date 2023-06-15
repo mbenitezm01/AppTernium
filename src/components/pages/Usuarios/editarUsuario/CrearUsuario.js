@@ -55,7 +55,7 @@ function CrearUsuario(){
                 activo: newActive
             }
             if (window.confirm("Crear nuevo usuario?")){
-                axios.post("http://localhost:5050/api/agregar-usuario", newUserData)
+                axios.post(`${process.env.REACT_APP_API_HOST}/api/agregar-usuario`, newUserData)
                 alert("Usuario creado exitosamente")
                 navigate('/usuarios')
             }

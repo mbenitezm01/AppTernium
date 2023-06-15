@@ -1,9 +1,11 @@
 export default function TrayectoriaLaboral({ datos }){
+    console.log(datos);
     return (
         <div className='work-history'>
             <div className='header'>
                 <p>TRAYECTORIA LABORAL</p>
             </div>
+            {datos !== null ?
             <table className='info'>
                 <thead>
                     <tr>
@@ -15,7 +17,7 @@ export default function TrayectoriaLaboral({ datos }){
                 <tbody>
                     {datos}
                 </tbody>
-            </table>
+            </table> : null}
         </div>
     );
 };

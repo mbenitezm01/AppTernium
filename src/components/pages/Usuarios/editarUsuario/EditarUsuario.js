@@ -19,7 +19,7 @@ function EditarUsuario(){
     const [activeCheck, setActive] = useState(false)
 
     const fetchInfoEmpleado = useCallback(async () => {
-        const response = await axios.get(`http://localhost:5050/api/info-usuario/${cet.id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_HOST}/api/info-usuario/${cet.id}`);
         setInfo(response.data[0])
         setLoading(false)
     }, []);
@@ -47,14 +47,14 @@ function EditarUsuario(){
         }
         
         if (window.confirm("Guardar cambios?")){
-            axios.patch(`http://localhost:5050/api/info-usuario/${cet.id}`, newData)
+            axios.patch(`${process.env.REACT_APP_API_HOST}/api/info-usuario/${cet.id}`, newData)
             alert("Cambios guardados exitosamente")
         }
     }
 
     function eraseUserHandler(){
         if (window.confirm("Deseas eliminar este usuario?\nEsta acción no se puede revertir.")){
-            axios.delete(`http://localhost:5050/api/info-usuario/${cet.id}`)
+            axios.delete(`${process.env.REACT_APP_API_HOST}/api/info-usuario/${cet.id}`)
             navigate('/usuarios')
         }
         

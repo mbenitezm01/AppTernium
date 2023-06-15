@@ -95,7 +95,6 @@ function Editar(){
                 tabla: editarView,
                 metodo: 'crear'
             })
-            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
             try{
                 const config = {
@@ -155,7 +154,12 @@ function Editar(){
                 metodo: 'borrar',
                 id_obj: id
             });
-            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+            console.log(response.data);
+            if(response.data.creado){
+                alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+            }else{
+                alert(response.data.mensaje);
+            }
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
             try{
                 const config = {
@@ -222,7 +226,11 @@ function Editar(){
                 metodo: 'editar',
                 id_obj: dataObject.id
             });
-            alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+            if(response.data.creado){
+                alert('Se ha notificado al administrador y se va a evaluar tu comentario');
+            }else{
+                alert(response.data.mensaje);
+            }
         }else if(localStorage.getItem('tipo_usuario') === 'administrador'){
             try{
                 const config = {
@@ -317,6 +325,10 @@ function Editar(){
         setInfoPersonal(response.data.empleado);
     };
     useEffect(() => {
+        if(localStorage.getItem('tipo_usuario') === 'observador'){
+            navigate(`/ficha/${id}`);
+        }
+
         if(sessionStorage.length === 0) {
             localStorage.clear();
             navigate('/login');

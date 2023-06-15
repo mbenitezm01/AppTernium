@@ -136,6 +136,20 @@
     transition: background-color .5s ease, border-color .5s ease;    
 }
 
+.agregar-btn-disabled{
+    all: unset;
+    color: white;
+    background-color: #f30;
+    width: 100px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    transition: background-color .5s ease, border-color .5s ease;
+    opacity: 0.5;
+}
+
 .regresar-btn{
     cursor: pointer;
     font-size: x-large;

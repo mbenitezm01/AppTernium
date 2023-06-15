@@ -5,13 +5,13 @@ export default function SeccionPersonal({ renderedInfoValue, renderedEvaluacione
         <div className='personal-section'>
             <div className='personal-data'>
                 <Header texto='datos personales'/>
-                {renderedInfoValue !== null ? <table className='info'>{renderedInfoValue}</table> : null}
+                {renderedInfoValue !== null ? <table className='info-personal'>{renderedInfoValue}</table> : null}
             </div>
             <div className='evaluations'>
                 <Header texto='evaluaciones anuales'/>
-                <table className='info'>
+                <table className='info-personal'>
                     <thead>
-                        <tr key='info'>
+                        <tr>
                             <th>Año</th>
                             <th>PERF</th>
                             <th>POTENCIAL</th>

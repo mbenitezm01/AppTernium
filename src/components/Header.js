@@ -6,7 +6,8 @@ import Btn from './Btn'
 import './sharedStyles/Header.css'
 
 //Importacion de imagenes
-import Logo from '../media/images/logo.png'
+// import Logo from '../media/images/logo.png'
+import Logo from '../media/logo-ternium.jpeg';
 
 function Header(){
     const navigate = useNavigate();

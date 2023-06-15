@@ -33,7 +33,7 @@ function EditarPassword(){
                 break;
             case (pass1 === pass2):
                 if (window.confirm("Cambiar contraseña?")){
-                    axios.patch(`http://localhost:5050/api/info-usuario/password/${cet.id}`, {contrasena: pass1})
+                    axios.patch(`${process.env.REACT_APP_API_HOST}/api/info-usuario/password/${cet.id}`, {contrasena: pass1})
                     alert("Contraseña cambiada exitosamente")
                     navigate(`/editar-usuario/${cet.id}`)
                 }

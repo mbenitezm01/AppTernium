@@ -5,6 +5,7 @@ import { jsPDF } from 'jspdf';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../../media/logo-ternium.jpeg'
+import { FaKey } from 'react-icons/fa';
 
 // Import de estilos
 import './Ficha.css';
@@ -54,7 +55,7 @@ function Ficha(){
     const handleClickEdit = () => {
         navigate(`/ficha/${info.empleado.cet}/editar`, {state: {empleado: info, cet: cet}});
     };
-
+    console.log(info);
     // Funcion que hace una peticion a la API y regresa toda la info personal
     const fetchInfoEmpleado = async () => {
         console.log('Request');
@@ -73,18 +74,27 @@ function Ficha(){
 
     // useEffect
     useEffect(() => {
+        if(localStorage.getItem('cet') === cet.id) navigate('/busqueda');
         if(localStorage.length === 0) navigate('/login');
         fetchInfoEmpleado();
     }, []);
-
     // Se cargan los datos de la seccion personal
     let renderedInfoValue = null;
     if(info.empleado !== undefined){
+        const birthDate = new Date(info.empleado.fecha_nacimiento.slice(0,10));
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
         renderedInfoValue = (
             <tbody>
                 <tr key={info.empleado.fecha_nacimiento.slice(0,10)}>
                     <td className='border-r'>Edad</td>
-                    <td>{info.empleado.fecha_nacimiento.slice(0,10) || 0}</td>
+                    <td>{age || 0}</td>
                 </tr>
                 <tr key={info.empleado.antiguedad}>
                     <td className='border-r'>Antiguedad</td>
@@ -92,7 +102,7 @@ function Ficha(){
                 </tr>
                 <tr key='estudios'>
                     <td className='border-r'>Estudios</td>
-                    <td>{info.empleado.estudios ? 1 : 0}</td>
+                    <td>{info.empleado.estudios || 0}</td>
                 </tr>
                 <tr key='universidad'>
                     <td className='border-r'>Universidad</td>
@@ -255,7 +265,16 @@ function Ficha(){
             <div className='main-container' style={{padding: padding}}>
                 {<div ref={printRef}>
                     <div className='main-header'>
-                        <p className='main-title'>{info.empleado !== undefined ? info.empleado.nombre : ''}</p>
+                        <div className='main-title'>
+                            <div className='main-title-p'><p>{info.empleado !== undefined ? info.empleado.nombre : ''}</p></div>
+                            {info.empleado !== undefined ?
+                                <>
+                                    {info.empleado.key_talent ? <FaKey className='key-talent'></FaKey> : null}
+                                </>
+                                :
+                                null
+                            }
+                        </div>
                         <img src={Logo} className='logo'/>
                     </div>
                     <div className='body'>
